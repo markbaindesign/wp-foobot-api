@@ -116,10 +116,12 @@ function baindesign_foobot_plugin_init()
 	/** 
 	 * Get device UUID
 	 */
+
 	function bd_get_foobot_device_uuid()
 	{
 		$device = bd_get_foobot_device();
-		$uuid = $device[0]->{"uuid"};
+		var_dump($device);
+		//$uuid = $device[0]->{"uuid"};
 		return $uuid;
 	}
 
@@ -137,7 +139,6 @@ function baindesign_foobot_plugin_init()
 		/**
 		 * Having done that, we can proceed with questioning the database.
 		 */
-		// $data = bd_get_foobot_data();
 		
 		/**
 		 * We're storing the retrieved values in an array to make it easy for 
@@ -200,7 +201,14 @@ function baindesign_foobot_plugin_init()
 		 */
 
 		// Get info on devices attached to user account
-		$data = bd_get_foobot_data();
+		$device_data = bd_get_foobot_device();
+
+		/**
+		 * Add the retrieved device data to the database
+		 */
+		$uuid = $device_data[0]->{"uuid"};
+		
+		$sensor_data = bd_get_foobot_data();
 
 		/**
 		 * Temperature
@@ -208,15 +216,15 @@ function baindesign_foobot_plugin_init()
 		 */
 
 		// Get timestamp
-		$time = $data->{"start"};
+		$time = $sensor_data->{"start"};
 
 		// Get the temperature
-		$datapoints = $data->{"datapoints"};
+		$datapoints = $sensor_data->{"datapoints"};
 		$datapoint = $datapoints[0];
 		$temp = $datapoint[2];
 
 		// Get the temperature units
-		$units = $data->{"units"};
+		$units = $sensor_data->{"units"};
 		$temp_units = $units[2];
 	
 		$table_name = $wpdb->prefix . 'bd_foobot_data';
@@ -224,13 +232,14 @@ function baindesign_foobot_plugin_init()
 		$wpdb->insert(
 			$table_name,
 			array(
-				'footimestamp' => $time,
-				'footemp' => $temp,
-				'footempunits' => $temp_units,
+				'uuid' 				=> $uuid,
+				'footimestamp' 	=> $time,
+				'footemp' 			=> $temp,
+				'footempunits' 	=> $temp_units,
 			)
 		);
 
-		echo $wpdb->show_errors();
+		// echo $wpdb->show_errors();
 
 		// Transient is set for 5 mins
 		set_transient('foobot-api-data-updated', 1, (60 * 5));
