@@ -47,7 +47,7 @@ add_shortcode('foobot_device_name', 'bd_foobot_show_device_name');
 /**
  * Show Foobot device data
  */
-function bd_foobot_show_data_from_device( $device )
+function bd_foobot_show_data_from_device()
 {   
    $device = bd_get_foobot_data();
    ob_start();
@@ -63,7 +63,7 @@ add_shortcode('foobot_device_data', 'bd_foobot_show_data_from_device');
 /**
  * Show temp now
  */
-function bd_foobot_show_temp_now( $device )
+function bd_foobot_show_temp_now()
 {   
 	$data = bd_get_temp_now();
 

@@ -12,7 +12,7 @@ function bd_foobot_create_table()
    global $wpdb;
    global $bd_foobot_db_version;
 
-   $table_name = $wpdb->prefix . 'bd_foobot_api';
+   $table_name = $wpdb->prefix . 'bd_foobot_data';
 
    $charset_collate = $wpdb->get_charset_collate();
 
@@ -35,10 +35,29 @@ function bd_foobot_install_data()
 {
    global $wpdb;
 
+   $table_name = $wpdb->prefix . 'bd_foobot_data';
+
+   $wpdb->insert(
+      $table_name,
+      array(
+         'footimestamp'   => '0',
+         'footemp'         => '0',
+         'footempunits'   => '',
+      )
+   );
+}
+
+/**
+ * 
+ */
+function bd_foobot_update_temp_data()
+{
+   global $wpdb;
+
    $welcome_name = 'Mr. WordPress';
    $welcome_text = 'Congratulations, you just completed the installation!';
 
-   $table_name = $wpdb->prefix . 'bd_foobot_api';
+   $table_name = $wpdb->prefix . 'bd_foobot_data';
 
    $wpdb->insert(
       $table_name,

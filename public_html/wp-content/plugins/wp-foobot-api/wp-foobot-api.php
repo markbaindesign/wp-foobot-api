@@ -9,7 +9,7 @@
  * Author URI: http://bain.design
  * License: GNU General Public License v2.0
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: _bd_foobot_api
+ * Text Domain: _bd_foobot_data
  * Plugin Slug: wp-foobot-api
  */
 
@@ -128,25 +128,37 @@ function baindesign_foobot_plugin_init()
 	 */
 	function bd_get_temp_now()
 	{
+		/**
+		 * First, we need to check our transient and update the data in the 
+		 * custom table if necessary. 
+		 */
+		bd_update_sensor_data();
 
-		$data = bd_get_foobot_data();
+		/**
+		 * Having done that, we can proceed with questioning the database.
+		 */
+		// $data = bd_get_foobot_data();
+		
+		/**
+		 * We're storing the retrieved values in an array to make it easy for 
+		 * our shortcode to parse the data.
+		 */
 		$temp_data = array();
 
+		$table_name = $wpdb->prefix . 'bd_foobot_data';
+		
 		// Get the timestamp
-		$time = $data->{"start"};
+   	$time = $wpdb -> get_var( "SELECT time_stamp FROM $table_name" );
 		$temp_data[] = $time; // Add to array
+		
 
 		// Get the temp
-		$datapoints = $data->{"datapoints"};
-		$datapoint = $datapoints[0];
-		$temp = $datapoint[2];
+		$temp = $wpdb -> get_var( "SELECT temp FROM $table_name" );
 		$temp_data[] = $temp; // Add to array
 
 		// Get the units
-		$units = $data->{"units"};
-
-		$u = $units[2];
-		$temp_data[] = $u; // Add to array
+		$temp_units = $wpdb -> get_var( "SELECT temp_units FROM $table_name" );
+		$temp_data[] = $temp_units; // Add to array
 
 		return $temp_data;
 	}
@@ -170,6 +182,7 @@ function baindesign_foobot_plugin_init()
 
 	function bd_update_sensor_data()
 	{
+		global $wpdb;
 
 		// If an API call has been made within the last 5 mins, 
 		// return.
@@ -180,8 +193,44 @@ function baindesign_foobot_plugin_init()
 			return;
 		}
 
+		/**
+		 * 
+		 * Update the custom database table with fresh data via an API 
+		 * 
+		 */
+
 		// Get info on devices attached to user account
-		bd_get_foobot_data();
+		$data = bd_get_foobot_data();
+
+		/**
+		 * Temperature
+		 * ===========
+		 */
+
+		// Get timestamp
+		$time = $data->{"start"};
+
+		// Get the temperature
+		$datapoints = $data->{"datapoints"};
+		$datapoint = $datapoints[0];
+		$temp = $datapoint[2];
+
+		// Get the temperature units
+		$units = $data->{"units"};
+		$temp_units = $units[2];
+	
+		$table_name = $wpdb->prefix . 'bd_foobot_data';
+	
+		$wpdb->insert(
+			$table_name,
+			array(
+				'footimestamp' => $time,
+				'footemp' => $temp,
+				'footempunits' => $temp_units,
+			)
+		);
+
+		echo $wpdb->show_errors();
 
 		// Transient is set for 5 mins
 		set_transient('foobot-api-data-updated', 1, (60 * 5));
