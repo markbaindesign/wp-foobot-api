@@ -65,11 +65,31 @@ add_shortcode('foobot_device_data', 'bd_foobot_show_data_from_device');
  */
 function bd_foobot_show_temp_now( $device )
 {   
-   $data = bd_get_temp_now();
+	$data = bd_get_temp_now();
+
+	// Time
+	$timestamp = $data[0];
+	$date = date('Y-m-d', $timestamp);
+	$time = date('H:i:s', $timestamp);
+
+	$temp = $data[1];
+	// Rounding
+	$tr = round($temp, 1);
+
+	$units = $data[2];
+
 	ob_start();
-	echo '<div>Current temperature:</div>';
-	echo '<h1>' . $data . '</h1>';
+	echo '<div class="current_temp">Current temperature:</div>';
+	echo '<h1>' . $tr . $units . '</h1>';
+	echo '<div class="timestamp">Data read on ' . $date . ' at ' . $time . ' (UTC)</div>';
+
+	// Debug
+	// echo '<pre><code>';
+	// var_dump( $data );
+	// echo '</code></pre>';
+
 	$content =  ob_get_contents();
+
 	ob_clean();
 	return $content;
 }

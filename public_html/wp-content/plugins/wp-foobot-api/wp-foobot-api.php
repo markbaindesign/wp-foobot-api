@@ -13,11 +13,14 @@
  * Plugin Slug: wp-foobot-api
  */
 
+include(plugin_dir_path(__FILE__) . 'database.php');
+include(plugin_dir_path(__FILE__) . 'admin/admin.php');
+include(plugin_dir_path(__FILE__) . 'shortcodes.php');
+
 function baindesign_foobot_plugin_init()
 {
 
-	include(plugin_dir_path(__FILE__) . 'admin/admin.php');
-	include(plugin_dir_path(__FILE__) . 'shortcodes.php');
+
 
 	function bd_foobot_get_api_key()
 	{
@@ -25,13 +28,22 @@ function baindesign_foobot_plugin_init()
 		return $options['baindesign_foobot_api_key'];
 	}
 
+	/**
+	 * This function should not be called directly!!!
+	 * ==============================================
+	 * 
+	 * Using our API key, we question the API to get the UUID of the 
+	 * Foobot device. With this info, we can go on to call sensor data. 
+	 * 
+	 * We must never call this function directly! Instead, we must
+	 * retrieve the data we have stored in our custom database table (see 
+	 * "database.php"). This function is only used to update the 
+	 * table. 
+	 * 
+	 */
 	function bd_get_foobot_device()
 	{
 		$key = bd_foobot_get_api_key();
-
-		// echo '<pre><code>';
-		// var_dump( $key );
-		// echo '</code></pre>';
 
 		$url = 'https://api.foobot.io/v2/owner/mark@bain.design/device/';
 		$args = array(
@@ -40,11 +52,7 @@ function baindesign_foobot_plugin_init()
 			)
 		);
 
-		$request = wp_remote_get( $url, $args );
-
-		// echo '<pre><code>';
-		// var_dump( $request );
-		// echo '</code></pre>';
+		$request = wp_remote_get($url, $args);
 
 		if (is_wp_error($request)) {
 			return false; // Bail early
@@ -57,20 +65,24 @@ function baindesign_foobot_plugin_init()
 	}
 
 	/**
+	 * This function should not be called directly!!!
+	 * ==============================================
+	 * 
 	 * Get the API data
 	 * 
 	 * Now that we have the device UUID, we can call for 
-	 * the data from the device. 
+	 * the data from the device.
+	 * 
+	 * We must never call this function directly! Instead, we must
+	 * retrieve the data we have stored in our custom database table (see 
+	 * "database.php"). This function is only used to update the 
+	 * table.
 	 * 
 	 */
 	function bd_get_foobot_data()
 	{
 		$key = bd_foobot_get_api_key();
 		$uuid = bd_get_foobot_device_uuid();
-
-		// echo '<pre><code>';
-		// var_dump( $key );
-		// echo '</code></pre>';
 
 		$url = 'https://api.foobot.io/v2/device/' . $uuid . '/datapoint/0/last/0/?' . $key;
 		$args = array(
@@ -79,11 +91,7 @@ function baindesign_foobot_plugin_init()
 			)
 		);
 
-		$request = wp_remote_get( $url, $args );
-
-		// echo '<pre><code>';
-		// var_dump( $request );
-		// echo '</code></pre>';
+		$request = wp_remote_get($url, $args);
 
 		if (is_wp_error($request)) {
 			return false; // Bail early
@@ -116,31 +124,77 @@ function baindesign_foobot_plugin_init()
 	}
 
 	/** 
-	 * Get current temperature
+	 * Get current temperature and return it as array
 	 */
 	function bd_get_temp_now()
 	{
+
 		$data = bd_get_foobot_data();
+		$temp_data = array();
+
+		// Get the timestamp
+		$time = $data->{"start"};
+		$temp_data[] = $time; // Add to array
 
 		// Get the temp
 		$datapoints = $data->{"datapoints"};
 		$datapoint = $datapoints[0];
 		$temp = $datapoint[2];
-
-		// Rounding
-		$tr = round($temp, 1);
+		$temp_data[] = $temp; // Add to array
 
 		// Get the units
 		$units = $data->{"units"};
 
 		$u = $units[2];
+		$temp_data[] = $u; // Add to array
 
-		// Concat output
-		$content = $tr.$u;
-		
-		return $content;
-
+		return $temp_data;
 	}
 
+	/**
+	 * Update the sensor readings
+	 * ==========================
+	 * 
+	 * In order to avoid hitting the API to often, using up bandwidth, 
+	 * and impacting performance, we store the readings in the database, 
+	 * and update them every 5 minutes via an API call.
+	 * 
+	 * To do this, we store a transient, and check for it each time we
+	 * make a call. If it exists, we read the data we have stored in the
+	 * custom database table. Otherwise, we make a new call, update the stored
+	 * data, and set a new transient.
+	 * 
+	 * This function should be run before checking the database for data.
+	 * 
+	 * */
+
+	function bd_update_sensor_data()
+	{
+
+		// If an API call has been made within the last 5 mins, 
+		// return.
+		if (1 == get_transient('foobot-api-data-updated')) {
+			// Debug
+			error_log("No Foobot API call made at this time.", 0);
+
+			return;
+		}
+
+		// Get info on devices attached to user account
+		bd_get_foobot_data();
+
+		// Transient is set for 5 mins
+		set_transient('foobot-api-data-updated', 1, (60 * 5));
+
+		// Debug
+		error_log("Foobot sensor data has been updated! Next update > 5 mins.", 0);
+	}
+	add_action('init', 'bd_update_sensor_data');
 }
 add_action('plugins_loaded', 'baindesign_foobot_plugin_init');
+
+// Create database table on plugin activation
+register_activation_hook(__FILE__, 'bd_foobot_create_table');
+
+// Add data on plugin activation
+register_activation_hook(__FILE__, 'bd_foobot_install_data');
