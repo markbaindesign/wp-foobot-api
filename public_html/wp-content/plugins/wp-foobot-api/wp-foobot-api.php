@@ -206,7 +206,8 @@ function baindesign_foobot_plugin_init()
 		/**
 		 * Add the retrieved device data to the database
 		 */
-		$uuid = $device_data[0]->{"uuid"};
+		// $uuid = $device_data[0]->{"uuid"};
+		$uuid = '1234567890';
 		
 		$sensor_data = bd_get_foobot_data();
 
