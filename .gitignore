@@ -1,0 +1,108 @@
+# =========================
+# Project root folders
+# =========================
+.sass-cache
+bin
+export
+import
+node_modules
+release
+releases
+
+# =========================
+# VVV provisioning
+# =========================
+
+provision/vvv-nginx.conf
+
+public_html/wp-content/themes/foobot/assets/js/dist/custom/modernizr-custom.js
+
+# =========================
+# Sass projects
+# =========================
+
+# If you are using _just_ Sass, you probably don't want to commit _any_ 
+# compiled .css
+# Explictly ignore your generated CSS. This allows for additional, 
+# plain vanilla CSS to be versioned e.g. vendor styles
+
+
+
+# Ignore everything in the "sass" directory except the files and
+# directories you specify.
+sass/*
+!sass/base
+!sass/theme_*
+!sass/vendor
+!sass/*.scss
+
+# =========================
+# WordPress 
+# =========================
+
+
+
+# Ignore everything in the "public_html" directory except the "wp-content" directory.
+public_html/*
+!public_html/wp-content/
+
+# Ignore everything in the "wp-content" directory, except the "plugins"
+# and "themes" directories.
+public_html/wp-content/*
+!public_html/wp-content/plugins/
+!public_html/wp-content/themes/
+!public_html/wp-content/mu-plugins/
+ 
+# Ignore everything in the "plugins" directory, except the plugins you
+# specify (see the commented-out examples for hints on how to do this.)
+public_html/wp-content/plugins/*
+!public_html/wp-content/plugins/wp-foobot-api/
+
+# Ignore everything in the "mu-plugins" directory, except the mu-plugins you
+# specify (see the commented-out examples for hints on how to do this.)
+public_html/wp-content/mu-plugins/*
+!public_html/wp-content/mu-plugins/disable-flood-protection.php
+ 
+# Ignore everything in the "themes" directory, except the themes you
+# specify (see the commented-out example for a hint on how to do this.)
+public_html/wp-content/themes/*
+
+# =========================
+# Operating System Files
+# =========================
+
+# Windows
+# =========================
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+*.map
+
+# Editor files
+*~
+*.swp
+*.sublime-workspace
+*.code-workspace
+
+# Misc
+*.zip
+*.tar
+*.gz
+*.sql
+*.yml
+*.orig
+*.log
+.DS_Store
