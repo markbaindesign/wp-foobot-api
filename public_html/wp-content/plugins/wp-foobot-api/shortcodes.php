@@ -51,9 +51,9 @@ function bd_foobot_show_data_from_device()
 {   
    $device = bd_get_foobot_data();
    ob_start();
-	echo '<pre><code>';
-	var_dump( $device );
-	echo '</code></pre>';
+	// echo '<pre><code>';
+	// var_dump( $device );
+	// echo '</code></pre>';
 	$content =  ob_get_contents();
 	ob_clean();
 	return $content;
@@ -65,7 +65,13 @@ function bd_foobot_show_data_from_device()
  */
 function bd_foobot_show_temp_now()
 {   
+	
+	// Retrieve the sensor data from the database
 	$data = bd_get_temp_now();
+
+	echo '<pre><code>';
+	var_dump( $data );
+	echo '</code></pre>';
 
 	// Time
 	$timestamp = $data[0];

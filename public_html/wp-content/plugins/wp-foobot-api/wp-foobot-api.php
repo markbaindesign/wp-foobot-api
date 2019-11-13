@@ -121,7 +121,7 @@ function baindesign_foobot_plugin_init()
 	{
 		$device = bd_get_foobot_device();
 		var_dump($device);
-		//$uuid = $device[0]->{"uuid"};
+		$uuid = $device[0]->{"uuid"};
 		return $uuid;
 	}
 
@@ -145,21 +145,27 @@ function baindesign_foobot_plugin_init()
 		 * our shortcode to parse the data.
 		 */
 		$temp_data = array();
+		global $wpdb;
 
-		$table_name = $wpdb->prefix . 'bd_foobot_data';
+		$table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
 		
 		// Get the timestamp
-   	$time = $wpdb -> get_var( "SELECT time_stamp FROM $table_name" );
-		$temp_data[] = $time; // Add to array
-		
+   	$time = $wpdb -> get_var( "SELECT time FROM $table_name" );
+		if( $time != NULL ){
+			$temp_data[] = $time; // Add to array
+		}		
 
 		// Get the temp
-		$temp = $wpdb -> get_var( "SELECT temp FROM $table_name" );
-		$temp_data[] = $temp; // Add to array
+		$temp = $wpdb -> get_var( "SELECT datapoint FROM $table_name" );
+		if( $temp != NULL ){
+			$temp_data[] = $temp; // Add to array
+		}
 
 		// Get the units
-		$temp_units = $wpdb -> get_var( "SELECT temp_units FROM $table_name" );
-		$temp_data[] = $temp_units; // Add to array
+		$temp_units = $wpdb -> get_var( "SELECT unit FROM $table_name" );
+		if( $temp_units != NULL ){
+			$temp_data[] = $temp_units; // Add to array
+		}
 
 		return $temp_data;
 	}
@@ -207,7 +213,8 @@ function baindesign_foobot_plugin_init()
 		 * Add the retrieved device data to the database
 		 */
 		// $uuid = $device_data[0]->{"uuid"};
-		$uuid = '1234567890';
+		$device = 'BainBot';
+		$sensor = 'tmp';
 		
 		$sensor_data = bd_get_foobot_data();
 
@@ -228,15 +235,16 @@ function baindesign_foobot_plugin_init()
 		$units = $sensor_data->{"units"};
 		$temp_units = $units[2];
 	
-		$table_name = $wpdb->prefix . 'bd_foobot_data';
+		$table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
 	
 		$wpdb->insert(
 			$table_name,
 			array(
-				'uuid' 				=> $uuid,
-				'footimestamp' 	=> $time,
-				'footemp' 			=> $temp,
-				'footempunits' 	=> $temp_units,
+				'time' 	=> $time,
+				'device' => $device,
+				'sensor' => $sensor,
+				'datapoint' => $temp,
+				'unit' 	=> $temp_units,
 			)
 		);
 
