@@ -42,7 +42,7 @@ function bd_foobot_show_device_name()
 	ob_clean();
 	return $content;
 }
-// add_shortcode('foobot_device_name', 'bd_foobot_show_device_name');
+add_shortcode('foobot_device_name', 'bd_foobot_show_device_name');
 
 /**
  * Show Foobot device data
@@ -51,14 +51,14 @@ function bd_foobot_show_data_from_device()
 {   
    $device = bd_get_foobot_data();
    ob_start();
-	// echo '<pre><code>';
-	// var_dump( $device );
-	// echo '</code></pre>';
+	echo '<pre><code>';
+	var_dump( $device );
+	echo '</code></pre>';
 	$content =  ob_get_contents();
 	ob_clean();
 	return $content;
 }
-// add_shortcode('foobot_device_data', 'bd_foobot_show_data_from_device');
+add_shortcode('foobot_device_data', 'bd_foobot_show_data_from_device');
 
 /**
  * Show temp now

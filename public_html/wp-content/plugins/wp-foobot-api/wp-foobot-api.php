@@ -224,7 +224,8 @@ function baindesign_foobot_plugin_init()
 		 */
 
 		// Get timestamp
-		$time = $sensor_data->{"start"};
+		$timestamp = $sensor_data->{"start"};
+		$time = date('Y-m-d H:i:s', $timestamp);
 
 		// Get the temperature
 		$datapoints = $sensor_data->{"datapoints"};
