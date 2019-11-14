@@ -140,39 +140,9 @@ function baindesign_foobot_plugin_init()
 		 * Having done that, we can proceed with questioning the database.
 		 */
 		
-		/**
-		 * We're storing the retrieved values in an array to make it easy for 
-		 * our shortcode to parse the data.
-		 */
-		$temp_data = array();
-		global $wpdb;
-
-		$table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
-
-		/**
-		 * Get the most recent data for the tmp sensor
-		 */
-
-
-		// Get the timestamp
-   	$time = $wpdb -> get_var( "SELECT time FROM $table_name" );
-		if( $time != NULL ){
-			$temp_data[] = $time; // Add to array
-		}		
-
-		// Get the temp
-		$temp = $wpdb -> get_var( "SELECT datapoint FROM $table_name" );
-		if( $temp != NULL ){
-			$temp_data[] = $temp; // Add to array
-		}
-
-		// Get the units
-		$temp_units = $wpdb -> get_var( "SELECT unit FROM $table_name" );
-		if( $temp_units != NULL ){
-			$temp_data[] = $temp_units; // Add to array
-		}
-
-		return $temp_data;
+		$data = bd_foobot_fetch_latest_sensor_data();
+		
+		return $data;
 	}
 
 	/**

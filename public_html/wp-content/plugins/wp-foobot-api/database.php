@@ -82,7 +82,7 @@ function bd_foobot_fetch_latest_sensor_data(){
    $table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
    
    // $data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$table_name}` ORDER BY `id` DESC LIMIT 1", $sensor) );
-   $data = $wpdb->get_row( "SELECT * FROM `{$table_name}` ORDER BY `id` DESC LIMIT 1" );
+   $data = $wpdb->get_row( "SELECT * FROM `{$table_name}` ORDER BY `id` DESC LIMIT 1", ARRAY_A );
 
    return $data;
 

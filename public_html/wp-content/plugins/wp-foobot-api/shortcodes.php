@@ -86,25 +86,30 @@ function bd_foobot_show_temp_now()
 	// Retrieve the sensor data from the database
 	$data = bd_get_temp_now();
 
-	echo '<pre><code>';
-	var_dump( $data );
-	echo '</code></pre>';
+
 
 	// Time
-	$timestamp = $data[0];
-	$date = date('Y-m-d', $timestamp);
-	$time = date('H:i:s', $timestamp);
+	$timestamp = $data['time'];
+	$date = date('Y-m-d', strtotime( $timestamp) );
+	$time = date('H:i:s', strtotime( $timestamp) );
 
-	$temp = $data[1];
+	$temp = $data['datapoint'];
 	// Rounding
 	$tr = round($temp, 1);
 
-	$units = $data[2];
+	$units = $data['unit'];
+	$device = $data['device'];
 
 	ob_start();
-	echo '<div class="current_temp">Current temperature:</div>';
+
+	// Debug
+	// echo '<pre><code>';
+	// var_dump( $data );
+	// echo '</code></pre>';
+
+	echo '<div class="current_temp">Current location temperature:</div>';
 	echo '<h1>' . $tr . $units . '</h1>';
-	echo '<div class="timestamp">Data read on ' . $date . ' at ' . $time . ' (UTC)</div>';
+	echo '<div class="timestamp"><small>Data from '.$device.' on ' . $date . ' at ' . $time . ' (UTC)</small></div>';
 
 	// Debug
 	// echo '<pre><code>';
