@@ -148,7 +148,12 @@ function baindesign_foobot_plugin_init()
 		global $wpdb;
 
 		$table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
-		
+
+		/**
+		 * Get the most recent data for the tmp sensor
+		 */
+
+
 		// Get the timestamp
    	$time = $wpdb -> get_var( "SELECT time FROM $table_name" );
 		if( $time != NULL ){

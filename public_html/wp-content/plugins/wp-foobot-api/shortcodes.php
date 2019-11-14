@@ -4,6 +4,23 @@
  * Shortcodes
  */
 
+function bd_foobot_show_latest_sensor_data()
+{
+   
+   $data = bd_foobot_fetch_latest_sensor_data();
+	ob_start();
+	
+	// Debug
+	echo '<pre><code>';
+	var_dump( $data );
+	echo '</code></pre>';
+
+	$content =  ob_get_contents();
+	ob_clean();
+	return $content;
+}
+add_shortcode('foobot_show_latest_data', 'bd_foobot_show_latest_sensor_data');
+
 function bd_foobot_show_api_key()
 {
    
