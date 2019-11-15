@@ -240,4 +240,4 @@ add_action('plugins_loaded', 'baindesign_foobot_plugin_init');
 register_activation_hook(__FILE__, 'bd_foobot_create_table');
 
 // Add data on plugin activation
-register_activation_hook(__FILE__, 'bd_foobot_install_data');
+// register_activation_hook(__FILE__, 'bd_foobot_install_data');

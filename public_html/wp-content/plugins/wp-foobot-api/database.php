@@ -20,9 +20,20 @@ function bd_foobot_create_table()
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
 		time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
       device tinytext NOT NULL,
-		sensor tinytext NOT NULL,
-		unit tinytext NOT NULL,
-      datapoint float NOT NULL,
+		'unit-time' tinytext NOT NULL,
+      'datapoint-time' float NOT NULL,
+		'unit-pm' tinytext NOT NULL,
+      'datapoint-pm' float NOT NULL,
+		'unit-tmp' tinytext NOT NULL,
+      'datapoint-tmp' float NOT NULL,
+		'unit-hum' tinytext NOT NULL,
+      'datapoint-hum' float NOT NULL,
+		'unit-co2' tinytext NOT NULL,
+      'datapoint-co2' float NOT NULL,
+      'unit-voc' tinytext NOT NULL,
+      'datapoint-voc' float NOT NULL,
+      'unit-allpollu' tinytext NOT NULL,
+      'datapoint-allpollu' float NOT NULL,
 		PRIMARY KEY  (id)
 	) $charset_collate;";
 
