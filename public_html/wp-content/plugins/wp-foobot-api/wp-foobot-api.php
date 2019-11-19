@@ -205,22 +205,33 @@ function baindesign_foobot_plugin_init()
 		// Get the temperature
 		$datapoints = $sensor_data->{"datapoints"};
 		$datapoint = $datapoints[0];
-		$temp = $datapoint[2];
+		$datapointTmp = $datapoint[2];
 
 		// Get the temperature units
 		$units = $sensor_data->{"units"};
-		$temp_units = $units[2];
+		$unitTmp = $units[2];
 	
-		$table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
-	
+		/**
+		 * Insert data into custom database table
+		 */
+		$table_name = $wpdb->prefix . 'bd_foobot_sensor_data';	
 		$wpdb->insert(
 			$table_name,
 			array(
-				'time' 	=> $time,
-				'device' => $device,
-				'sensor' => $sensor,
-				'datapoint' => $temp,
-				'unit' 	=> $temp_units,
+				'time' 						=> $time,
+				'device' 					=> $device,
+				'unitPm' 					=> $unitPm,
+				'datapointPm' 				=> $datapointPm,
+				'unitTmp' 					=> $unitTmp,
+				'datapointTmp' 			=> $datapointTmp,
+				'unitHum' 					=> $unitHum,
+				'datapointHum' 			=> $datapointHum,
+				'unitCo2' 					=> $unitCo2,
+				'datapointCo2' 			=> $datapointCo2,
+				'unitVoc' 					=> $unitVoc,
+				'datapointVoc' 			=> $datapointVoc,
+				'unitAllpollu' 			=> $unitAllpollu,
+				'datapointAllpollu' 		=> $datapointAllpollu,
 			)
 		);
 
