@@ -93,11 +93,11 @@ function bd_foobot_show_temp_now()
 	$date = date('Y-m-d', strtotime( $timestamp) );
 	$time = date('H:i:s', strtotime( $timestamp) );
 
-	$temp = $data['datapoint'];
+	$temp = $data['datapointTmp'];
 	// Rounding
 	$tr = round($temp, 1);
 
-	$units = $data['unit'];
+	$units = $data['unitTmp'];
 	$device = $data['device'];
 
 	ob_start();

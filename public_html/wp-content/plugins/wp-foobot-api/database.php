@@ -22,18 +22,18 @@ function bd_foobot_create_table()
 		device tinytext NOT NULL,
 		unitTime tinytext NOT NULL,
 		datapointTime float NOT NULL,
-		unitPm tinytext NOT NULL,
-		datapointPm float NOT NULL,
-		unitTmp tinytext NOT NULL,
-		datapointTmp float NOT NULL,
-		unitHum tinytext NOT NULL,
-		datapointHum float NOT NULL,
-		unitCo2 tinytext NOT NULL,
-		datapointCo2 float NOT NULL,
-		unitVoc tinytext NOT NULL,
-		datapointVoc float NOT NULL,
-		unitAllpollu tinytext NOT NULL,
-		datapointAllpollu float NOT NULL,
+		unitPm tinytext NULL,
+		datapointPm float NULL,
+		unitTmp tinytext NULL,
+		datapointTmp float NULL,
+		unitHum tinytext NULL,
+		datapointHum float NULL,
+		unitCo2 tinytext NULL,
+		datapointCo2 float NULL,
+		unitVoc tinytext NULL,
+		datapointVoc float NULL,
+		unitAllpollu tinytext NULL,
+		datapointAllpollu float NULL,
 		PRIMARY KEY  (id)
 	) $charset_collate;";
 
@@ -87,6 +87,9 @@ function bd_foobot_update_temp_data()
  * Fetch data for a particular sensor from the database
  */
 function bd_foobot_fetch_latest_sensor_data(){
+
+	// To DO
+	// Pass the sensor you want to this function
 	
 	// Vars
 	global $wpdb;

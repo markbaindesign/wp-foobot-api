@@ -194,10 +194,27 @@ function baindesign_foobot_plugin_init()
 		$sensor_data = bd_get_foobot_data();
 
 		/**
+		 * Particle Matter
+		 * ===============
+		 */
+
+		/**
 		 * Temperature
 		 * ===========
 		 */
-
+		$unitPm = '';
+		$datapointPm = '';
+		$unitTmp = '';
+		$datapointTmp = '';
+		$unitHum = '';
+		$datapointHum = '';
+		$unitCo2 = '';
+		$datapointCo2 = '';
+		$unitVoc = '';
+		$datapointVoc = '';
+		$unitAllpollu = '';
+		$datapointAllpollu = '';
+		
 		// Get timestamp
 		$timestamp = $sensor_data->{"start"};
 		$time = date('Y-m-d H:i:s', $timestamp);
