@@ -2,6 +2,9 @@
 
 /**
  * Shortcodes
+ * ==========
+ * 
+ * User functions to display the data
  */
 
 function bd_foobot_show_latest_sensor_data()
@@ -45,7 +48,7 @@ function bd_foobot_show_device_data()
 	ob_clean();
 	return $content;
 }
-add_shortcode('foobot_show_device', 'bd_foobot_show_device_data');
+// add_shortcode('foobot_show_device', 'bd_foobot_show_device_data');
 
 /**
  * Show device name
@@ -59,7 +62,7 @@ function bd_foobot_show_device_name()
 	ob_clean();
 	return $content;
 }
-add_shortcode('foobot_device_name', 'bd_foobot_show_device_name');
+// add_shortcode('foobot_device_name', 'bd_foobot_show_device_name');
 
 /**
  * Show Foobot device data
@@ -75,7 +78,7 @@ function bd_foobot_show_data_from_device()
 	ob_clean();
 	return $content;
 }
-add_shortcode('foobot_device_data', 'bd_foobot_show_data_from_device');
+// add_shortcode('foobot_device_data', 'bd_foobot_show_data_from_device');
 
 /**
  * Show temp now
