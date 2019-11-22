@@ -26,3 +26,7 @@ Add the following to your VVV `config.yml`
         WP_DEBUG_DISPLAY: false
         WP_DISABLE_FATAL_ERROR_HANDLER: true
 ```
+
+## Set up WordPress
+
+Log into WordPress and activate the plugin. Once the plugin is activated, go to Settings > Discussion and add your Foobot API key.
