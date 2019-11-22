@@ -1,5 +1,5 @@
 # WP Foobot API
-Version 0.0.0
+_Version 0.0.0_
 
 ## by Bain Design
 
