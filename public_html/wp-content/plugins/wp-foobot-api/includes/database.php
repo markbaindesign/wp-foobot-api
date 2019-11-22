@@ -144,6 +144,10 @@ function bd_foobot_update_device_data()
 
    // Get the device data
    $device_data = bd_foobot_call_device_api();
+   if (is_wp_error($device_data)) {
+      error_log("Error: No data from Foobot device API ", 0);
+      return false; // Bail early
+   }
 
    // Add the API to the database
    $table_name = $wpdb->prefix . 'bd_foobot_device_data';
@@ -174,6 +178,10 @@ function bd_foobot_update_sensor_data()
 
    // Get the device data
    $sensor_data = bd_foobot_call_data_api();
+   if (is_wp_error($device_data)) {
+      error_log("Error: No data from Foobot sensor API ", 0);
+      return false; // Bail early
+   }
 
    // Add the API to the database
    $table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
