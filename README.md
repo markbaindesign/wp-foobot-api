@@ -1,9 +1,9 @@
-# WP Foobot API
+# Foobot API WordPress Plugin
 _Version 1.0.0_
 
-## by Bain Design
+### by Bain Design
 
-## Set up
+## VVV Setup
 
 Add the following to your VVV `config.yml` 
 
@@ -27,6 +27,7 @@ Add the following to your VVV `config.yml`
         WP_DISABLE_FATAL_ERROR_HANDLER: true
 ```
 
-## Set up WordPress
+## WordPress Setup
 
-Log into WordPress and activate the plugin. Once the plugin is activated, go to Settings > Discussion and add your Foobot API key.
+* Log into WordPress and activate the plugin. 
+* Once the plugin is activated, go to `Settings > Discussion` and add your Foobot API key.
