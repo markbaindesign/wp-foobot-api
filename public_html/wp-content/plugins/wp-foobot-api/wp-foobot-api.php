@@ -5,7 +5,7 @@
  * Plugin URI: https://bain.design/wp-foobot-api
  * Description: Call your air quality data via the Foobot API.
  * Author: Bain Design
- * Version: 0.0.0
+ * Version: 1.0.0
  * Author URI: http://bain.design
  * License: GNU General Public License v2.0
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
