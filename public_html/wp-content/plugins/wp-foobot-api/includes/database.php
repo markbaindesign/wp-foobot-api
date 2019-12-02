@@ -162,6 +162,17 @@ function bd_foobot_update_device_data()
    error_log("Foobot sensor data has been updated! Next update > 24 hours.", 0);
 }
 
+/**
+ * Add device data to database
+ */
+function bd_foobot_update_db_device( $device_api_data ){
+   global $wpdb;
+   $table_name = $wpdb->prefix . 'bd_foobot_device_data';
+   foreach ( $device_api_data as $key => $value ){
+      $wpdb->insert( $table_name, array( $key => $value ));
+   }
+}
+
 // Update sensor data
 function bd_foobot_update_sensor_data()
 {

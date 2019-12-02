@@ -15,6 +15,7 @@
 
 // Includes
 	$path = plugin_dir_path(__FILE__);
+	include($path . 'tests/tests.php');
 	include($path . 'includes/database.php');
 	include($path . 'admin/admin.php');
 	include($path . 'includes/shortcodes.php');
