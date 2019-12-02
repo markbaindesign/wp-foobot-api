@@ -188,6 +188,8 @@ function bd_foobot_update_sensor_data()
    foreach ( $sensor_data as $key => $value ){
       $wpdb->insert( $table_name, array( $key => $value ));
    }
+   // vars
+   $device=$unitTmp=$datapointTmp='';
 
    // Temperature
    $unitTmp = $sensor_data->{"unitTmp"};
