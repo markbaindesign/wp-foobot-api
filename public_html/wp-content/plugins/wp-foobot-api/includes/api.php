@@ -33,7 +33,7 @@ function bd_foobot_call_device_api()
 
    $body = wp_remote_retrieve_body($request);
 
-   $api_data = json_decode($body);
+   $api_data = json_decode( $body, true);
    return $api_data;
 }
 
@@ -74,7 +74,7 @@ function bd_foobot_call_data_api()
 
    $body = wp_remote_retrieve_body($request);
 
-   $api_data = json_decode($body);
+   $api_data = json_decode( $body, true);
    return $api_data;
 }
 
@@ -85,7 +85,7 @@ function bd_foobot_call_data_api()
  */
 
 // Update device data
-function bd_foobot_update_device_data()
+function bd_foobot_get_device_data()
 {
    global $wpdb;
 
@@ -99,7 +99,7 @@ function bd_foobot_update_device_data()
 
    // Get the device data
    $device_data = bd_foobot_call_device_api();
-   
+
    if (is_wp_error($device_data)) {
       error_log("Error: No data from Foobot device API ", 0);
       return false; // Bail early
