@@ -17,7 +17,11 @@
         array(
             "uuid" => "123ABC7890", 
             "name" => "TestBot2 ", 
-        ),  
+        ),
+        array(
+            "uuid" => "99yrtZZC7890", 
+            "name" => "TestBot3 ",
+        )       
     );
     return $test_devices;
  }
