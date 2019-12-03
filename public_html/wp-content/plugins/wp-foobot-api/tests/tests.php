@@ -58,11 +58,11 @@
 
   function bd_foobot_shortcode_call_device_api()
   {
-    // $data = bd_foobot_get_device_data();    // Real API data with transients
+    $data = bd_foobot_get_device_data();    // Real API data with transients
 
     // ========= Use with CAUTION! =======//
-    $data = bd_foobot_call_device_api();      // Real API data (no transients)
-    error_log("{{{ WARNING: Device API called without transients }}}", 0);
+    //$data = bd_foobot_call_device_api();      // Real API data (no transients)
+    //error_log("{{{ WARNING: Device API called without transients }}}", 0);
 
     // Add the test device data to the db
     // bd_foobot_update_db_device( $data );

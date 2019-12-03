@@ -129,7 +129,7 @@ function bd_foobot_update_db_device( $device_api_data ){
 
    global $wpdb;
    // Turn on errors display
-   $wpdb->show_errors();
+   //$wpdb->show_errors();
 
    $table_name = $wpdb->prefix . 'bd_foobot_device_data';
    $time = current_time('timestamp');
@@ -159,8 +159,10 @@ function bd_foobot_update_db_device( $device_api_data ){
       //echo '</code></pre>';
       
       // vars
-      $name = $device_data[1]['name'];
-      $uuid = $device_data[0]['uuid'];
+      $uuid    = $device_data[0]['uuid'];
+      $userId  = $device_data[1]['userId'];
+      $mac     = $device_data[2]['mac'];
+      $name    = $device_data[3]['name'];
 
       //echo '<pre><code>';
       //var_dump( $uuid );
@@ -181,12 +183,23 @@ function bd_foobot_update_db_device( $device_api_data ){
          )
       );
 
-      error_log("Device data inserted in table", 0);
+      error_log("EVENT: Device data inserted in table", 0);
 
       // Show error if any
-      $wpdb->print_error();
+      //$wpdb->print_error();
 
    }
+}
+
+function bd_foobot_update_device_data(){
+   // Function called on init hook.
+
+   // Get the API data
+   $data = bd_foobot_get_device_data();
+   
+   // Update the database with the API data
+   bd_foobot_update_db_device($data);
+
 }
 
 // Update sensor data
