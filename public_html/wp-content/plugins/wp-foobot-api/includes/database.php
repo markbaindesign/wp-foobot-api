@@ -123,47 +123,6 @@ function bd_foobot_fetch_latest_sensor_data(){
 }
 
 /**
- * Update database data
- * ====================
- * 
- * These functions use transients to avoid hitting the API
- * limit. 
- */
-
-// Update device data
-function bd_foobot_update_device_data()
-{
-   global $wpdb;
-
-   // If an API call has been made within the last 24 hours, 
-   // return.
-   if (1 == get_transient('foobot-api-device-updated')) {
-      // Debug
-      error_log("No Foobot Device API call made at this time.", 0);
-      return;
-   }
-
-   // Get the device data
-   $device_data = bd_foobot_call_device_api();
-   if (is_wp_error($device_data)) {
-      error_log("Error: No data from Foobot device API ", 0);
-      return false; // Bail early
-   }
-
-   // Add the API to the database
-   $table_name = $wpdb->prefix . 'bd_foobot_device_data';
-   foreach ( $device_data as $key => $value ){
-      $wpdb->insert( $table_name, array( $key => $value ));
-   }
-
-   // Transient is set for 24 hours
-   set_transient('foobot-api-device-updated', 1, (60 * 60 * 24));
-
-   // Debug
-   error_log("Foobot sensor data has been updated! Next update > 24 hours.", 0);
-}
-
-/**
  * Add device data to database
  */
 function bd_foobot_update_db_device( $device_api_data ){
