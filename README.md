@@ -31,3 +31,12 @@ Add the following to your VVV `config.yml`
 
 * Log into WordPress and activate the plugin. 
 * Once the plugin is activated, go to `Settings > Discussion` and add your Foobot API key.
+
+## Testing
+
+WP CLI is your friend. Here are some commands to make testing a breeze.
+
+```
+wp db query 'SELECT * FROM wp_bd_foobot_device_data'
+wp db query 'SELECT * FROM wp_bd_foobot_sensor_data'
+```

@@ -243,7 +243,7 @@ function bd_foobot_update_sensor_data()
 
    // Get the device data
    $sensor_data = bd_foobot_call_data_api();
-   if (is_wp_error($device_data)) {
+   if (is_wp_error($sensor_data)) {
       error_log("Error: No data from Foobot sensor API ", 0);
       return false; // Bail early
    }
