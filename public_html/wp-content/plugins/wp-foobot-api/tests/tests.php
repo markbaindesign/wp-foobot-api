@@ -26,8 +26,11 @@
  /* Shortcode to display tests */
  function bd_foobot_tests_shortcode()
  {
-    
     $data = bd_foobot_test_device_data();
+
+    // Add the test device data to the db
+    bd_foobot_update_db_device( $data );
+
      ob_start();
      
      // Debug

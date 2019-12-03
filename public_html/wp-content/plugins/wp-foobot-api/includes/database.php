@@ -6,7 +6,7 @@
 
 // Device
 global $bd_foobot_device_db_version;
-$bd_foobot_device_db_version = '1.0';
+$bd_foobot_device_db_version = '1.1';
 
 // Sensors
 global $bd_foobot_sensor_db_version;
@@ -90,7 +90,8 @@ function bd_foobot_create_device_table()
 	$sql = "CREATE TABLE $table_name (
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
 		time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-		device tinytext NOT NULL,
+		name tinytext NOT NULL,
+		uuid tinytext NOT NULL,
 		PRIMARY KEY  (id)
 	) $charset_collate;";
 
@@ -166,10 +167,63 @@ function bd_foobot_update_device_data()
  * Add device data to database
  */
 function bd_foobot_update_db_device( $device_api_data ){
+
    global $wpdb;
+   // Turn on errors display
+   $wpdb->show_errors();
+
    $table_name = $wpdb->prefix . 'bd_foobot_device_data';
-   foreach ( $device_api_data as $key => $value ){
-      $wpdb->insert( $table_name, array( $key => $value ));
+
+   // Loop each device
+   foreach( $device_api_data as $data ){
+      $device_data = array();
+      //echo '<pre><code>';
+      //var_dump( $data );
+      //echo '</code></pre>';
+
+      // Loop the device data
+      foreach ( $data as $key => $value ){
+         $device_data[] = array( $key => $value );
+         //echo '<pre><code>';
+         //var_dump( $key. ' ' .$value );
+         //echo '</code></pre>';
+
+         echo '<h5>Device data in loop</h5>';
+         echo '<pre><code>';
+         var_dump( $device_data );
+         echo '</code></pre>';
+      }
+      echo '<h5>Device data after loop</h5>';
+      echo '<pre><code>';
+      var_dump( $device_data );
+      echo '</code></pre>';
+      
+      // vars
+      $name = $device_data[1]['name'];
+      $uuid = $device_data[0]['uuid'];
+
+      echo '<pre><code>';
+      var_dump( $uuid );
+      echo '</code></pre>';
+      
+      // Insert data into db table
+      $wpdb->insert( 
+         $table_name, 
+         array(
+            'name' => $name,
+            'uuid' => $uuid,
+         ),
+         array(
+            '%s',
+            '%s'
+         )
+      );
+
+      error_log("Device data inserted in table", 0);
+
+      // Show error if any
+      $wpdb->print_error();
+
    }
 }
 
