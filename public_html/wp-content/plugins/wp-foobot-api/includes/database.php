@@ -6,7 +6,7 @@
 
 // Device
 global $bd_foobot_device_db_version;
-$bd_foobot_device_db_version = '1.1';
+$bd_foobot_device_db_version = '1.2';
 
 // Sensors
 global $bd_foobot_sensor_db_version;
@@ -89,7 +89,7 @@ function bd_foobot_create_device_table()
 
 	$sql = "CREATE TABLE $table_name (
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
-		time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+		timestamp int NOT NULL,
 		name tinytext NOT NULL,
 		uuid tinytext NOT NULL,
 		PRIMARY KEY  (id)
@@ -170,9 +170,10 @@ function bd_foobot_update_db_device( $device_api_data ){
 
    global $wpdb;
    // Turn on errors display
-   // $wpdb->show_errors();
+   $wpdb->show_errors();
 
    $table_name = $wpdb->prefix . 'bd_foobot_device_data';
+   $time = current_time('timestamp');
 
    // Loop each device
    foreach( $device_api_data as $data ){
@@ -210,10 +211,12 @@ function bd_foobot_update_db_device( $device_api_data ){
       $wpdb->insert( 
          $table_name, 
          array(
+            'timestamp' => $time,
             'name' => $name,
             'uuid' => $uuid,
          ),
          array(
+            '%d',
             '%s',
             '%s'
          )
@@ -222,7 +225,7 @@ function bd_foobot_update_db_device( $device_api_data ){
       error_log("Device data inserted in table", 0);
 
       // Show error if any
-      // $wpdb->print_error();
+      $wpdb->print_error();
 
    }
 }

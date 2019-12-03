@@ -38,5 +38,6 @@ WP CLI is your friend. Here are some commands to make testing a breeze.
 
 ```
 wp db query 'SELECT * FROM wp_bd_foobot_device_data'
+wp db query 'SELECT * FROM wp_bd_foobot_device_data ORDER BY id DESC LIMIT 10'
 wp db query 'SELECT * FROM wp_bd_foobot_sensor_data'
 ```
