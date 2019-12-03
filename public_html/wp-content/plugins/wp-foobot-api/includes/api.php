@@ -100,11 +100,6 @@ function bd_foobot_get_device_data()
    // Get the device data
    $device_data = bd_foobot_call_device_api();
 
-   if (is_wp_error($device_data)) {
-      error_log("Error: No data from Foobot device API ", 0);
-      return false; // Bail early
-   }
-
    return $device_data;
 
    // Transient is set for 24 hours

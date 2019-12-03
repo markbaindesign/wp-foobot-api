@@ -75,3 +75,23 @@
 
   }
   add_shortcode('foobot_device_api_test', 'bd_foobot_shortcode_call_device_api');
+
+    /**
+   * Show the latest device data from the database (Shortcode)
+   * 
+   * Test-only
+   * 
+   *  */ 
+
+  function bd_foobot_shortcode_show_latest_device_data()
+  {
+    $data = bd_foobot_get_current_devices();
+    
+    echo '<pre><code>';
+    var_dump( $data );
+    echo '</code></pre>';
+
+    die();
+
+  }
+  add_shortcode('foobot_device_data_test', 'bd_foobot_shortcode_show_latest_device_data');

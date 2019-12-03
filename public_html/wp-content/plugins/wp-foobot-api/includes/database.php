@@ -192,13 +192,22 @@ function bd_foobot_update_db_device( $device_api_data ){
 }
 
 function bd_foobot_update_device_data(){
-   // Function called on init hook.
 
    // Get the API data
    $data = bd_foobot_get_device_data();
+
+   echo '<pre><code>';
+   var_dump( $data );
+   echo '</code></pre>';
+
+   // Debug
+   error_log("EVENT: An attempted API call has been made.", 0);
    
    // Update the database with the API data
    bd_foobot_update_db_device($data);
+
+   // Debug
+   error_log("EVENT: An attempted database update has been made.", 0);
 
 }
 
@@ -302,4 +311,35 @@ function bd_foobot_update_sensor_data()
 
    // Debug
    error_log("Foobot sensor data has been updated! Next update > 5 mins.", 0);
+}
+
+/**
+ * Get latest devices from the database
+ */
+function bd_foobot_get_current_devices(){
+   
+   global $wpdb;
+   $wpdb->show_errors();
+
+   // Vars
+   $table_name = $wpdb->prefix . 'bd_foobot_device_data';
+
+   // Update the device table if required
+   bd_foobot_update_device_data();
+   
+   // Get all the results
+   // TO DO: Only return results from the last 24 hours?
+
+   // Order the results
+
+   // Get the most recent result and return rows that
+   // match the same timestamp
+	
+	//$data = $wpdb->get_row( "SELECT * FROM `{$table_name}` WHERE timestamp >= DATE_SUB(NOW(), INTERVAL 1 DAY)", ARRAY_A );
+	$data = $wpdb->get_row( "SELECT * FROM `{$table_name}` ORDER BY `id` DESC LIMIT 1", ARRAY_A );
+
+   return $data;
+   
+   // Show error if any
+   $wpdb->print_error();
 }
