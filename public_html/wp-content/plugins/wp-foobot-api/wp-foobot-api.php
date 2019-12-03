@@ -32,8 +32,8 @@ function baindesign_foobot_plugin_init()
 {
 
 	// Actions
-	add_action('init', 'bd_foobot_update_sensor_data');
-	add_action('init', 'bd_foobot_update_device_data');
+	//add_action('init', 'bd_foobot_update_sensor_data');
+	//add_action('init', 'bd_foobot_update_device_data');
 
 }
 add_action('plugins_loaded', 'baindesign_foobot_plugin_init');

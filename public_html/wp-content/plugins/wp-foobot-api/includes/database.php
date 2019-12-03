@@ -170,7 +170,7 @@ function bd_foobot_update_db_device( $device_api_data ){
 
    global $wpdb;
    // Turn on errors display
-   $wpdb->show_errors();
+   // $wpdb->show_errors();
 
    $table_name = $wpdb->prefix . 'bd_foobot_device_data';
 
@@ -188,23 +188,23 @@ function bd_foobot_update_db_device( $device_api_data ){
          //var_dump( $key. ' ' .$value );
          //echo '</code></pre>';
 
-         echo '<h5>Device data in loop</h5>';
-         echo '<pre><code>';
-         var_dump( $device_data );
-         echo '</code></pre>';
+         //echo '<h5>Device data in loop</h5>';
+         //echo '<pre><code>';
+         //var_dump( $device_data );
+         //echo '</code></pre>';
       }
-      echo '<h5>Device data after loop</h5>';
-      echo '<pre><code>';
-      var_dump( $device_data );
-      echo '</code></pre>';
+      //echo '<h5>Device data after loop</h5>';
+      //echo '<pre><code>';
+      //var_dump( $device_data );
+      //echo '</code></pre>';
       
       // vars
       $name = $device_data[1]['name'];
       $uuid = $device_data[0]['uuid'];
 
-      echo '<pre><code>';
-      var_dump( $uuid );
-      echo '</code></pre>';
+      //echo '<pre><code>';
+      //var_dump( $uuid );
+      //echo '</code></pre>';
       
       // Insert data into db table
       $wpdb->insert( 
@@ -222,7 +222,7 @@ function bd_foobot_update_db_device( $device_api_data ){
       error_log("Device data inserted in table", 0);
 
       // Show error if any
-      $wpdb->print_error();
+      // $wpdb->print_error();
 
    }
 }
