@@ -53,7 +53,7 @@ function bd_get_foobot_device_uuid( $device_name )
       echo '<pre><code>';
       var_dump( $key );
       echo '</code></pre>';
-      return 'Device not found';
+      return 'Device "' . $device_name . '" not found';
    }
 
    // Debug
