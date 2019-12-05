@@ -196,18 +196,12 @@ function bd_foobot_update_device_data(){
    // Get the API data
    $data = bd_foobot_get_device_data();
 
-   echo '<pre><code>';
-   var_dump( $data );
-   echo '</code></pre>';
-
-   // Debug
-   error_log("EVENT: An attempted API call has been made.", 0);
+   //echo '<pre><code>';
+   //var_dump( $data );
+   //echo '</code></pre>';
    
    // Update the database with the API data
    bd_foobot_update_db_device($data);
-
-   // Debug
-   error_log("EVENT: An attempted database update has been made.", 0);
 
 }
 
@@ -335,10 +329,22 @@ function bd_foobot_get_current_devices(){
    // Get the most recent result and return rows that
    // match the same timestamp
 	
-	//$data = $wpdb->get_row( "SELECT * FROM `{$table_name}` WHERE timestamp >= DATE_SUB(NOW(), INTERVAL 1 DAY)", ARRAY_A );
+   //$data = $wpdb->get_row( "SELECT * FROM `{$table_name}` WHERE timestamp >= DATE_SUB(NOW(), INTERVAL 1 DAY)", ARRAY_A );
+   $data = array();
 	$data = $wpdb->get_row( "SELECT * FROM `{$table_name}` ORDER BY `id` DESC LIMIT 1", ARRAY_A );
 
-   return $data;
+   $timestamp = $data["timestamp"];
+
+   //$latest = array();
+   $latest = $wpdb->get_results( "SELECT * FROM `{$table_name}` WHERE `timestamp`= $timestamp ORDER BY `id` DESC", ARRAY_A );
+
+   return $latest;   // returns an array with the latest devices
+                     // All data
+
+   //echo '<h3>Latest</h3>';
+   //echo '<pre><code>';
+   //var_dump( $latest );
+   //echo '</code></pre>';
    
    // Show error if any
    $wpdb->print_error();

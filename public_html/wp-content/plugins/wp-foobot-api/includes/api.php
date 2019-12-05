@@ -74,7 +74,7 @@ function bd_foobot_call_data_api()
 
    $body = wp_remote_retrieve_body($request);
 
-   $api_data = json_decode( $body, true);
+   $api_data = json_decode( $body, true); // Output array
    return $api_data;
 }
 

@@ -71,8 +71,6 @@
     var_dump( $data );
     echo '</code></pre>';
 
-    die();
-
   }
   add_shortcode('foobot_device_api_test', 'bd_foobot_shortcode_call_device_api');
 
@@ -86,12 +84,40 @@
   function bd_foobot_shortcode_show_latest_device_data()
   {
     $data = bd_foobot_get_current_devices();
-    
-    echo '<pre><code>';
-    var_dump( $data );
-    echo '</code></pre>';
 
-    die();
+    ob_start();
+    
+    //echo '<pre><code>$data = bd_foobot_get_current_devices();</code></pre>';
+    //echo 'returns this:';
+    //echo '<pre><code>';
+    //var_dump( $data );
+    //echo '</code></pre>';
+
+    // Display table of devices and UUIDs
+    echo '<h3>Foobot Devices</h3>';
+    echo '<p>The following active Foobot devices have been detected on your account. New devices can take up to 24 hours to appear.</p>';
+    echo '<table><tr><th>Name</th><th>UUID</th></tr>';
+    foreach( $data as $device ){
+        // vars
+        $timestamp  = $device["timestamp"];
+        $name       = $device["name"];
+        $uuid       = $device["uuid"];
+
+        // table row
+        echo '<tr>';
+        echo '<td>' . $name . '</td>';
+        echo '<td>' . $uuid . '</td>';
+        echo '</tr>';
+    }
+
+    echo '</tr></table>';
+
+    // Show timestamp
+    echo '<p><small>' . $timestamp . '</small></p>';
+
+    $content =  ob_get_contents();
+    ob_clean();
+    return $content;
 
   }
   add_shortcode('foobot_device_data_test', 'bd_foobot_shortcode_show_latest_device_data');
