@@ -3,6 +3,42 @@
  * Tests
  */
 
+     /**
+   * Show the latest device data from the database (Shortcode)
+   * 
+   * Test-only
+   * 
+   *  */ 
+
+  function bd_foobot_shortcode_test_get_uuid( $atts )
+  {
+    // [foobot-get-uuid device="Bainbot"]
+
+    $device_data = shortcode_atts( array(
+        'device' => '',
+    ), $atts );
+    
+    $device_name = $device_data["device"]; 
+    // Debug
+    echo '<pre><code>';
+    var_dump( $device_name );
+    echo '</code></pre>';
+      
+    $device_uuid = bd_get_foobot_device_uuid( $device_name );
+    // Debug
+    echo '<pre><code>';
+    var_dump( $device_uuid );
+    echo '</code></pre>';  
+
+    ob_start();
+        echo 'Device UUID: ' . $device_uuid;
+    $content =  ob_get_contents();
+    ob_clean();
+    return $content;
+
+  }
+  add_shortcode('foobot_get_uuid', 'bd_foobot_shortcode_test_get_uuid');
+
  // Create test API data to test database
  function bd_foobot_test_device_data(){
      // This function returns an array that mimics
