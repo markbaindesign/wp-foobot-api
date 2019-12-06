@@ -34,8 +34,15 @@ function bd_foobot_get_api_user()
 }
 
 /**
+ * ======================
  * Create database tables
  * ======================
+ */
+
+ /**
+ * Create the 2 custom tables needed for this plugin, 
+ * one to store the device data, another to store the
+ * sensor readings. 
  */
 
 // Create table to store sensor data
@@ -100,6 +107,7 @@ function bd_foobot_create_device_table()
 }
 
 /**
+ * ============================
  * Fetch data from the database
  * ============================
  */
@@ -120,9 +128,60 @@ function bd_foobot_fetch_latest_sensor_data(){
 
 }
 
+function bd_foobot_get_current_devices(){
+   
+   global $wpdb;
+   $wpdb->show_errors();
+
+   // Vars
+   $table_name = $wpdb->prefix . 'bd_foobot_device_data';
+
+   // Update the device table if required
+   bd_foobot_update_device_data();
+   
+   // Get all the results
+   // TO DO: Only return results from the last 24 hours?
+
+   // Order the results
+
+   // Get the most recent result and return rows that
+   // match the same timestamp
+	
+   //$data = $wpdb->get_row( "SELECT * FROM `{$table_name}` WHERE timestamp >= DATE_SUB(NOW(), INTERVAL 1 DAY)", ARRAY_A );
+   $data = array();
+	$data = $wpdb->get_row( "SELECT * FROM `{$table_name}` ORDER BY `id` DESC LIMIT 1", ARRAY_A );
+
+   $timestamp = $data["timestamp"];
+
+   //$latest = array();
+   $latest = $wpdb->get_results( "SELECT * FROM `{$table_name}` WHERE `timestamp`= $timestamp ORDER BY `id` DESC", ARRAY_A );
+
+   return $latest;   // returns an array with the latest devices
+                     // All data
+
+   //echo '<h3>Latest</h3>';
+   //echo '<pre><code>';
+   //var_dump( $latest );
+   //echo '</code></pre>';
+   
+   // Show error if any
+   $wpdb->print_error();
+}
+
 /**
- * Add device data to database
+ * =========================
+ * Add data to the database
+ * =========================
  */
+
+/**
+ * After fetching data via an API call, add it to
+ * one of the two custom tables we've created. This 
+ * allows us to reduce the number of API calls we 
+ * make each time we need to display the data, and 
+ * avoid API limits. 
+ */
+
 function bd_foobot_update_db_device( $device_api_data ){
 
    global $wpdb;
@@ -189,9 +248,6 @@ function bd_foobot_update_db_device( $device_api_data ){
    }
 }
 
-/**
- * Add sensor data to database
- */
 function bd_foobot_update_db_sensors( $api_data ){
 
    global $wpdb;
@@ -216,10 +272,6 @@ function bd_foobot_update_db_sensors( $api_data ){
       $userId  = $db_data[1]['userId'];
       $mac     = $db_data[2]['mac'];
       $name    = $db_data[3]['name'];
-
-      //echo '<pre><code>';
-      //var_dump( $uuid );
-      //echo '</code></pre>';
       
       // Insert data into db table
       $wpdb->insert( 
@@ -280,47 +332,4 @@ function bd_foobot_update_sensor_data()
           */
          bd_foobot_update_db_sensor( $data );
       }
-}
-
-/**
- * Get latest devices from the database
- */
-function bd_foobot_get_current_devices(){
-   
-   global $wpdb;
-   $wpdb->show_errors();
-
-   // Vars
-   $table_name = $wpdb->prefix . 'bd_foobot_device_data';
-
-   // Update the device table if required
-   bd_foobot_update_device_data();
-   
-   // Get all the results
-   // TO DO: Only return results from the last 24 hours?
-
-   // Order the results
-
-   // Get the most recent result and return rows that
-   // match the same timestamp
-	
-   //$data = $wpdb->get_row( "SELECT * FROM `{$table_name}` WHERE timestamp >= DATE_SUB(NOW(), INTERVAL 1 DAY)", ARRAY_A );
-   $data = array();
-	$data = $wpdb->get_row( "SELECT * FROM `{$table_name}` ORDER BY `id` DESC LIMIT 1", ARRAY_A );
-
-   $timestamp = $data["timestamp"];
-
-   //$latest = array();
-   $latest = $wpdb->get_results( "SELECT * FROM `{$table_name}` WHERE `timestamp`= $timestamp ORDER BY `id` DESC", ARRAY_A );
-
-   return $latest;   // returns an array with the latest devices
-                     // All data
-
-   //echo '<h3>Latest</h3>';
-   //echo '<pre><code>';
-   //var_dump( $latest );
-   //echo '</code></pre>';
-   
-   // Show error if any
-   $wpdb->print_error();
 }
