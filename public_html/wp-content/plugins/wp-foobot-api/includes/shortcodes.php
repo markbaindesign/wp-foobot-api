@@ -84,12 +84,10 @@ function bd_foobot_show_data_from_device()
  * Show temp now
  */
 function bd_foobot_show_temp_now()
-{   
+{ // [foobot_temp_now]  
 	
 	// Retrieve the sensor data from the database
 	$data = bd_get_temp_now();
-
-
 
 	// Time
 	$timestamp = $data['time'];
