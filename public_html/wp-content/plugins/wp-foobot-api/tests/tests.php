@@ -11,11 +11,6 @@ function bdf_sc_test_fetch_api_device( $atts )
   ), $atts );
   
   $device_name = $device_data["device"]; 
-  // bd_pretty_debug( $device_name, "̣device_name" );
-
-    
-  // $device_uuid = bd_get_foobot_device_uuid( $device_name );
-  // bd_pretty_debug( $device_uuid, "device_uuid" );
 
   $data = bd_foobot_call_data_api( $device_name );
   bd_pretty_debug( $data, "bd_foobot_call_data_api( $device_name )" );
