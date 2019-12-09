@@ -268,10 +268,9 @@ function bd_foobot_update_db_sensors( $api_data ){
       }
       
       // vars
-      $uuid    = $db_data[0]['uuid'];
-      $userId  = $db_data[1]['userId'];
-      $mac     = $db_data[2]['mac'];
-      $name    = $db_data[3]['name'];
+      $name    = $db_data[0]['name']; // Device name
+      $unitTmp    = $db_data[0]['unitTmp'];
+      $datapointTmp  = $db_data[1]['datapointTmp'];
       
       // Insert data into db table
       $wpdb->insert( 
@@ -279,12 +278,14 @@ function bd_foobot_update_db_sensors( $api_data ){
          array(
             'timestamp'    => $time,
             'name'         => $name,
-            'uuid'         => $uuid,
+            '$unitTmp'     => $unitTmp,
+            '$datapointTmp'     => $datapointTmp,
          ),
          array(
             '%d',
             '%s',
-            '%s'
+            '%s',
+            '%d'
          )
       );
 

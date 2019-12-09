@@ -85,6 +85,12 @@
  }
  add_shortcode('foobot_tests', 'bd_foobot_tests_shortcode');
 
+ /**
+ * =========================
+ * API Calls
+ * =========================
+ */
+
   /**
    * Call the Device API & add to DB (Shortcode)
    * 
@@ -109,6 +115,32 @@
 
   }
   add_shortcode('foobot_device_api_test', 'bd_foobot_shortcode_call_device_api');
+
+    /**
+   * Call the Device API & add to DB (Shortcode)
+   * 
+   * Test-only
+   * 
+   *  */ 
+
+  function bd_foobot_shortcode_call_sensor_api()
+  {
+    $data = bd_foobot_get_device_data();    // Real API data with transients
+
+    // ========= Use with CAUTION! =======//
+    //$data = bd_foobot_call_device_api();      // Real API data (no transients)
+    //error_log("{{{ WARNING: Device API called without transients }}}", 0);
+
+    // Add the test device data to the db
+    // bd_foobot_update_db_device( $data );
+    
+    echo '<pre><code>';
+    var_dump( $data );
+    echo '</code></pre>';
+
+  }
+  add_shortcode('foobot_sensor_api_test', 'bd_foobot_shortcode_call_sensor_api');
+  
 
     /**
    * Show the latest device data from the database (Shortcode)

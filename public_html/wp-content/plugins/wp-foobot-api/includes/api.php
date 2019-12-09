@@ -124,85 +124,13 @@ function bd_foobot_get_sensor_data()
    }
 
    // Get the device data
-   $sensor_data = bd_foobot_call_data_api();
-   if (is_wp_error($sensor_data)) {
+   $data = bd_foobot_call_data_api();
+   if (is_wp_error($data)) {
       error_log("Error: No data from Foobot sensor API ", 0);
       return false; // Bail early
    }
 
-   // Add the API to the database
-   $table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
-   foreach ( $sensor_data as $key => $value ){
-      $wpdb->insert( $table_name, array( $key => $value ));
-   }
-   // vars
-   $device=$unitTmp=$datapointTmp='';
-
-   // Temperature
-   $unitTmp = $sensor_data->{"unitTmp"};
-   $datapointTmp = $sensor_data->{"datapointTmp"};
-
-   // Device
-   $device = $sensor_data->{"device"};
-
-   // Humidity
-   $unitHum = $sensor_data->{"unitHum"};
-   $datapointHum = $sensor_data->{"datapointHum"};
-
-   // CO2
-   $unitCo2 = $sensor_data->{"unitCo2"};
-   $datapointCo2 = $sensor_data->{"datapointCo2"};
-
-   // Voc
-   $unitVoc = $sensor_data->{"unitVoc"};
-   $datapointVoc = $sensor_data->{"datapointVoc"};
-
-   // All Pollution
-   $unitAllpollu = $sensor_data->{"unitAllpollu"};
-   $datapointAllpollu = $sensor_data->{"datapointAllpollu"};
-
-   // Get timestamp
-   $timestamp = $sensor_data->{"start"};
-   $time = date('Y-m-d H:i:s', $timestamp);
-
-   // Get the temperature
-   $datapoints = $sensor_data->{"datapoints"};
-   $datapoint = $datapoints[0];
-   $datapointTmp = $datapoint[2];
-
-   // Get the temperature units
-   $units = $sensor_data->{"units"};
-   $unitTmp = $units[2];
-
-   /**
-    * Insert data into custom database table
-    */
-
-
-   /**
-    * 
-   $wpdb->insert(
-      $table_name,
-      array(
-         'time'                  => $time,
-         'device'                => $device,
-         'unitPm'                => $sensor_data->{"unitPm"},
-         'datapointPm'           => $sensor_data->{"datapointPm"},
-         'unitTmp'               => $unitTmp,
-         'datapointTmp'          => $datapointTmp,
-         'unitHum'               => $unitHum,
-         'datapointHum'          => $datapointHum,
-         'unitCo2'               => $unitCo2,
-         'datapointCo2'          => $datapointCo2,
-         'unitVoc'               => $unitVoc,
-         'datapointVoc'          => $datapointVoc,
-         'unitAllpollu'          => $unitAllpollu,
-         'datapointAllpollu'     => $datapointAllpollu,
-      )
-   ); 
-   **/
-
-   // echo $wpdb->show_errors();
+   return $data;
 
    // Transient is set for 5 mins
    set_transient('foobot-api-data-updated', 1, (60 * 5));
