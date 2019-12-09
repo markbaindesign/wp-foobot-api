@@ -316,14 +316,14 @@ function bd_foobot_update_device_data(){
 
 }
 
-function bd_foobot_update_sensor_data()
+function bd_foobot_update_sensor_data( $device_name )
 {
    /**
     * Request an API call
     * (checks if transient set, if
     * not, makes API call)
     */
-      $data = bd_foobot_get_sensor_data();
+      $data = bd_foobot_get_sensor_data( $device_name );
 
       if( $data ){
          /**

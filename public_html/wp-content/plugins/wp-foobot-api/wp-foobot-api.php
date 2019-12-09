@@ -15,6 +15,7 @@
 
 // Includes
 	$path = plugin_dir_path(__FILE__);
+	include($path . 'lib/debug.php');
 	include($path . 'tests/tests.php');
 	include($path . 'includes/database.php');
 	include($path . 'admin/admin.php');

@@ -2,6 +2,38 @@
 /**
  * Tests
  */
+function bdf_sc_test_fetch_api_device( $atts )
+{
+  // [foobot-get-data-test device="BainBot"]
+
+  $device_data = shortcode_atts( array(
+      'device' => '',
+  ), $atts );
+  
+  $device_name = $device_data["device"]; 
+  // bd_pretty_debug( $device_name, "̣device_name" );
+
+    
+  // $device_uuid = bd_get_foobot_device_uuid( $device_name );
+  // bd_pretty_debug( $device_uuid, "device_uuid" );
+
+  $data = bd_foobot_call_data_api( $device_name );
+  bd_pretty_debug( $data, "bd_foobot_call_data_api( $device_name )" );
+
+  // TO DO  
+  // Pass the UUID to the fetch API function directly
+  // Do not check the transient
+  // Do not collect £200
+
+  ob_start();
+
+  $content =  ob_get_contents();
+  ob_clean();
+  return $content;
+
+}
+add_shortcode('foobot-get-data-test', 'bdf_sc_test_fetch_api_device');
+
 
      /**
    * Show the latest device data from the database (Shortcode)
@@ -128,7 +160,7 @@
     $data = bd_foobot_get_device_data();    // Real API data with transients
 
     // ========= Use with CAUTION! =======//
-    //$data = bd_foobot_call_device_api();      // Real API data (no transients)
+    $data = bd_foobot_call_device_api();      // Real API data (no transients)
     //error_log("{{{ WARNING: Device API called without transients }}}", 0);
 
     // Add the test device data to the db

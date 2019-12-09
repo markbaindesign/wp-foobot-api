@@ -54,10 +54,10 @@ function bd_foobot_call_device_api()
  * 
  */
 
-function bd_foobot_call_data_api()
+function bd_foobot_call_data_api( $device_name )
 {
    $key = bd_foobot_get_api_key();
-   $uuid = bd_get_foobot_device_uuid();
+   $uuid = bd_get_foobot_device_uuid( $device_name );
 
    $url = 'https://api.foobot.io/v2/device/' . $uuid . '/datapoint/0/last/0/?' . $key;
    $args = array(
@@ -110,7 +110,7 @@ function bd_foobot_get_device_data()
 }
 
 // Update sensor data
-function bd_foobot_get_sensor_data()
+function bd_foobot_get_sensor_data( $device_name )
 {
    global $wpdb;
 
@@ -124,7 +124,7 @@ function bd_foobot_get_sensor_data()
    }
 
    // Get the device data
-   $data = bd_foobot_call_data_api();
+   $data = bd_foobot_call_data_api( $device_name );
    if (is_wp_error($data)) {
       error_log("Error: No data from Foobot sensor API ", 0);
       return false; // Bail early

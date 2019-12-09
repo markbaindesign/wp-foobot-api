@@ -83,11 +83,18 @@ function bd_foobot_show_data_from_device()
 /**
  * Show temp now
  */
-function bd_foobot_show_temp_now()
-{ // [foobot_temp_now]  
+function bd_foobot_show_temp_now( $atts )
+{
+    // [foobot_temp_now device="Bainbot"]
+
+    $device_data = shortcode_atts( array(
+        'device' => '',
+	), $atts );
+
+	$device_name = $device_data["device"];
 	
 	// Retrieve the sensor data from the database
-	$data = bd_get_temp_now();
+	$data = bd_get_temp_now( $device_name );
 
 	// Time
 	$timestamp = $data['time'];
@@ -104,9 +111,9 @@ function bd_foobot_show_temp_now()
 	ob_start();
 
 	// Debug
-	// echo '<pre><code>';
-	// var_dump( $data );
-	// echo '</code></pre>';
+	echo '<pre><code>';
+	var_dump( $data );
+	echo '</code></pre>';
 
 	echo '<div class="current_temp">Current location temperature:</div>';
 	echo '<h1>' . $tr . $units . '</h1>';
