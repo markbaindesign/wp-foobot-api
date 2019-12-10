@@ -10,7 +10,7 @@ $bd_foobot_device_db_version = '1.2';
 
 // Sensors
 global $bd_foobot_sensor_db_version;
-$bd_foobot_sensor_db_version = '1.2';
+$bd_foobot_sensor_db_version = '1.4';
 
 /** Get Options
  * ============
@@ -252,7 +252,7 @@ function bd_foobot_update_db_device( $device_api_data ){
 }
 
 // Add sensor data
-function bd_foobot_update_db_sensors( $api_data ){
+function bd_foobot_update_db_sensors( $data ){
 
    global $wpdb;
    
@@ -262,14 +262,12 @@ function bd_foobot_update_db_sensors( $api_data ){
    $table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
 
    // vars
-   $time             = '1223344556';
-   $uuid             = '1AB563GH63JU';
-   $unitTmp          = 'C';
-   $datapointTmp     = '19.435';
-   // $time             = $db_data['start']; // Timestamp
-   // $unitTmp          = $db_data['units'][2];
-   // $datapointTmp     = $db_data['datapoints'][2];
-   // 
+   $time             = $data['start'];
+   $uuid             = $data['uuid'];
+   $unitTmp          = $data['units'][2];
+   bd_pretty_debug( $data['units'], "data['units']" );
+   $datapointTmp     = $data['datapoints'][0][2];
+   
    // Insert data into db table
    $wpdb->insert( 
       $table_name, 
@@ -282,34 +280,16 @@ function bd_foobot_update_db_sensors( $api_data ){
       array(
          '%d',
          '%s',
-         '%d'
+         '%s',
+         '%f'
       )
    );
 
-   // Loop through each sensor
-   foreach( $api_data as $data ){
-      $db_data = array();
+   error_log("EVENT: Sensor data inserted in table", 0);
 
-      // Loop the specific sensor data
+   // DEBUG
+   // $wpdb->print_error(); // Show error if any
 
-      /**
-       * ["sensors"]
-       * ["units"]
-       * ["datapoints"]
-       */
-
-      // foreach ( $data as $key => $value ){
-      //    $db_data[] = array( $key => $value );
-      // }
-      
-
-
-      error_log("EVENT: Sensor data inserted in table", 0);
-
-      // DEBUG
-      // $wpdb->print_error(); // Show error if any
-
-   }
 }
 
 function bd_foobot_update_device_data(){
