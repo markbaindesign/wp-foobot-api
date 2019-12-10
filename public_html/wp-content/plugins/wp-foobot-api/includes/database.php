@@ -112,6 +112,7 @@ function bd_foobot_create_device_table()
  * ============================
  */
 
+// Fetch sensor data
 function bd_foobot_fetch_latest_sensor_data(){
 
 	// To DO
@@ -128,6 +129,7 @@ function bd_foobot_fetch_latest_sensor_data(){
 
 }
 
+// Fetch device data
 function bd_foobot_get_current_devices(){
    
    global $wpdb;
@@ -182,6 +184,7 @@ function bd_foobot_get_current_devices(){
  * avoid API limits. 
  */
 
+// Add device data
 function bd_foobot_update_db_device( $device_api_data ){
 
    global $wpdb;
@@ -248,6 +251,7 @@ function bd_foobot_update_db_device( $device_api_data ){
    }
 }
 
+// Add sensor data
 function bd_foobot_update_db_sensors( $api_data ){
 
    global $wpdb;
@@ -256,34 +260,38 @@ function bd_foobot_update_db_sensors( $api_data ){
    $wpdb->show_errors(); // Turn on errors display
 
    $table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
-   $time = current_time('timestamp');
 
    // Loop through each sensor
    foreach( $api_data as $data ){
       $db_data = array();
 
       // Loop the specific sensor data
+
+      /**
+       * ["sensors"]
+       * ["units"]
+       * ["datapoints"]
+       */
+
       foreach ( $data as $key => $value ){
          $db_data[] = array( $key => $value );
       }
       
       // vars
-      $name    = $db_data[0]['name']; // Device name
-      $unitTmp    = $db_data[0]['unitTmp'];
-      $datapointTmp  = $db_data[1]['datapointTmp'];
+      $time             = $db_data['start']; // Timestamp
+      $unitTmp          = $db_data['units'][2];
+      $datapointTmp     = $db_data['datapoints'][2];
       
       // Insert data into db table
       $wpdb->insert( 
          $table_name, 
          array(
-            'timestamp'    => $time,
-            'name'         => $name,
-            '$unitTmp'     => $unitTmp,
-            '$datapointTmp'     => $datapointTmp,
+            'timestamp'       => $time,
+            '$unitTmp'        => $unitTmp,
+            '$datapointTmp'   => $datapointTmp,
          ),
          array(
             '%d',
-            '%s',
             '%s',
             '%d'
          )
