@@ -15,6 +15,9 @@ function bdf_sc_test_fetch_api_device( $atts )
   $data = bd_foobot_call_data_api( $device_name );
   bd_pretty_debug( $data, "bd_foobot_call_data_api( $device_name )" );
 
+  // Add the data to the database
+  bd_foobot_update_db_sensors( $data );
+
   // TO DO  
   // Pass the UUID to the fetch API function directly
   // Do not check the transient

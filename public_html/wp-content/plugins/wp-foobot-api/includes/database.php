@@ -10,7 +10,7 @@ $bd_foobot_device_db_version = '1.2';
 
 // Sensors
 global $bd_foobot_sensor_db_version;
-$bd_foobot_sensor_db_version = '1.0';
+$bd_foobot_sensor_db_version = '1.2';
 
 /** Get Options
  * ============
@@ -57,10 +57,10 @@ function bd_foobot_create_sensor_table()
 
 	$sql = "CREATE TABLE $table_name (
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
-		time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-		device tinytext NOT NULL,
-		unitTime tinytext NOT NULL,
-		datapointTime float NOT NULL,
+      timestamp int NOT NULL,
+      uuid tinytext NOT NULL,
+		unitTime tinytext NULL,
+		datapointTime float NULL,
 		unitPm tinytext NULL,
 		datapointPm float NULL,
 		unitTmp tinytext NULL,
@@ -257,9 +257,34 @@ function bd_foobot_update_db_sensors( $api_data ){
    global $wpdb;
    
    // DEBUG
-   $wpdb->show_errors(); // Turn on errors display
+   // $wpdb->show_errors(); // Turn on errors display
 
    $table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
+
+   // vars
+   $time             = '1223344556';
+   $uuid             = '1AB563GH63JU';
+   $unitTmp          = 'C';
+   $datapointTmp     = '19.435';
+   // $time             = $db_data['start']; // Timestamp
+   // $unitTmp          = $db_data['units'][2];
+   // $datapointTmp     = $db_data['datapoints'][2];
+   // 
+   // Insert data into db table
+   $wpdb->insert( 
+      $table_name, 
+      array(
+         'timestamp'      => $time,
+         'uuid'           => $uuid,
+         'unitTmp'        => $unitTmp,
+         'datapointTmp'   => $datapointTmp,
+      ),
+      array(
+         '%d',
+         '%s',
+         '%d'
+      )
+   );
 
    // Loop through each sensor
    foreach( $api_data as $data ){
@@ -273,34 +298,16 @@ function bd_foobot_update_db_sensors( $api_data ){
        * ["datapoints"]
        */
 
-      foreach ( $data as $key => $value ){
-         $db_data[] = array( $key => $value );
-      }
+      // foreach ( $data as $key => $value ){
+      //    $db_data[] = array( $key => $value );
+      // }
       
-      // vars
-      $time             = $db_data['start']; // Timestamp
-      $unitTmp          = $db_data['units'][2];
-      $datapointTmp     = $db_data['datapoints'][2];
-      
-      // Insert data into db table
-      $wpdb->insert( 
-         $table_name, 
-         array(
-            'timestamp'       => $time,
-            '$unitTmp'        => $unitTmp,
-            '$datapointTmp'   => $datapointTmp,
-         ),
-         array(
-            '%d',
-            '%s',
-            '%d'
-         )
-      );
+
 
       error_log("EVENT: Sensor data inserted in table", 0);
 
       // DEBUG
-      $wpdb->print_error(); // Show error if any
+      // $wpdb->print_error(); // Show error if any
 
    }
 }

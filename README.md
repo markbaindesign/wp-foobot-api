@@ -42,3 +42,13 @@ wp db query 'SELECT * FROM wp_bd_foobot_device_data'
 wp db query 'SELECT * FROM wp_bd_foobot_device_data ORDER BY id DESC LIMIT 10'
 wp db query 'SELECT * FROM wp_bd_foobot_sensor_data'
 ```
+
+### Changes to table structure
+
+When changing the database table, you must also:
+
+1. Update the database version function
+2. Deactivate the plugin
+3. Reactivate the plugin
+
+...in order for the changes to take effect.
