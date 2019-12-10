@@ -1,0 +1,25 @@
+.sensors {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.sensors li span{
+    display: block;
+}
+.sensor {
+    background: rgba(0,0,0,0.05);
+    border-radius: 5px;
+    padding: 1rem;
+    text-align: center;
+}
+.sensor .sensor__label {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+.sensor .sensor__data {
+    font-size: 5rem;
+    font-weight: bold;
+}
