@@ -12,19 +12,19 @@ function bdf_sc_test_fetch_api_device( $atts )
   
   $device_name = $device_data["device"]; 
 
-  $data = bd_foobot_call_data_api( $device_name );
-  bd_pretty_debug( $data, "bd_foobot_call_data_api( $device_name )" );
+  // $data = bd_foobot_call_data_api( $device_name );
+
+  $uuid = '2C03466F849044E0'; // test (BainBot)
+  $data = bdf_query_sensors( $uuid );
+  // bd_pretty_debug( $data, "data" );
 
   // Add the data to the database
-  bd_foobot_update_db_sensors( $data );
+  // bd_foobot_update_db_sensors( $data );
 
-  // TO DO  
-  // Pass the UUID to the fetch API function directly
-  // Do not check the transient
-  // Do not collect £200
+
+
 
   ob_start();
-
   $content =  ob_get_contents();
   ob_clean();
   return $content;

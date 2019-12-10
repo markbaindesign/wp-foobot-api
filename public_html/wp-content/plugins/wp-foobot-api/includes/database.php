@@ -129,6 +129,17 @@ function bd_foobot_fetch_latest_sensor_data(){
 
 }
 
+// Query the database for sensor 
+// data from a specific device
+function bdf_query_sensors( $uuid ){
+
+	global $wpdb;
+   $table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
+	$data = $wpdb->get_results( "SELECT * FROM `{$table_name}` WHERE `uuid`='$uuid' ORDER BY `id` DESC LIMIT 1", ARRAY_A );
+   return $data;
+
+}
+
 // Fetch device data
 function bd_foobot_get_current_devices(){
    
