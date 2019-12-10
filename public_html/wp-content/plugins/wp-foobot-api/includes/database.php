@@ -261,27 +261,60 @@ function bd_foobot_update_db_sensors( $data ){
 
    $table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
 
-   // vars
-   $time             = $data['start'];
-   $uuid             = $data['uuid'];
-   $unitTmp          = $data['units'][2];
-   bd_pretty_debug( $data['units'], "data['units']" );
-   $datapointTmp     = $data['datapoints'][0][2];
+   // Vars
+   $time                   = $data['start'];
+   $uuid                   = $data['uuid'];
+
+   // Units
+   $unitPm                 = $data['units'][1];
+   $unitTmp                = $data['units'][2];
+   $unitHum                = $data['units'][3];
+   $unitCo2                = $data['units'][4];
+   $unitVoc                = $data['units'][5];
+   $unitAllpollu           = $data['units'][6];
+
+   // Datapoints
+   $datapointPm            = $data['datapoints'][0][1];
+   $datapointTmp           = $data['datapoints'][0][2];
+   $datapointHum           = $data['datapoints'][0][3];
+   $datapointCo2           = $data['datapoints'][0][4];
+   $datapointVoc           = $data['datapoints'][0][5];
+   $datapointAllpollu      = $data['datapoints'][0][6];
    
    // Insert data into db table
    $wpdb->insert( 
       $table_name, 
       array(
-         'timestamp'      => $time,
-         'uuid'           => $uuid,
-         'unitTmp'        => $unitTmp,
-         'datapointTmp'   => $datapointTmp,
+         'timestamp'          => $time,
+         'uuid'               => $uuid,
+         'unitPm'             => $unitPm,
+         'datapointPm'        => $datapointPm,
+         'unitTmp'            => $unitTmp,
+         'datapointTmp'       => $datapointTmp,
+         'unitHum'            => $unitHum,
+         'datapointHum'       => $datapointHum,
+         'unitCo2'            => $unitCo2,
+         'datapointCo2'       => $datapointCo2,
+         'unitVoc'            => $unitVoc,
+         'datapointVoc'       => $datapointVoc,
+         'unitAllpollu'       => $unitAllpollu,
+         'datapointAllpollu'  => $datapointAllpollu,
       ),
       array(
-         '%d',
-         '%s',
-         '%s',
-         '%f'
+         '%d', // 'timestamp'
+         '%s', // 'uuid'
+         '%s', // 'unitPm'
+         '%f', // 'datapointPm'
+         '%s', // 'unitTmp'
+         '%f', // 'datapointTmp'
+         '%s', // 'unitHum'
+         '%f', // 'datapointHum'
+         '%s', // 'unitCo2'
+         '%f', // 'datapointCo2'
+         '%s', // 'unitVoc'
+         '%f', // 'datapointVoc'
+         '%s', // 'unitAllpollu'
+         '%f', // 'datapointAllpollu'
       )
    );
 
