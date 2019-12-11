@@ -15,14 +15,20 @@
 
 // Includes
 	$path = plugin_dir_path(__FILE__);
+
 	include( $path . 'lib/debug.php');
-	include( $path . 'tests/tests.php');
 	include( $path . 'includes/database.php');
 	include( $path . 'admin/admin.php');
 	include( $path . 'includes/shortcodes.php');
 	include( $path . 'includes/sensors.php');
 	include( $path . 'includes/api.php');
 	include( $path . 'includes/helpers.php');
+
+	// Tests 
+	include( $path . 'tests/tests-api.php');
+	include( $path . 'tests/tests-data.php');
+	include( $path . 'tests/tests-database.php');
+	include( $path . 'tests/tests-transients.php');
 
 /**
  * Plugin Init
