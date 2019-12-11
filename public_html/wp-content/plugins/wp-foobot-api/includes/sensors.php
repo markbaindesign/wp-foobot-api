@@ -21,6 +21,10 @@ function bd_foobot_show_sensors( $device_name )
   // Remove one level from the array
   $data = $sensor_data[0];
 
+  // Data age
+  $now = time();
+  $data_age = $now - $data['timestamp'];
+
   // Output sensor data
   $content = '<ul class="sensors">';
   $content.= '<li class="sensor sensor--tmp"><span class="sensor__label">Temperature</span><span class="sensor__data">' . $data['datapointTmp'] . '</span><span class="sensor__unit">' . $data['unitTmp'] . '</span></li>' ;
@@ -30,6 +34,9 @@ function bd_foobot_show_sensors( $device_name )
   $content.= '<li class="sensor sensor--hum"><span class="sensor__label">Humidity</span><span class="sensor__data">' . $data['datapointHum'] . '</span><span class="sensor__unit">' . $data['unitHum'] . '</span></li>' ;
   $content.= '<li class="sensor sensor--all"><span class="sensor__label">All</span><span class="sensor__data">' . $data['datapointAllpollu'] . '</span><span class="sensor__unit">' . $data['unitAllpollu'] . '</span></li>' ;
   $content.= '</ul>';
+  $content.= '<div class="sensor__data-age">Data updated ';
+  $content.= $data_age;
+  $content.= 's ago</div">';
 
   return $content;
 
@@ -40,13 +47,13 @@ function bd_foobot_show_sensors( $device_name )
 /** 
  * Get current temperature and return it as array
  */
-function bd_get_temp_now( $device_name )
+function bd_get_temp_now($uuid)
 {
    /**
     * First, we need to check our transient and update the data in the 
     * custom table if necessary. 
     */
-    bd_foobot_update_sensor_data( $device_name );
+    bd_foobot_update_sensor_data($uuid);
 
    /**
     * Having done that, we can proceed with questioning the database.

@@ -375,14 +375,14 @@ function bd_foobot_update_device_data(){
 
 }
 
-function bd_foobot_update_sensor_data( $device_name )
+function bd_foobot_update_sensor_data( $uuid )
 {
    /**
     * Request an API call
     * (checks if transient set, if
     * not, makes API call)
     */
-      $data = bd_foobot_call_api_trans_sensors( $device_name );
+      $data = bd_foobot_call_api_trans_sensors( $uuid );
 
       if( $data ){
          /**
