@@ -143,8 +143,7 @@ function bd_foobot_fetch_db_sensors( $uuid ){
    $table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
 
    // Update the device table if required
-   // bd_foobot_update_sensor_data($uuid);
-   bd_foobot_update_sensor_data('BainBot');
+   bd_foobot_update_sensor_data($uuid);
 
    // Now we query the db.
 	$data = $wpdb->get_results( "SELECT * FROM `{$table_name}` WHERE `uuid`='$uuid' ORDER BY `id` DESC LIMIT 1", ARRAY_A );

@@ -40,10 +40,6 @@
 function baindesign_foobot_plugin_init()
 {
 
-	// Actions
-	//add_action('init', 'bd_foobot_update_sensor_data');
-	// add_action('init', 'bd_foobot_update_device_data');
-
 	function bdf_enqueue_styles() {
 		wp_enqueue_style( 'bdf-style', plugins_url( 'assets/style.css', __FILE__ ), false );
 	}

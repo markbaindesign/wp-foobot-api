@@ -58,10 +58,9 @@ function bd_foobot_call_api_devices()
  * 
  */
 
-function bd_foobot_call_api_sensors( $device_name )
+function bd_foobot_call_api_sensors( $uuid )
 {
    $key = bd_foobot_get_api_key();
-   $uuid = bd_get_foobot_device_uuid( $device_name );
 
    $url = 'https://api.foobot.io/v2/device/' . $uuid . '/datapoint/0/last/0/?' . $key;
    $args = array(
@@ -120,7 +119,7 @@ function bd_foobot_call_api_trans_devices()
 }
 
 // Update sensor data
-function bd_foobot_call_api_trans_sensors( $device_name )
+function bd_foobot_call_api_trans_sensors( $uuid )
 {
    global $wpdb;
 
@@ -137,17 +136,17 @@ function bd_foobot_call_api_trans_sensors( $device_name )
    }
 
    // Get the device data
-   $data = bd_foobot_call_api_sensors( $device_name );
+   $data = bd_foobot_call_api_sensors( $uuid );
    if (is_wp_error($data)) {
       error_log("Error: No data from Foobot sensor API ", 0);
       return false; // Bail early
    }
-
-   return $data;
 
    // Transient is set for 5 mins
    set_transient('foobot-api-data-updated', 1, (60 * 5));
 
    // Debug
    error_log("Foobot sensor data has been updated! Next update > 5 mins.", 0);
+
+   return $data;
 }
