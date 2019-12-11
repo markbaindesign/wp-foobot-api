@@ -43,6 +43,24 @@ function bdf_sc_test_fetch_api_device( $atts )
 }
 add_shortcode('foobot-get-data-test', 'bdf_sc_test_fetch_api_device');
 
+/** 
+ * Transient test
+ **/
+function bd_f_test_transient()
+{
+  // [foobot_transient]
+  if (1 == get_transient('foobot-test')) {
+    // Debug
+    error_log("foobot-test is unexpired", 0);
+    return;
+  }
+  set_transient('foobot-test', 1, (60 * 5));
+  // Debug
+  error_log("foobot-test has expired. Setting foobot-test", 0);
+  return;
+}
+add_shortcode('foobot_transient', 'bd_f_test_transient');
+
 
      /**
    * Show the latest device data from the database (Shortcode)
