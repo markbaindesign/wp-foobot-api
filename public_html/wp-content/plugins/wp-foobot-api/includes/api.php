@@ -120,18 +120,18 @@ function bd_foobot_call_api_trans_devices()
 }
 
 // Update sensor data
-function bd_foobot_get_sensor_data( $device_name )
+function bd_foobot_call_api_trans_sensors( $device_name )
 {
    global $wpdb;
 
    // debug
-   error_log("FUNCTION: bd_foobot_get_sensor_data", 0);
+   error_log("FUNCTION: bd_foobot_call_api_trans_sensors", 0);
 
    // If an API call has been made within the last 5 mins, 
    // return.
    if (1 == get_transient('foobot-api-data-updated')) {
       // Debug
-      error_log("No Foobot API call made at this time.", 0);
+      error_log("No Foobot Sensor API call made at this time.", 0);
 
       return;
    }

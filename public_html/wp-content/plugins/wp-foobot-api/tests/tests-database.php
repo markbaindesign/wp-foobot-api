@@ -25,7 +25,7 @@ function bdf_sc_test_fetch_api_device( $atts )
   bd_pretty_debug( $data, "data" );
 
   // Add the data to the database
-  // bd_foobot_update_db_sensors( $data );
+  // bd_foobot_add_db_sensors( $data );
 
   // Output
   ob_start();

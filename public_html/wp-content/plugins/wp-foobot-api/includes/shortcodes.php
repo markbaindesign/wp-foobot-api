@@ -14,7 +14,7 @@ function bd_foobot_shortcode_show_sensors( $atts )
   // e.g. [foobot-show-data device="BainBot"]
 
   // Debug
-  error_log("SHORTCODE: [foobot-show-data]", 0);
+  error_log("== SHORTCODE: Start [foobot-show-data] ==", 0);
   error_log("FUNCTION: bd_foobot_shortcode_show_sensors", 0);
 
 
@@ -35,6 +35,10 @@ function bd_foobot_shortcode_show_sensors( $atts )
   
   $content =  ob_get_contents();
   ob_clean();
+
+  // Debug
+  error_log("== SHORTCODE: End [foobot-show-data] ==", 0);
+
   return $content;
 
 }
@@ -269,11 +273,11 @@ add_shortcode('foobot_temp_now', 'bd_foobot_show_temp_now');
 
   function bd_foobot_shortcode_show_latest_device_data()
   {
-    $data = bd_foobot_get_current_devices();
+    $data = bd_foobot_fetch_db_devices();
 
     ob_start();
     
-    //echo '<pre><code>$data = bd_foobot_get_current_devices();</code></pre>';
+    //echo '<pre><code>$data = bd_foobot_fetch_db_devices();</code></pre>';
     //echo 'returns this:';
     //echo '<pre><code>';
     //var_dump( $data );

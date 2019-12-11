@@ -10,7 +10,7 @@
 
 function bd_get_foobot_device_uuid( $device_name )
 {
-   $devices = bd_foobot_get_current_devices();
+   $devices = bd_foobot_fetch_db_devices();
 
    // Get array columns
    $col = array_column( $devices, 'name' );

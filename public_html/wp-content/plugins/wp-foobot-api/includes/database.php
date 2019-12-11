@@ -133,20 +133,34 @@ function bd_foobot_fetch_latest_sensor_data(){
 // data from a specific device
 function bd_foobot_fetch_db_sensors( $uuid ){
 
-	global $wpdb;
+   // Debug
+   error_log("FUNCTION: bd_foobot_fetch_db_sensors(".$uuid.")", 0);
+
+   global $wpdb;
+   $wpdb->show_errors();
+
+   // Vars
    $table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
 
-   // Debug
-   error_log("FUNCTION: bd_foobot_fetch_db_sensors", 0);
+   // Update the device table if required
+   // bd_foobot_update_sensor_data($uuid);
+   bd_foobot_update_sensor_data('BainBot');
 
    // Now we query the db.
 	$data = $wpdb->get_results( "SELECT * FROM `{$table_name}` WHERE `uuid`='$uuid' ORDER BY `id` DESC LIMIT 1", ARRAY_A );
+   
    return $data;
+
+   // Show error if any
+   $wpdb->print_error();
 
 }
 
 // Fetch device data
-function bd_foobot_get_current_devices(){
+function bd_foobot_fetch_db_devices(){
+
+   // debug
+   error_log("FUNCTION: bd_foobot_fetch_db_devices()", 0);
    
    global $wpdb;
    $wpdb->show_errors();
@@ -270,7 +284,7 @@ function bd_foobot_add_db_devices( $device_api_data ){
 }
 
 // Add sensor data to database
-function bd_foobot_update_db_sensors( $data ){
+function bd_foobot_add_db_sensors( $data ){
 
    global $wpdb;
    
@@ -336,7 +350,7 @@ function bd_foobot_update_db_sensors( $data ){
       )
    );
 
-   error_log("EVENT: Sensor data inserted in table", 0);
+   error_log("EVENT | Database: New sensor data added", 0);
 
    // DEBUG
    // $wpdb->print_error(); // Show error if any
@@ -369,7 +383,7 @@ function bd_foobot_update_sensor_data( $device_name )
     * (checks if transient set, if
     * not, makes API call)
     */
-      $data = bd_foobot_get_sensor_data( $device_name );
+      $data = bd_foobot_call_api_trans_sensors( $device_name );
 
       if( $data ){
          /**
@@ -377,6 +391,6 @@ function bd_foobot_update_sensor_data( $device_name )
           * (i.e. transient not set)
           * update the database
           */
-         bd_foobot_update_db_sensor( $data );
+         bd_foobot_add_db_sensors( $data );
       }
 }
