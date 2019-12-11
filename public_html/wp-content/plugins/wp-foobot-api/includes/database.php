@@ -135,6 +135,11 @@ function bdf_query_sensors( $uuid ){
 
 	global $wpdb;
    $table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
+
+   // Before querying the database we check if the data needs updated.
+   // bd_foobot_get_sensor_data( $device_name );
+
+   // Now we query the db.
 	$data = $wpdb->get_results( "SELECT * FROM `{$table_name}` WHERE `uuid`='$uuid' ORDER BY `id` DESC LIMIT 1", ARRAY_A );
    return $data;
 
@@ -195,7 +200,7 @@ function bd_foobot_get_current_devices(){
  * avoid API limits. 
  */
 
-// Add device data
+// Add device data to database
 function bd_foobot_update_db_device( $device_api_data ){
 
    global $wpdb;
@@ -262,7 +267,7 @@ function bd_foobot_update_db_device( $device_api_data ){
    }
 }
 
-// Add sensor data
+// Add sensor data to database
 function bd_foobot_update_db_sensors( $data ){
 
    global $wpdb;
