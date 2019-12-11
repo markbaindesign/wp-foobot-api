@@ -20,7 +20,7 @@ function bdf_sc_test_fetch_api_device( $atts )
   bd_pretty_debug( $uuid, "uuid" );
   
   // Fetch the sensor data from the database
-  $sensor_data = bdf_query_sensors( $uuid );
+  $sensor_data = bd_foobot_fetch_db_sensors( $uuid );
   $data = $sensor_data[0];
   bd_pretty_debug( $data, "data" );
 

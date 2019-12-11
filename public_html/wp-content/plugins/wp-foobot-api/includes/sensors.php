@@ -7,20 +7,20 @@
  */
 
 // Show the data from a specific device
-function bd_fbt_show_data( $device_name )
+function bd_foobot_show_sensors( $device_name )
 {
   
   // Get the target device UUID
   $uuid = bd_get_foobot_device_uuid( $device_name );
   
   // Fetch the sensor data from the database
-  $sensor_data = bdf_query_sensors( $uuid );
+  $sensor_data = bd_foobot_fetch_db_sensors( $uuid );
 
   // Remove one level from the array
   $data = $sensor_data[0];
 
   // debug
-  error_log("FUNCTION: bd_fbt_show_data (" .$uuid. ")", 0);
+  error_log("FUNCTION: bd_foobot_show_sensors (" .$uuid. ")", 0);
 
   // Output sensor data
   $content = '<ul class="sensors">';

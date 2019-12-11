@@ -15,7 +15,7 @@
  * table. 
  * 
  */
-function bd_foobot_call_device_api()
+function bd_foobot_call_api_devices()
 {
 
    // Vars
@@ -34,6 +34,10 @@ function bd_foobot_call_device_api()
    $body = wp_remote_retrieve_body($request);
 
    $api_data = json_decode( $body, true);
+
+   // debug
+   error_log("FUNCTION: bd_foobot_call_api_devices", 0);
+
    return $api_data;
 }
 
@@ -54,7 +58,7 @@ function bd_foobot_call_device_api()
  * 
  */
 
-function bd_foobot_call_data_api( $device_name )
+function bd_foobot_call_api_sensors( $device_name )
 {
    $key = bd_foobot_get_api_key();
    $uuid = bd_get_foobot_device_uuid( $device_name );
@@ -75,6 +79,9 @@ function bd_foobot_call_data_api( $device_name )
    $body = wp_remote_retrieve_body($request);
 
    $api_data = json_decode( $body, true); // Output array
+
+   // debug
+   error_log("FUNCTION: bd_foobot_call_api_sensors", 0);
    return $api_data;
 }
 
@@ -85,34 +92,40 @@ function bd_foobot_call_data_api( $device_name )
  */
 
 // Update device data
-function bd_foobot_get_device_data()
+function bd_foobot_call_api_trans_devices()
 {
    global $wpdb;
+
+   // debug
+   error_log("FUNCTION: bd_foobot_call_api_trans_devices", 0);
 
    // If an API call has been made within the last 24 hours, 
    // return.
    if (1 == get_transient('foobot-api-device-updated')) {
       // Debug
-      error_log("No Foobot Device API call made at this time.", 0);
+      error_log("NOTICE: No Foobot Device API call made at this time.", 0);
       return;
    }
 
    // Get the device data
-   $device_data = bd_foobot_call_device_api();
-
-   return $device_data;
+   $device_data = bd_foobot_call_api_devices();
 
    // Transient is set for 24 hours
    set_transient('foobot-api-device-updated', 1, (60 * 60 * 24));
 
    // Debug
-   error_log("Foobot sensor data has been updated! Next update > 24 hours.", 0);
+   error_log("NOTICE: Foobot sensor data has been updated! Next update > 24 hours.", 0);
+
+   return $device_data;
 }
 
 // Update sensor data
 function bd_foobot_get_sensor_data( $device_name )
 {
    global $wpdb;
+
+   // debug
+   error_log("FUNCTION: bd_foobot_get_sensor_data", 0);
 
    // If an API call has been made within the last 5 mins, 
    // return.
@@ -124,7 +137,7 @@ function bd_foobot_get_sensor_data( $device_name )
    }
 
    // Get the device data
-   $data = bd_foobot_call_data_api( $device_name );
+   $data = bd_foobot_call_api_sensors( $device_name );
    if (is_wp_error($data)) {
       error_log("Error: No data from Foobot sensor API ", 0);
       return false; // Bail early

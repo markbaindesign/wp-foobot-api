@@ -131,13 +131,13 @@ function bd_foobot_fetch_latest_sensor_data(){
 
 // Query the database for sensor 
 // data from a specific device
-function bdf_query_sensors( $uuid ){
+function bd_foobot_fetch_db_sensors( $uuid ){
 
 	global $wpdb;
    $table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
 
-   // Before querying the database we check if the data needs updated.
-   // bd_foobot_get_sensor_data( $device_name );
+   // Debug
+   error_log("FUNCTION: bd_foobot_fetch_db_sensors", 0);
 
    // Now we query the db.
 	$data = $wpdb->get_results( "SELECT * FROM `{$table_name}` WHERE `uuid`='$uuid' ORDER BY `id` DESC LIMIT 1", ARRAY_A );
@@ -201,9 +201,9 @@ function bd_foobot_get_current_devices(){
  */
 
 // Add device data to database
-function bd_foobot_update_db_device( $device_api_data ){
+function bd_foobot_add_db_devices( $device_api_data ){
 
-   error_log("FUNCTION: bd_foobot_update_db_device", 0);
+   error_log("FUNCTION: bd_foobot_add_db_devices", 0);
 
    global $wpdb;
    // Turn on errors display
@@ -349,7 +349,7 @@ function bd_foobot_update_device_data(){
     * (checks if transient set, if
     * not, makes API call)
     */
-   $data = bd_foobot_get_device_data();
+   $data = bd_foobot_call_api_trans_devices();
 
    if( $data ){
       /**
@@ -357,7 +357,7 @@ function bd_foobot_update_device_data(){
        * (i.e. transient not set)
        * update the database
        */
-      bd_foobot_update_db_device( $data );
+      bd_foobot_add_db_devices( $data );
    }
 
 }

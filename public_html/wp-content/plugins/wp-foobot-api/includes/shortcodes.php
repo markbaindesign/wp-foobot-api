@@ -9,13 +9,13 @@
 
 
 // Show the data from a specific device
-function bd_foobot_shortcode_show_data( $atts )
+function bd_foobot_shortcode_show_sensors( $atts )
 {
   // e.g. [foobot-show-data device="BainBot"]
 
   // Debug
   error_log("SHORTCODE: [foobot-show-data]", 0);
-  error_log("FUNCTION: bd_foobot_shortcode_show_data", 0);
+  error_log("FUNCTION: bd_foobot_shortcode_show_sensors", 0);
 
 
   // Get attributes from shortcode
@@ -27,7 +27,7 @@ function bd_foobot_shortcode_show_data( $atts )
   $device_name = $device_data["device"];
 
   // Show the data
-  $output = bd_fbt_show_data( $device_name );
+  $output = bd_foobot_show_sensors( $device_name ); // sensors.php
 
   // Output sensor data
   ob_start();
@@ -38,7 +38,7 @@ function bd_foobot_shortcode_show_data( $atts )
   return $content;
 
 }
-add_shortcode('foobot-show-data', 'bd_foobot_shortcode_show_data');
+add_shortcode('foobot-show-data', 'bd_foobot_shortcode_show_sensors');
 
 
 function bd_foobot_show_latest_sensor_data()
@@ -71,20 +71,6 @@ function bd_foobot_show_device_data()
 	return $content;
 }
 // add_shortcode('foobot_show_device', 'bd_foobot_show_device_data');
-
-/**
- * Show device name
- */
-function bd_foobot_show_device_name()
-{   
-	$name = bd_get_foobot_device_name();
-   ob_start();
-	echo $name;
-	$content =  ob_get_contents();
-	ob_clean();
-	return $content;
-}
-// add_shortcode('foobot_device_name', 'bd_foobot_show_device_name');
 
 /**
  * Show Foobot device data
@@ -201,7 +187,7 @@ add_shortcode('foobot_temp_now', 'bd_foobot_show_temp_now');
     $data = bd_foobot_test_device_data();
 
     // Add the test device data to the db
-    bd_foobot_update_db_device( $data );
+    bd_foobot_add_db_devices( $data );
 
      ob_start();
      
@@ -232,14 +218,14 @@ add_shortcode('foobot_temp_now', 'bd_foobot_show_temp_now');
 
   function bd_foobot_shortcode_call_device_api()
   {
-    $data = bd_foobot_get_device_data();    // Real API data with transients
+    $data = bd_foobot_call_api_trans_devices();    // Real API data with transients
 
     // ========= Use with CAUTION! =======//
-    //$data = bd_foobot_call_device_api();      // Real API data (no transients)
+    //$data = bd_foobot_call_api_devices();      // Real API data (no transients)
     //error_log("{{{ WARNING: Device API called without transients }}}", 0);
 
     // Add the test device data to the db
-    // bd_foobot_update_db_device( $data );
+    // bd_foobot_add_db_devices( $data );
     
     echo '<pre><code>';
     var_dump( $data );
@@ -257,14 +243,14 @@ add_shortcode('foobot_temp_now', 'bd_foobot_show_temp_now');
 
   function bd_foobot_shortcode_call_sensor_api()
   {
-    $data = bd_foobot_get_device_data();    // Real API data with transients
+    $data = bd_foobot_call_api_trans_devices();    // Real API data with transients
 
     // ========= Use with CAUTION! =======//
-    $data = bd_foobot_call_device_api();      // Real API data (no transients)
+    $data = bd_foobot_call_api_devices();      // Real API data (no transients)
     //error_log("{{{ WARNING: Device API called without transients }}}", 0);
 
     // Add the test device data to the db
-    // bd_foobot_update_db_device( $data );
+    // bd_foobot_add_db_devices( $data );
     
     echo '<pre><code>';
     var_dump( $data );
