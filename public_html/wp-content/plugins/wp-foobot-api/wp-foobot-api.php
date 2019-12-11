@@ -22,6 +22,8 @@
 	include( $path . 'includes/shortcodes.php');
 	include( $path . 'includes/sensors.php');
 	include( $path . 'includes/api.php');
+
+	// Misc
 	include( $path . 'includes/helpers.php');
 
 	// Tests 

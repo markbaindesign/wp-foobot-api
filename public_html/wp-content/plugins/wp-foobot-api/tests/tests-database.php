@@ -7,6 +7,7 @@
 function bdf_sc_test_fetch_api_device( $atts )
 {
   // [foobot-get-data-test device="BainBot"]
+  error_log("FUNCTION: bdf_sc_test_fetch_api_device", 0);
 
   $device_data = shortcode_atts( array(
       'device' => '',

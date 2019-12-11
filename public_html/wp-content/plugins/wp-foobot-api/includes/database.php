@@ -203,6 +203,8 @@ function bd_foobot_get_current_devices(){
 // Add device data to database
 function bd_foobot_update_db_device( $device_api_data ){
 
+   error_log("FUNCTION: bd_foobot_update_db_device", 0);
+
    global $wpdb;
    // Turn on errors display
    //$wpdb->show_errors();
@@ -259,7 +261,7 @@ function bd_foobot_update_db_device( $device_api_data ){
          )
       );
 
-      error_log("EVENT: Device data inserted in table", 0);
+      error_log("EVENT: Device data inserted in table for " . $uuid, 0);
 
       // Show error if any
       //$wpdb->print_error();

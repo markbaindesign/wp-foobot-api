@@ -13,6 +13,11 @@ function bd_foobot_shortcode_show_data( $atts )
 {
   // e.g. [foobot-show-data device="BainBot"]
 
+  // Debug
+  error_log("SHORTCODE: [foobot-show-data]", 0);
+  error_log("FUNCTION: bd_foobot_shortcode_show_data", 0);
+
+
   // Get attributes from shortcode
   $device_data = shortcode_atts( array(
       'device' => '',
