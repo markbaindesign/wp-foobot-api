@@ -28,7 +28,7 @@ function bd_foobot_show_sensors( $device_name )
   // Output sensor data
   $content = '<ul class="sensors">';
   $content.= '<li class="sensor sensor--tmp"><span class="sensor__label">Temperature</span><span class="sensor__data">' . $data['datapointTmp'] . '</span><span class="sensor__unit">' . $data['unitTmp'] . '</span></li>' ;
-  $content.= '<li class="sensor sensor--pm"><span class="sensor__label">PM</span><span class="sensor__data">' . $data['datapointPm'] . '</span><span class="sensor__unit">' . $data['unitPm'] . '</span></li>' ;
+  $content.= '<li class="sensor sensor--pm"><span class="sensor__label">PM</span><span class="sensor__data">' . $data['datapointPm'] . '</span><span class="sensor__unit">µg/m3</span></li>' ;
   $content.= '<li class="sensor sensor--co2"><span class="sensor__label">Co2</span><span class="sensor__data">' . $data['datapointCo2'] . '</span><span class="sensor__unit">' . $data['unitCo2'] . '</span></li>' ;
   $content.= '<li class="sensor sensor--voc"><span class="sensor__label">VOC</span><span class="sensor__data">' . $data['datapointVoc'] . '</span><span class="sensor__unit">' . $data['unitVoc'] . '</span></li>' ;
   $content.= '<li class="sensor sensor--hum"><span class="sensor__label">Humidity</span><span class="sensor__data">' . $data['datapointHum'] . '</span><span class="sensor__unit">' . $data['unitHum'] . '</span></li>' ;
