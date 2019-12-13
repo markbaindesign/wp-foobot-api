@@ -1,9 +1,11 @@
 .sensors {
+    font-family: sans-serif;
+    font-size: 16px;
     padding: 0;
     margin: 0;
     list-style-type: none;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 10px;
 }
 .sensors li span{
@@ -12,14 +14,14 @@
 .sensor {
     background: rgba(0,0,0,0.05);
     border-radius: 5px;
-    padding: 1rem;
+    padding: 1em;
     text-align: center;
 }
 .sensor .sensor__label {
-    font-size: 1rem;
+    font-size: 1em;
     opacity: 0.8;
 }
 .sensor .sensor__data {
-    font-size: 5rem;
+    font-size: 5em;
     font-weight: bold;
 }
