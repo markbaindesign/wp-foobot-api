@@ -128,7 +128,7 @@ function bd_foobot_call_api_trans_sensors( $uuid )
 
    // If an API call has been made within the last 5 mins, 
    // return.
-   if (1 == get_transient('foobot-api-data-updated')) {
+   if (1 == get_transient('foobot-api-data-updated-' . $uuid )) {
       // Debug
       error_log("No Foobot Sensor API call made at this time.", 0);
 
@@ -142,11 +142,11 @@ function bd_foobot_call_api_trans_sensors( $uuid )
       return false; // Bail early
    }
 
-   // Transient is set for 5 mins
-   set_transient('foobot-api-data-updated', 1, (60 * 5));
+   // Transient is set for 10 mins
+   set_transient('foobot-api-data-updated-' . $uuid, 1, (60 * 10));
 
    // Debug
-   error_log("Foobot sensor data has been updated! Next update > 5 mins.", 0);
+   error_log("Foobot sensor data has been updated! Next update > 10 mins.", 0);
 
    return $data;
 }
