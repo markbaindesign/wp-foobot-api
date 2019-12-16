@@ -25,14 +25,23 @@ function bd_foobot_show_sensors( $device_name )
   $now = time();
   $data_age = $now - $data['timestamp'];
 
+  // Pretty up the data
+  $Tmp_data = round( $data['datapointTmp'], 1 );
+  $Pm_data = round( $data['datapointPm'], 1 );
+  $Co2_data = round( $data['datapointCo2'], 1 );
+  $Voc_data = round( $data['datapointVoc'], 1 );
+  $Hum_data = round( $data['datapointHum'], 1 );
+  $All_data = round( $data['datapointAllpollu'], 1 );
+
+
   // Output sensor data
   $content = '<div class="foobot-data"><ul class="sensors">';
-  $content.= '<li class="sensor sensor--tmp"><span class="sensor__label">Temperature</span><span class="sensor__data">' . $data['datapointTmp'] . '</span><span class="sensor__unit">' . $data['unitTmp'] . '</span></li>' ;
-  $content.= '<li class="sensor sensor--pm"><span class="sensor__label">PM</span><span class="sensor__data">' . $data['datapointPm'] . '</span><span class="sensor__unit">µg/m3</span></li>' ;
-  $content.= '<li class="sensor sensor--co2"><span class="sensor__label">Co2</span><span class="sensor__data">' . $data['datapointCo2'] . '</span><span class="sensor__unit">' . $data['unitCo2'] . '</span></li>' ;
-  $content.= '<li class="sensor sensor--voc"><span class="sensor__label">VOC</span><span class="sensor__data">' . $data['datapointVoc'] . '</span><span class="sensor__unit">' . $data['unitVoc'] . '</span></li>' ;
-  $content.= '<li class="sensor sensor--hum"><span class="sensor__label">Humidity</span><span class="sensor__data">' . $data['datapointHum'] . '</span><span class="sensor__unit">' . $data['unitHum'] . '</span></li>' ;
-  $content.= '<li class="sensor sensor--all"><span class="sensor__label">All</span><span class="sensor__data">' . $data['datapointAllpollu'] . '</span><span class="sensor__unit">' . $data['unitAllpollu'] . '</span></li>' ;
+  $content.= '<li class="sensor sensor--tmp"><span class="sensor__label">Temperature</span><span class="sensor__data">' . $Tmp_data . '</span><span class="sensor__unit">' . $data['unitTmp'] . '</span></li>' ;
+  $content.= '<li class="sensor sensor--pm"><span class="sensor__label">PM</span><span class="sensor__data">' . $Pm_data . '</span><span class="sensor__unit">µg/m3</span></li>' ;
+  $content.= '<li class="sensor sensor--co2"><span class="sensor__label">Co2</span><span class="sensor__data">' . $Co2_data . '</span><span class="sensor__unit">' . $data['unitCo2'] . '</span></li>' ;
+  $content.= '<li class="sensor sensor--voc"><span class="sensor__label">VOC</span><span class="sensor__data">' . $Voc_data . '</span><span class="sensor__unit">' . $data['unitVoc'] . '</span></li>' ;
+  $content.= '<li class="sensor sensor--hum"><span class="sensor__label">Humidity</span><span class="sensor__data">' . $Hum_data . '</span><span class="sensor__unit">' . $data['unitHum'] . '</span></li>' ;
+  $content.= '<li class="sensor sensor--all"><span class="sensor__label">All</span><span class="sensor__data">' . $All_data . '</span><span class="sensor__unit">' . $data['unitAllpollu'] . '</span></li>' ;
   $content.= '</ul>';
   $content.= '<div class="sensor__data-age">Data updated ';
   $content.= $data_age;
