@@ -1,12 +1,18 @@
-.sensors {
+.foobot-data {
     font-family: sans-serif;
     font-size: 16px;
+    color: #485665;
+}
+
+.sensors {
+
     padding: 0;
     margin: 0;
     list-style-type: none;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 10px;
+
 }
 .sensors li span{
     display: block;
@@ -16,12 +22,33 @@
     border-radius: 5px;
     padding: 1em;
     text-align: center;
+    display: flex;
+    justify-items: start;
+    flex-direction: column;
+    overflow: hidden;
+}
+.sensor .sensor__label,
+.sensor .sensor__unit,
+.sensor__data-age {
+    font-size: 0.7em;
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 .sensor .sensor__label {
-    font-size: 1em;
-    opacity: 0.8;
+    text-align: left;
+}
+.sensor .sensor__unit {
+    text-align: right;
 }
 .sensor .sensor__data {
-    font-size: 5em;
+    font-size: 4em;
     font-weight: bold;
+}
+.sensor__data-age {
+    color: #485665;
+    text-align: right;
+}
+.sensor__data-age .s {
+    text-transform: lowercase;
 }

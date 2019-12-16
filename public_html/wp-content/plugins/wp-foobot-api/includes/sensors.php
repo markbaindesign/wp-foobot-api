@@ -26,7 +26,7 @@ function bd_foobot_show_sensors( $device_name )
   $data_age = $now - $data['timestamp'];
 
   // Output sensor data
-  $content = '<ul class="sensors">';
+  $content = '<div class="foobot-data"><ul class="sensors">';
   $content.= '<li class="sensor sensor--tmp"><span class="sensor__label">Temperature</span><span class="sensor__data">' . $data['datapointTmp'] . '</span><span class="sensor__unit">' . $data['unitTmp'] . '</span></li>' ;
   $content.= '<li class="sensor sensor--pm"><span class="sensor__label">PM</span><span class="sensor__data">' . $data['datapointPm'] . '</span><span class="sensor__unit">µg/m3</span></li>' ;
   $content.= '<li class="sensor sensor--co2"><span class="sensor__label">Co2</span><span class="sensor__data">' . $data['datapointCo2'] . '</span><span class="sensor__unit">' . $data['unitCo2'] . '</span></li>' ;
@@ -36,7 +36,7 @@ function bd_foobot_show_sensors( $device_name )
   $content.= '</ul>';
   $content.= '<div class="sensor__data-age">Data updated ';
   $content.= $data_age;
-  $content.= 's ago</div">';
+  $content.= '<span class="s">s</span> ago</div"></div>';
 
   return $content;
 
