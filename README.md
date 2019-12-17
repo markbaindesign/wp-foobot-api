@@ -16,7 +16,6 @@ Add the following to your VVV `config.yml`
       - wp-foobot-api.test
     custom:
       delete_default_plugins: true
-      install_test_content: true
       install_plugins:
         - transients-manager
         - query-monitor

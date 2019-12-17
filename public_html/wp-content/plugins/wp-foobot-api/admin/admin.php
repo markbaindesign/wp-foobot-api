@@ -27,7 +27,7 @@ function baindesign_foobot_settings_init()
 
 	add_settings_section(
 		'baindesign-foobot-api-creds',						// Section ID
-		__('Foobot API Credentials', '_bd_foobot'),		// Section header
+		__('Foobot API Credentials', 'aq-data-foobot'),	// Section header
 		'baindesign_foobot_settings_section_callback',	// Callback
 		'baindesignFoobot' 										// Add section to 
 																		// options group
@@ -36,7 +36,7 @@ function baindesign_foobot_settings_init()
 	// API Key
 	add_settings_field(
 		'baindesign_foobot_api_key',						// ID
-		__('API Key', '_bd_foobot'),						// Label
+		__('API Key', 'aq-data-foobot'),					// Label
 		'baindesign_foobot_api_key_field_render',		// Function to display
 																	// inputs
 		'baindesignFoobot',									// Page to display on
@@ -46,7 +46,7 @@ function baindesign_foobot_settings_init()
 	// API username
 	add_settings_field(
 		'baindesign_foobot_api_user',						// ID
-		__('API User', '_bd_foobot'),						// Label
+		__('API User', 'aq-data-foobot'),				// Label
 		'baindesign_foobot_api_user_field_render',	// Function to
 																	// display inputs
 		'baindesignFoobot',									// Page to display on
@@ -58,7 +58,7 @@ function baindesign_foobot_api_user_field_render()
 {
 	$options = get_option( 'baindesign_foobot_api_settings' );
 	?>
-	<input type='email' name='baindesign_foobot_api_settings[baindesign_foobot_api_user]' placeholder='Your API email' value='<?php echo $options['baindesign_foobot_api_user']; ?>'>
+	<input type='email' name='baindesign_foobot_api_settings[baindesign_foobot_api_user]' placeholder='<?php _e("Your API email", 'aq-data-foobot');?>' value='<?php echo esc_html( $options['baindesign_foobot_api_user'] ); ?>'>
 <?php
 }
 
@@ -66,7 +66,7 @@ function baindesign_foobot_api_key_field_render()
 {
 	$options = get_option( 'baindesign_foobot_api_settings' );
 	?>
-	<textarea rows="7" cols="50" name='baindesign_foobot_api_settings[baindesign_foobot_api_key]' placeholder='Your API key'><?php echo $options['baindesign_foobot_api_key']; ?></textarea>
+	<textarea rows="7" cols="50" name='baindesign_foobot_api_settings[baindesign_foobot_api_key]' placeholder='<?php _e("Your API key", 'aq-data-foobot');?>'><?php echo esc_textarea( $options['baindesign_foobot_api_key'] ); ?></textarea>
 <?php
 }
 /**
@@ -74,7 +74,7 @@ function baindesign_foobot_api_key_field_render()
  */
 function baindesign_foobot_settings_section_callback()
 {
-	echo __('Add your Foobot API credentials below. An API key can be obtained at <a href="https://api.foobot.io/apidoc/index.html">api.foobot.io</a>.', '_bd_foobot');
+	_e('Add your Foobot API credentials below. An API key can be obtained at <a href="https://api.foobot.io/apidoc/index.html">api.foobot.io</a>.', 'aq-data-foobot');
 }
 
 /**
@@ -86,7 +86,7 @@ function baindesign_foobot_options_page() {
 	<div class="wrap">
 		<form action='options.php' method='post'>
 
-			<h1>Foobot API Admin Page</h1>
+			<h1><?php _e("Foobot API Admin Page", 'aq-data-foobot');?></h1>
 			<?php
 				settings_fields( 'baindesignFoobot' );
 				do_settings_sections( 'baindesignFoobot' );
