@@ -37,18 +37,20 @@ function baindesign_foobot_settings_init()
 	add_settings_field(
 		'baindesign_foobot_api_key',						// ID
 		__('API Key', '_bd_foobot'),						// Label
-		'baindesign_foobot_api_key_field_render',		// Function to display inputs
-		'baindesignFoobot',											// Page to display on
+		'baindesign_foobot_api_key_field_render',		// Function to display
+																	// inputs
+		'baindesignFoobot',									// Page to display on
 		'baindesign-foobot-api-creds'						// Section ID
 	);
 
 	// API username
 	add_settings_field(
-		'baindesign_foobot_api_user',					// ID
-		__('API User', '_bd_foobot'),					// Label
-		'baindesign_foobot_api_user_field_render',		// Function to display inputs
+		'baindesign_foobot_api_user',						// ID
+		__('API User', '_bd_foobot'),						// Label
+		'baindesign_foobot_api_user_field_render',	// Function to
+																	// display inputs
 		'baindesignFoobot',									// Page to display on
-		'baindesign-foobot-api-creds'					// Section ID
+		'baindesign-foobot-api-creds'						// Section ID
 	);
 }
 
