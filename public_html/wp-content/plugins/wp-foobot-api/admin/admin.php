@@ -4,30 +4,42 @@
  * Admin screens
  */
 
+add_action('admin_menu', 'baindesign_foobot_add_admin_menu');
 add_action('admin_init', 'baindesign_foobot_settings_init');
+
+function baindesign_foobot_add_admin_menu() {
+	add_options_page( 
+		'Foobot API Page', 
+		'Foobot API', 
+		'manage_options', 
+		'foobot-api-page', 
+		'baindesign_foobot_options_page'
+	);
+}
 
 function baindesign_foobot_settings_init()
 {
 	// Register
 	register_setting(
-		'discussion', 									// Existing options group
-		'baindesign_foobot_api_settings'				// Entry in options table
+		'baindesignFoobot', 							// New options group
+		'baindesign_foobot_api_settings'			// Entry in options table
 	);
 
 	add_settings_section(
-		'baindesign-foobot-api-creds',					// Section ID
+		'baindesign-foobot-api-creds',						// Section ID
 		__('Foobot API Credentials', '_bd_foobot'),		// Section header
 		'baindesign_foobot_settings_section_callback',	// Callback
-		'discussion' 									// Add section to Discussion
+		'baindesignFoobot' 										// Add section to 
+																		// options group
 	);
 
 	// API Key
 	add_settings_field(
-		'baindesign_foobot_api_key',					// ID
-		__('API Key', '_bd_foobot'),					// Label
+		'baindesign_foobot_api_key',						// ID
+		__('API Key', '_bd_foobot'),						// Label
 		'baindesign_foobot_api_key_field_render',		// Function to display inputs
-		'discussion',									// Page to display on
-		'baindesign-foobot-api-creds'					// Section ID
+		'baindesignFoobot',											// Page to display on
+		'baindesign-foobot-api-creds'						// Section ID
 	);
 
 	// API username
@@ -35,7 +47,7 @@ function baindesign_foobot_settings_init()
 		'baindesign_foobot_api_user',					// ID
 		__('API User', '_bd_foobot'),					// Label
 		'baindesign_foobot_api_user_field_render',		// Function to display inputs
-		'discussion',									// Page to display on
+		'baindesignFoobot',									// Page to display on
 		'baindesign-foobot-api-creds'					// Section ID
 	);
 }
@@ -60,5 +72,26 @@ function baindesign_foobot_api_key_field_render()
  */
 function baindesign_foobot_settings_section_callback()
 {
-	echo __('Add your Foobot API credentials below.', '_bd_foobot');
+	echo __('Add your Foobot API credentials below. An API key can be obtained at <a href="https://api.foobot.io/apidoc/index.html">api.foobot.io</a>.', '_bd_foobot');
+}
+
+/**
+ * Render the options page form
+ */
+
+function baindesign_foobot_options_page() {
+	?>
+	<div class="wrap">
+		<form action='options.php' method='post'>
+
+			<h1>Foobot API Admin Page</h1>
+			<?php
+				settings_fields( 'baindesignFoobot' );
+				do_settings_sections( 'baindesignFoobot' );
+				submit_button();
+			?>
+
+		</form>
+	</div>
+	<?php
 }
