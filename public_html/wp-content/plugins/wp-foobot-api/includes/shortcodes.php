@@ -62,36 +62,6 @@ function bd_foobot_show_latest_sensor_data()
 }
 add_shortcode('foobot_show_latest_data', 'bd_foobot_show_latest_sensor_data');
 
-function bd_foobot_show_device_data()
-{
-   
-   $device = bd_get_foobot_device();
-   ob_start();
-	echo '<pre><code>';
-	var_dump( $device );
-	echo '</code></pre>';
-	$content =  ob_get_contents();
-	ob_clean();
-	return $content;
-}
-// add_shortcode('foobot_show_device', 'bd_foobot_show_device_data');
-
-/**
- * Show Foobot device data
- */
-function bd_foobot_show_data_from_device()
-{   
-   $device = bd_get_foobot_data();
-   ob_start();
-	echo '<pre><code>';
-	var_dump( $device );
-	echo '</code></pre>';
-	$content =  ob_get_contents();
-	ob_clean();
-	return $content;
-}
-// add_shortcode('foobot_device_data', 'bd_foobot_show_data_from_device');
-
 /**
  * Show temp now
  */
