@@ -5,14 +5,9 @@
 }
 
 .sensors {
-
     padding: 0;
     margin: 0;
     list-style-type: none;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-
 }
 .sensors li span{
     display: block;
@@ -21,6 +16,7 @@
     background: rgba(0,0,0,0.05);
     border-radius: 5px;
     padding: 1em;
+    margin-bottom: 10px;
     text-align: center;
     display: flex;
     justify-items: start;
@@ -42,7 +38,7 @@
     text-align: right;
 }
 .sensor .sensor__data {
-    font-size: 4em;
+    font-size: 2em;
     font-weight: bold;
 }
 .sensor__data-age {
@@ -51,4 +47,27 @@
 }
 .sensor__data-age .s {
     text-transform: lowercase;
+}
+@media (min-width: 250px) {
+    .sensors {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+    .sensor {
+        margin-bottom: 0;
+    }
+    .sensor .sensor__data {
+        font-size: 2em;
+    }
+}
+@media (min-width: 450px) {
+    .sensor .sensor__data {
+        font-size: 4em;
+    }
+}
+@media (min-width: 750px) {
+    .sensors {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
 }
