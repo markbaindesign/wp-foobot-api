@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: Air Quality Data from Foobot
- * Plugin URI: https://bain.design/wp-foobot-api
+ * Plugin URI: https://foobot.bain.design
  * Description: Call your air quality data via the Foobot API.
  * Author: Bain Design
  * Version: 1.0.0

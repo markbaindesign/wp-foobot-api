@@ -3,6 +3,8 @@ _Version 1.0.0_
 
 ### by Bain Design
 
+Demo site: https://foobot.bain.design
+
 ## VVV Setup
 
 Add the following to your VVV `config.yml` 
@@ -29,7 +31,8 @@ Add the following to your VVV `config.yml`
 ## WordPress Setup
 
 * Log into WordPress and activate the plugin. 
-* Once the plugin is activated, go to `Settings > Discussion` and add your Foobot API key.
+* Once the plugin is activated, go to `Settings > Discussion` and add your Foobot API username and API key.
+* Use the shortcode `[foobot-show-data device="foo"]`, where "foo" is your device name, to show the world your AQ data!
 
 ## Testing
 
