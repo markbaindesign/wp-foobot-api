@@ -42,6 +42,7 @@ function baindesign_foobot_plugin_init()
 
 	function bdf_enqueue_styles() {
 		wp_enqueue_style( 'bdf-style', plugins_url( 'assets/style.css', __FILE__ ), false );
+		wp_enqueue_style( 'bdf-fonts', 'https://fonts.googleapis.com/css?family=Share+Tech+Mono&display=swap', false );
 	}
 	add_action('wp_enqueue_scripts','bdf_enqueue_styles');
 
