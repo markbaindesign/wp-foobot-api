@@ -43,7 +43,7 @@ function bd_foobot_show_sensors( $device_name )
   $content.= '<li class="sensor sensor--hum"><span class="sensor__label">' . __('Humidity', 'aq-data-foobot') . '</span><span class="sensor__data">' . $Hum_data . '</span><span class="sensor__unit">' . $data['unitHum'] . '</span></li>' ;
   $content.= '<li class="sensor sensor--all"><span class="sensor__label">' . __('All', 'aq-data-foobot') . '</span><span class="sensor__data">' . $All_data . '</span><span class="sensor__unit">' . $data['unitAllpollu'] . '</span></li>' ;
   $content.= '</ul>';
-  $content.= sprintf( __('<div class="sensor__data-age">Data updated %d<span class="s">s</span> ago</div>', 'aq-data-foobot'), $data_age );
+  $content.= sprintf( __('<div class="sensor__data-age">Data from %s updated %d<span class="s">s</span> ago</div>', 'aq-data-foobot'), $device_name, $data_age );
   $content.= '</div>';
 
   return $content;

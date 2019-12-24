@@ -1,4 +1,7 @@
-.foobot-data {
+.foobot-data,
+.foobot-data ul,
+.foobot-data li,
+.foobot-data p {
     font-family: 'Share Tech Mono', monospace;
     font-size: 16px;
     color: #485665;
@@ -9,14 +12,17 @@
     margin: 0;
     list-style-type: none;
 }
+.sensors li {
+    margin: 0;
+}
 .sensors li span{
     display: block;
 }
-.sensor {
+li.sensor {
     background: rgba(0,0,0,0.05);
     border-radius: 5px;
     padding: 1em;
-    margin-bottom: 10px;
+    margin: 0 0 10px 0;
     text-align: center;
     display: flex;
     justify-items: start;
@@ -63,7 +69,7 @@
 }
 @media (min-width: 450px) {
     .sensor .sensor__data {
-        font-size: 4em;
+        font-size: 3em;
     }
 }
 @media (min-width: 750px) {
