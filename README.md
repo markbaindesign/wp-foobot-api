@@ -43,6 +43,7 @@ wp db tables --all-tables
 wp db query 'SELECT * FROM wp_bd_foobot_device_data'
 wp db query 'SELECT * FROM wp_bd_foobot_device_data ORDER BY id DESC LIMIT 10'
 wp db query 'SELECT * FROM wp_bd_foobot_sensor_data'
+wp option get baindesign_foobot_api_settings
 ```
 
 ### Changes to table structure
