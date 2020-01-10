@@ -10,10 +10,10 @@ add_action('admin_init', 'baindesign_foobot_settings_init');
 function baindesign_foobot_add_admin_menu()
 {
 	add_options_page(
-		'Foobot API Page',
+		'Air Quality Data from Foobot',
 		'Foobot API',
 		'manage_options',
-		'foobot-api-page',
+		'aq-data-foobot',
 		'baindesign_foobot_options_page'
 	);
 }
@@ -23,7 +23,7 @@ function baindesign_settings_link($links)
 	// Build and escape the URL.
 	$url = esc_url(add_query_arg(
 		'page',
-		'foobot-api-page',
+		'aq-data-foobot',
 		get_admin_url() . 'options-general.php'
 	));
 	// Create the link.
@@ -35,7 +35,7 @@ function baindesign_settings_link($links)
 	);
 	return $links;
 }
-add_filter('plugin_action_links_wp-foobot-api/wp-foobot-api.php', 'baindesign_settings_link');
+add_filter('plugin_action_links_aq-data-foobot/aq-data-foobot.php', 'baindesign_settings_link');
 
 function baindesign_foobot_settings_init()
 {
@@ -107,7 +107,7 @@ function baindesign_foobot_options_page()
 	<div class="wrap">
 		<form action='options.php' method='post'>
 
-			<h1><?php _e("Foobot API Admin Page", 'aq-data-foobot'); ?></h1>
+			<h1><?php _e("Air Quality Data from Foobot", 'aq-data-foobot'); ?></h1>
 			<?php
 			settings_fields('baindesignFoobot');
 			do_settings_sections('baindesignFoobot');
