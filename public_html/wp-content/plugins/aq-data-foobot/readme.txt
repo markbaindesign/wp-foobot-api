@@ -32,9 +32,18 @@ No, but you do need access to one via the Foobot API in order to display data on
 
 = Can you sell me a Foobot Air Quality Monitor? =
 
-Sorry, no. I need both of mine for testing purposes. 
+Sorry, no. I need both of mine for testing purposes.
+
+== Screenshots ==
+
+1. The data table.
 
 == Changelog ==
+
+= 1.0 =
+* Initial plugin version
+
+== Upgrade Notice ==
 
 = 1.0 =
 * Initial plugin version
