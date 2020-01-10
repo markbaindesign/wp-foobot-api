@@ -26,12 +26,6 @@
 	// Misc
 	include( $path . 'includes/helpers.php');
 
-	// Tests 
-	include( $path . 'tests/tests-api.php');
-	include( $path . 'tests/tests-data.php');
-	include( $path . 'tests/tests-database.php');
-	include( $path . 'tests/tests-transients.php');
-
 /**
  * Plugin Init
  * ================
