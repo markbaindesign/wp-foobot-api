@@ -1,0 +1,79 @@
+.foobot-data,
+.foobot-data ul,
+.foobot-data li,
+.foobot-data p {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 16px;
+    color: #485665;
+}
+
+.sensors {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+.sensors li {
+    margin: 0;
+}
+.sensors li span{
+    display: block;
+}
+li.sensor {
+    background: rgba(0,0,0,0.05);
+    border-radius: 5px;
+    padding: 1em;
+    margin: 0 0 10px 0;
+    text-align: center;
+    display: flex;
+    justify-items: start;
+    flex-direction: column;
+    overflow: hidden;
+}
+.sensor .sensor__label,
+.sensor .sensor__unit,
+.sensor__data-age {
+    font-size: 0.7em;
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.sensor .sensor__label {
+    text-align: left;
+}
+.sensor .sensor__unit {
+    text-align: right;
+}
+.sensor .sensor__data {
+    font-size: 2em;
+    font-weight: bold;
+}
+.sensor__data-age {
+    color: #485665;
+    text-align: right;
+}
+.sensor__data-age .s {
+    text-transform: lowercase;
+}
+@media (min-width: 250px) {
+    .sensors {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+    .sensor {
+        margin-bottom: 0;
+    }
+    .sensor .sensor__data {
+        font-size: 2em;
+    }
+}
+@media (min-width: 450px) {
+    .sensor .sensor__data {
+        font-size: 3em;
+    }
+}
+@media (min-width: 750px) {
+    .sensors {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}

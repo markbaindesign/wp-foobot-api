@@ -56,7 +56,7 @@ public_html/wp-content/*
 # Ignore everything in the "plugins" directory, except the plugins you
 # specify (see the commented-out examples for hints on how to do this.)
 public_html/wp-content/plugins/*
-!public_html/wp-content/plugins/wp-foobot-api/
+!public_html/wp-content/plugins/aq-data-foobot/
 
 # Ignore everything in the "mu-plugins" directory, except the mu-plugins you
 # specify (see the commented-out examples for hints on how to do this.)
