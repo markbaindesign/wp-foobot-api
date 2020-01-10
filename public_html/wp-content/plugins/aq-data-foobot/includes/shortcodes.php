@@ -14,8 +14,8 @@ function bd_foobot_shortcode_show_sensors( $atts )
   // e.g. [foobot-show-data device="BainBot"]
 
   // Debug
-  error_log("== SHORTCODE: Start [foobot-show-data] ==", 0);
-  error_log("FUNCTION: bd_foobot_shortcode_show_sensors", 0);
+  // error_log("== SHORTCODE: Start [foobot-show-data] ==", 0);
+  // error_log("FUNCTION: bd_foobot_shortcode_show_sensors", 0);
 
 
   // Get attributes from shortcode
@@ -37,7 +37,7 @@ function bd_foobot_shortcode_show_sensors( $atts )
   ob_clean();
 
   // Debug
-  error_log("== SHORTCODE: End [foobot-show-data] ==", 0);
+  // error_log("== SHORTCODE: End [foobot-show-data] ==", 0);
 
   return $content;
 

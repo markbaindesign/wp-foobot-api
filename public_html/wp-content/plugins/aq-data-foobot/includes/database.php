@@ -220,7 +220,7 @@ function bd_foobot_fetch_db_devices()
 function bd_foobot_add_db_devices($device_api_data)
 {
 
-   error_log("FUNCTION: bd_foobot_add_db_devices", 0);
+   // error_log("FUNCTION: bd_foobot_add_db_devices", 0);
 
    global $wpdb;
    // Turn on errors display
@@ -278,7 +278,7 @@ function bd_foobot_add_db_devices($device_api_data)
          )
       );
 
-      error_log("EVENT: Device data inserted in table for " . $uuid, 0);
+      // error_log("EVENT: Device data inserted in table for " . $uuid, 0);
 
       // Show error if any
       //$wpdb->print_error();
@@ -354,7 +354,7 @@ function bd_foobot_add_db_sensors($data)
       )
    );
 
-   error_log("EVENT | Database: New sensor data added", 0);
+   // error_log("EVENT | Database: New sensor data added", 0);
 
    // DEBUG
    // $wpdb->print_error(); // Show error if any

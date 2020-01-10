@@ -80,7 +80,7 @@ function bd_foobot_call_api_sensors( $uuid )
    $api_data = json_decode( $body, true); // Output array
 
    // debug
-   error_log("FUNCTION: bd_foobot_call_api_sensors", 0);
+   // error_log("FUNCTION: bd_foobot_call_api_sensors", 0);
    return $api_data;
 }
 
@@ -102,7 +102,7 @@ function bd_foobot_call_api_trans_devices()
    // return.
    if (1 == get_transient('foobot-api-device-updated')) {
       // Debug
-      error_log("NOTICE: No Foobot Device API call made at this time.", 0);
+      // error_log("NOTICE: No Foobot Device API call made at this time.", 0);
       return;
    }
 
@@ -113,7 +113,7 @@ function bd_foobot_call_api_trans_devices()
    set_transient('foobot-api-device-updated', 1, (60 * 60 * 24));
 
    // Debug
-   error_log("NOTICE: Foobot sensor data has been updated! Next update > 24 hours.", 0);
+   // error_log("NOTICE: Foobot sensor data has been updated! Next update > 24 hours.", 0);
 
    return $device_data;
 }
@@ -124,13 +124,13 @@ function bd_foobot_call_api_trans_sensors( $uuid )
    global $wpdb;
 
    // debug
-   error_log("FUNCTION: bd_foobot_call_api_trans_sensors", 0);
+   // error_log("FUNCTION: bd_foobot_call_api_trans_sensors", 0);
 
    // If an API call has been made within the last 5 mins, 
    // return.
    if (1 == get_transient('foobot-api-data-updated-' . $uuid )) {
       // Debug
-      error_log("No Foobot Sensor API call made at this time.", 0);
+      // error_log("No Foobot Sensor API call made at this time.", 0);
 
       return;
    }
@@ -138,7 +138,7 @@ function bd_foobot_call_api_trans_sensors( $uuid )
    // Get the device data
    $data = bd_foobot_call_api_sensors( $uuid );
    if (is_wp_error($data)) {
-      error_log("Error: No data from Foobot sensor API ", 0);
+      // error_log("Error: No data from Foobot sensor API ", 0);
       return false; // Bail early
    }
 
@@ -146,7 +146,7 @@ function bd_foobot_call_api_trans_sensors( $uuid )
    set_transient('foobot-api-data-updated-' . $uuid, 1, (60 * 10));
 
    // Debug
-   error_log("Foobot sensor data has been updated! Next update > 10 mins.", 0);
+   // error_log("Foobot sensor data has been updated! Next update > 10 mins.", 0);
 
    return $data;
 }
