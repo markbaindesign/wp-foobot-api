@@ -1,4 +1,5 @@
-# Foobot API WordPress Plugin
+# Air Quality Data from Foobot WordPress Plugin
+
 _Version 1.0.0_
 
 ### by Bain Design
