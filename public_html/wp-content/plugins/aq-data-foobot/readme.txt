@@ -34,6 +34,10 @@ No, but you do need access to one via the Foobot API in order to display data on
 
 Sorry, no. I need both of mine for testing purposes.
 
+= ? =
+
+Sorry, no. I need both of mine for testing purposes.
+
 == Screenshots ==
 
 1. The data table.
@@ -47,3 +51,7 @@ Sorry, no. I need both of mine for testing purposes.
 
 = 1.0 =
 * Initial plugin version
+
+== Credits ==
+
+Icon made by [Vitaly Gorbachev](https://www.flaticon.com/authors/vitaly-gorbachev) from [www.flaticon.com](https://www.flaticon.com)
