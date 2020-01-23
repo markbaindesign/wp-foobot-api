@@ -34,10 +34,6 @@ No, but you do need access to one via the Foobot API in order to display data on
 
 Sorry, no. I need both of mine for testing purposes.
 
-= ? =
-
-Sorry, no. I need both of mine for testing purposes.
-
 == Screenshots ==
 
 1. The data table.
