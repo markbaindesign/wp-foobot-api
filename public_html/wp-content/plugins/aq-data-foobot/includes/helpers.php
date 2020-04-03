@@ -11,13 +11,11 @@
 function bd_get_foobot_device_uuid( $device_name )
 {
    $devices = bd_foobot_fetch_db_devices();
-
    // Get array columns
    $col = array_column( $devices, 'name' );
    
    // Get the array key
-   $name = $device_name . ' ';   // API returns device names
-                                 // with a trailing space.
+   $name = $device_name;
 
    $key = array_search( $name, $col );
    if( $key===false ){
