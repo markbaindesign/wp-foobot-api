@@ -3,6 +3,7 @@
 # =========================
 .sass-cache
 bin
+backup
 export
 import
 node_modules
