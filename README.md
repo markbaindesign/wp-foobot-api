@@ -1,6 +1,6 @@
 # Air Quality Data from Foobot WordPress Plugin
 
-_Version 1.1.0_
+_Version 1.2.1_
 
 ### by Bain Design
 
@@ -14,7 +14,7 @@ If you just want to install the plugin and display your air quality data on your
 * Locate the plugin file and upload to your website Plugins folder.
 * Log into WordPress and activate the plugin. 
 * Once the plugin is activated, go to `Settings > Foobot API` and add your Foobot API username and API key ([Get your Foobot API key here](https://api.foobot.io/apidoc/index.html "Foobot API")).
-* Use the shortcode `[foobot-show-data device="foo"]`, where `foo` is your device name, to show the world your AQ data!
+* Use the shortcode `[foobot-show-data device="foo"]`, where `foo` is your device name, to show the world your air quality data!
 
 # Development
 
