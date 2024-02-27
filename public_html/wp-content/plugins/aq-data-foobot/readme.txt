@@ -2,7 +2,7 @@
 Contributors: markcbain
 Donate link: https://bain.design/
 Tags: air quality, foobot, pollution, air, monitor, particles, air, measure, CO2, humidity, temperature, API
-Requires at least: 4.6
+Requires at least: 5.3
 Tested up to: 6.4
 Stable tag: 1.2.0
 Requires PHP: 5.2.4

@@ -47,6 +47,8 @@ if(!function_exists('bd324_get_local_datetime')):
       * 
       * Timezone of Foobot timestamp?  UTC?
       *
+      * Requires WordPress >= 5.3
+      *
       * See https://developer.wordpress.org/reference/functions/get_date_from_gmt/
       */
       
