@@ -41,10 +41,9 @@ Sorry, no. I need both of mine for testing purposes.
 == Changelog ==
 
 = 1.2 =
-* Update Test up to version
-
-= 1.0 =
-* Initial plugin version
+* Display data timestamp in WordPress format
+* Use system fonts
+* Force temp to show decimals
 
 = 1.1 =
 * Add credits and assets for plugin repo
@@ -56,6 +55,11 @@ Sorry, no. I need both of mine for testing purposes.
 
 = 1.0 =
 * Initial plugin version
+
+= 1.2 =
+* Display data timestamp in WordPress format
+* Use system fonts
+* Force temp to show decimals
 
 == Credits ==
 
