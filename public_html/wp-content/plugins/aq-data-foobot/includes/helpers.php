@@ -20,13 +20,9 @@ function bd_get_foobot_device_uuid( $device_name )
    $key = array_search( $name, $col );
    if( $key===false ){
       return 'error_device_not_found';
-      // error_log('Device "' . $device_name . '" not found', 0);
    } else {
       $uuid = $devices[$key]["uuid"];   
       return $uuid;
-
-      // debug
-      // error_log("FUNCTION: bd_get_foobot_device_uuid (" .$device_name. ")", 0);
    }
 
 
