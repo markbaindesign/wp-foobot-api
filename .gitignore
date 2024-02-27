@@ -3,11 +3,13 @@
 # =========================
 .sass-cache
 bin
+backup
 export
 import
 node_modules
 release
 releases
+svn
 
 # =========================
 # VVV provisioning

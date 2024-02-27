@@ -1,10 +1,10 @@
 === Air Quality Data from Foobot ===
 Contributors: markcbain
 Donate link: https://bain.design/
-Tags: data, air quality, api, foobot, pollution, monitor
-Requires at least: 4.6
-Tested up to: 5.3.2
-Stable tag: 1.1.0
+Tags: air quality, foobot, pollution, air, monitor, particles, air, measure, CO2, humidity, temperature, API
+Requires at least: 5.3
+Tested up to: 6.4
+Stable tag: 1.2.0
 Requires PHP: 5.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -13,7 +13,7 @@ Display the Air Quality Data from multiple Foobot devices via a shortcode.
 
 == Description ==
 
-This plugin lets you show the data from one or more Foobot Air Quality Monitor devices on your WordPress site in a simple table. Apart from a Foobot device, you will need to [request an API key](https://api.foobot.io/apidoc/index.html "request a Foobot API key") from the Foobot API website. 
+This plugin lets you show the data from one or more [Foobot Air Quality Monitors](hhttps://foobot.io/ "Visit the Foobot website") on your WordPress site.Apart from a Foobot device, you will need to [request an API key](https://api.foobot.io/apidoc/index.html "request a Foobot API key") from the Foobot API website. 
 
 == Installation ==
 
@@ -40,6 +40,14 @@ Sorry, no. I need both of mine for testing purposes.
 
 == Changelog ==
 
+= 1.2 =
+* Display data timestamp in WordPress format
+* Use system fonts
+* Force temp to show decimals
+
+= 1.1 =
+* Add credits and assets for plugin repo
+
 = 1.0 =
 * Initial plugin version
 
@@ -47,3 +55,12 @@ Sorry, no. I need both of mine for testing purposes.
 
 = 1.0 =
 * Initial plugin version
+
+= 1.2 =
+* Display data timestamp in WordPress format
+* Use system fonts
+* Force temp to show decimals
+
+== Credits ==
+
+Icon made by [Vitaly Gorbachev](https://www.flaticon.com/authors/vitaly-gorbachev) from [www.flaticon.com](https://www.flaticon.com)
