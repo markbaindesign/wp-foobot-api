@@ -36,13 +36,13 @@ function bd_foobot_show_sensors( $device_name )
       $local_timestamp = bd324_get_local_datetime($utc_timestamp);
    }
 
-    // Pretty up the data
-    $Tmp_data = round( $data['datapointTmp'], 1 );
-    $Pm_data = round( $data['datapointPm'], 1 );
-    $Co2_data = round( $data['datapointCo2'], 1 );
-    $Voc_data = round( $data['datapointVoc'], 1 );
-    $Hum_data = round( $data['datapointHum'], 1 );
-    $All_data = round( $data['datapointAllpollu'], 1 );
+   // Pretty up the data
+   $Tmp_data =   number_format( $data['datapointTmp'],         1 );
+   $Pm_data =    round( $data['datapointPm'],                  0 );
+   $Co2_data =   round( $data['datapointCo2'],                 0 );
+   $Voc_data =   round( $data['datapointVoc'],                 0 );
+   $Hum_data =   round( $data['datapointHum'],                 1 );
+   $All_data =   round( $data['datapointAllpollu'],            0 );
 
 
     // Output sensor data
