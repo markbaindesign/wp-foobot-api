@@ -31,9 +31,10 @@ function bd_foobot_show_sensors( $device_name )
     // Remove one level from the array
     $data = $sensor_data[0];
 
-    // Data age
-    $now = time();
-    $data_age = $now - esc_html( $data['timestamp'] );
+   // Data time & date
+   $data_timestamp   = $data['timestamp'];
+   $data_timedate    = date('Y-m-d H:i:s', $data_timestamp);
+   error_log(print_r($data_timedate, true));
 
     // Pretty up the data
     $Tmp_data = round( $data['datapointTmp'], 1 );
@@ -53,7 +54,7 @@ function bd_foobot_show_sensors( $device_name )
     $content.= '<li class="sensor sensor--hum"><span class="sensor__label">' . __('Humidity', 'aq-data-foobot') . '</span><span class="sensor__data">' . $Hum_data . '</span><span class="sensor__unit">' . $data['unitHum'] . '</span></li>' ;
     $content.= '<li class="sensor sensor--all"><span class="sensor__label">' . __('All', 'aq-data-foobot') . '</span><span class="sensor__data">' . $All_data . '</span><span class="sensor__unit">' . $data['unitAllpollu'] . '</span></li>' ;
     $content.= '</ul>';
-    $content.= sprintf( __('<div class="sensor__data-age">Data from %s updated %d<span class="s">s</span> ago</div>', 'aq-data-foobot'), $device_name, $data_age );
+    // $content.= sprintf( __('<div class="sensor__data-age">Data from %s updated %d<span class="s">s</span> ago</div>', 'aq-data-foobot'), $device_name, $data_age );
     $content.= '</div>';
   } else {
     // Error message
