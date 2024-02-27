@@ -1,6 +1,6 @@
 # Air Quality Data from Foobot WordPress Plugin
 
-_Version 1.2.1_
+_Version 1.2.0_
 
 ### by Bain Design
 
