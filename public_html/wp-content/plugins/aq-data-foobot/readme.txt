@@ -1,17 +1,10 @@
 === Air Quality Data from Foobot ===
 Contributors: markcbain
 Donate link: https://bain.design/
-<<<<<<< Updated upstream
-Tags: data, air quality, api, foobot, pollution, monitor, co2, pm2.5, particle matter, humidity, temperature, voc
-Requires at least: 4.6
-Tested up to: 5.3.2
-Stable tag: 1.2.0
-=======
 Tags: air quality, foobot, pollution, air, monitor, particles, air, measure, CO2, humidity, temperature, API
 Requires at least: 4.6
 Tested up to: 6.4
 Stable tag: 1.2.1
->>>>>>> Stashed changes
 Requires PHP: 5.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
