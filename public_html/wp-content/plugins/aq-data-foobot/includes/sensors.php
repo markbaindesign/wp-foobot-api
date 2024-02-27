@@ -32,21 +32,11 @@ function bd_foobot_show_sensors( $device_name )
     $data = $sensor_data[0];
 
    // Data time & date
-
-   /**
-    * Get the date/time of last API call
-    * 
-    * Timezone of Foobot timestamp?  UTC?
-    *
-    * See https://developer.wordpress.org/reference/functions/get_date_from_gmt/
-    */
-   $utc_timestamp                = $data['timestamp'];
-   $date_format                  = get_option( 'date_format' );
-   $time_format                  = get_option( 'time_format' );
-   $output_format                = $date_format . ' ' . $time_format;
-   $utc_timestamp_converted      = date($output_format, $utc_timestamp);
-   $local_timestamp              = get_date_from_gmt( $utc_timestamp_converted, $output_format );
-   error_log(print_r($local_timestamp, true));
+   $utc_timestamp = '';
+   if(isset($data['timestamp'])){
+      $utc_timestamp = $data['timestamp'];
+      $local_timestamp = bd324_get_local_datetime($utc_timestamp);
+   }
 
     // Pretty up the data
     $Tmp_data = round( $data['datapointTmp'], 1 );
@@ -66,7 +56,12 @@ function bd_foobot_show_sensors( $device_name )
     $content.= '<li class="sensor sensor--hum"><span class="sensor__label">' . __('Humidity', 'aq-data-foobot') . '</span><span class="sensor__data">' . $Hum_data . '</span><span class="sensor__unit">' . $data['unitHum'] . '</span></li>' ;
     $content.= '<li class="sensor sensor--all"><span class="sensor__label">' . __('All', 'aq-data-foobot') . '</span><span class="sensor__data">' . $All_data . '</span><span class="sensor__unit">' . $data['unitAllpollu'] . '</span></li>' ;
     $content.= '</ul>';
-    $content.= sprintf( __('<div class="sensor__data-age">Data from <span class="device-name">%s</span> updated <span class="data-timestamp">%s</span></div>', 'aq-data-foobot'), $device_name, $local_timestamp );
+
+    // Show device name and timestamp
+   if ($utc_timestamp) {
+      $content.= sprintf( __('<div class="sensor__data-age">Data from <span class="device-name">%s</span> updated <span class="data-timestamp">%s</span></div>', 'aq-data-foobot'), $device_name, $local_timestamp );
+   }
+
     $content.= '</div>';
   } else {
     // Error message

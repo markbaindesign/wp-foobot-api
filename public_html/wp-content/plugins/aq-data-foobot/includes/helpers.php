@@ -31,3 +31,36 @@ function bd_get_foobot_device_uuid( $device_name )
 
 
 }
+
+/**
+ * Get the local timestamp
+ *
+ * Convert the UTC timestamp of the data to the 
+ * format in WordPress settings.
+ * 
+ * @param   $utc_timestamp       Data timestamp from API call
+ * @return  $output              Local timestamp
+ * 
+ */
+if(!function_exists('bd324_get_local_datetime')):
+   function bd324_get_local_datetime($utc_timestamp)
+   {
+
+      /**
+       * Get the date/time of last API call
+      * 
+      * Timezone of Foobot timestamp?  UTC?
+      *
+      * See https://developer.wordpress.org/reference/functions/get_date_from_gmt/
+      */
+      
+      /* Vars */
+      $output = '';
+      $date_format                  = get_option( 'date_format' );
+      $time_format                  = get_option( 'time_format' );
+      $output_format                = $date_format . ' ' . $time_format;
+      $utc_timestamp_converted      = date($output_format, $utc_timestamp);
+      $output                       = get_date_from_gmt( $utc_timestamp_converted, $output_format );
+      return $output;
+   }
+endif;
