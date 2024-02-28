@@ -135,7 +135,9 @@ function bd_foobot_fetch_db_sensors($uuid)
 {
 
    global $wpdb;
-   $wpdb->show_errors();
+
+   // DEBUG
+   // $wpdb->show_errors();
 
    // Vars
    $table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
@@ -148,8 +150,8 @@ function bd_foobot_fetch_db_sensors($uuid)
 
    return $data;
 
-   // Show error if any
-   $wpdb->print_error();
+   // DEBUG
+   // $wpdb->print_error();
 }
 
 // Fetch device data
@@ -157,7 +159,9 @@ function bd_foobot_fetch_db_devices()
 {
 
    global $wpdb;
-   $wpdb->show_errors();
+   
+   // DEBUG
+   // $wpdb->show_errors();
 
    // Vars
    $table_name = $wpdb->prefix . 'bd_foobot_device_data';
