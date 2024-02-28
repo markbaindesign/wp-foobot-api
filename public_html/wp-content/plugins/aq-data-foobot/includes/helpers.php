@@ -16,7 +16,6 @@ function bd_get_foobot_device_uuid( $device_name )
    }
 
    $devices = bd_foobot_fetch_db_devices();
-   error_log(print_r($devices, true));
    
    // Get array columns
    $col = array_column( $devices, 'name' );
