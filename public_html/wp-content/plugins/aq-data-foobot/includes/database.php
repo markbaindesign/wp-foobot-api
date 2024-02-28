@@ -130,10 +130,20 @@ function bd_foobot_fetch_latest_sensor_data()
 
    // Vars
    global $wpdb;
-   $table_name = BD0019__SENSOR_DB_TABLE;
+   $data          = array();
+   $table_name    = BD0019__SENSOR_DB_TABLE;
 
-   // $data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$table_name}` ORDER BY `id` DESC LIMIT 1", $sensor) );
-   $data = $wpdb->get_row("SELECT * FROM `{$table_name}` ORDER BY `id` DESC LIMIT 1", ARRAY_A);
+   // Build query
+   $query = $wpdb->prepare("
+      SELECT * 
+      FROM %i
+         ORDER BY 'id'
+         DESC LIMIT 1
+      ", $table_name,
+   );
+
+   // Now we query the db.
+   $data = $wpdb->get_row( $query, ARRAY_A );
 
    // DEBUG
    if (BD0019__DEBUG === 1){
@@ -162,14 +172,7 @@ function bd_foobot_fetch_db_sensors($uuid)
    bd_foobot_update_sensor_data($uuid);
 
    // Build query
-   $query = $wpdb->prepare("
-      SELECT * 
-      FROM %i
-         WHERE uuid = %s
-         ORDER BY 'id'
-         DESC LIMIT 1
-      ", $table_name, $uuid
-   );
+   $query = $wpdb->prepare("SELECT * FROM {$table_name} ORDER BY 'id' DESC LIMIT 1", $uuid);
 
    // Now we query the db.
    $data = $wpdb->get_results( $query, ARRAY_A );
@@ -313,26 +316,11 @@ function bd_foobot_add_db_devices($device_api_data)
    // Loop each device
    foreach ($device_api_data as $data) {
       $device_data = array();
-      //echo '<pre><code>';
-      //var_dump( $data );
-      //echo '</code></pre>';
 
       // Loop the device data
       foreach ($data as $key => $value) {
          $device_data[] = array($key => $value);
-         //echo '<pre><code>';
-         //var_dump( $key. ' ' .$value );
-         //echo '</code></pre>';
-
-         //echo '<h5>Device data in loop</h5>';
-         //echo '<pre><code>';
-         //var_dump( $device_data );
-         //echo '</code></pre>';
       }
-      //echo '<h5>Device data after loop</h5>';
-      //echo '<pre><code>';
-      //var_dump( $device_data );
-      //echo '</code></pre>';
 
       // vars
       $uuid    = $device_data[0]['uuid'];
@@ -340,9 +328,6 @@ function bd_foobot_add_db_devices($device_api_data)
       $mac     = $device_data[2]['mac'];
       $name    = $device_data[3]['name'];
 
-      //echo '<pre><code>';
-      //var_dump( $uuid );
-      //echo '</code></pre>';
 
       // Insert data into db table
       $wpdb->insert(
