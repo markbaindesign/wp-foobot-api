@@ -22,15 +22,29 @@ $bd_foobot_sensor_db_version = '1.4';
 // Get API key from the database
 function bd_foobot_get_api_key()
 {
-   $options = get_option('baindesign_foobot_api_settings');
-   return $options['baindesign_foobot_api_key'];
+   $options = NULL;
+   if (isset(get_option('baindesign_foobot_api_settings'))){
+      $options = get_option('baindesign_foobot_api_settings');
+   }
+   if ($options){
+      return $options['baindesign_foobot_api_key'];
+   } else {
+      return "API key not found";
+   }
 }
 
 // Get API username from the database
 function bd_foobot_get_api_user()
 {
-   $options = get_option('baindesign_foobot_api_settings');
-   return $options['baindesign_foobot_api_user'];
+   $options = NULL;
+   if (isset(get_option('baindesign_foobot_api_settings'))){
+      $options = get_option('baindesign_foobot_api_settings');
+   }
+   if ($options){
+      return $options['baindesign_foobot_api_user'];
+   } else {
+      return "API username not found";
+   }
 }
 
 /**
