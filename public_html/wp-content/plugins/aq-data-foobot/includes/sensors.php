@@ -26,7 +26,7 @@ function bd_foobot_show_sensors( $device_name )
   // Fetch the sensor data from the database
   $sensor_data = bd_foobot_fetch_db_sensors( $uuid );
 
-  if (count($sensor_data)> 999){
+  if (count($sensor_data)> 0){
 
     // Remove one level from the array
     $data = $sensor_data[0];

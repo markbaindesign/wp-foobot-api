@@ -29,7 +29,6 @@ define('BD0019__API_USER_FIELD', 'baindesign_foobot_api_user');
 define('BD0019__API_USER', BD0019__API_OPTIONS[BD0019__API_USER_FIELD]);
 define('BD0019__SENSOR_DB_TABLE', $wpdb->prefix . 'bd_foobot_sensor_data');
 define('BD0019__DEVICE_DB_TABLE', $wpdb->prefix . 'bd_foobot_device_data');
-define('BD0019__DEBUG', 1);
 
 // Includes
 	$path = plugin_dir_path(__FILE__);

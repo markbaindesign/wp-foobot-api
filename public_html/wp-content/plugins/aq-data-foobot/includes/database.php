@@ -172,7 +172,7 @@ function bd_foobot_fetch_db_sensors($uuid)
    bd_foobot_update_sensor_data($uuid);
 
    // Build query
-   $query = $wpdb->prepare("SELECT * FROM {$table_name} ORDER BY 'id' DESC LIMIT 1", $uuid);
+   $query = $wpdb->prepare("SELECT * FROM {$table_name} WHERE uuid = %s ORDER BY 'id' DESC LIMIT 1", $uuid);
 
    // Now we query the db.
    $data = $wpdb->get_results( $query, ARRAY_A );
