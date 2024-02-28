@@ -27,7 +27,7 @@ function bd_foobot_show_sensors( $device_name )
   // Fetch the sensor data from the database
   $sensor_data = bd_foobot_fetch_db_sensors( $uuid );
 
-  if (count($sensor_data)> 9999){
+  if (count($sensor_data)> 999){
 
     // Remove one level from the array
     $data = $sensor_data[0];
@@ -68,7 +68,7 @@ function bd_foobot_show_sensors( $device_name )
     // Error message
     $content = '<div class="foobot-data foobot-data__error">';
     $content.= sprintf(
-      __('The device "%s" has been found, but no data has been sent. Please confirm your device is working via the Foobot app or dashboard.', 'aq-data-foobot'), $device_name
+      __('The requested device has been found ("%s" UUID %s), but no data has been sent. Please confirm your device is working via the Foobot app or dashboard.', 'aq-data-foobot'), $device_name, $uuid
      );
     $content .= '</div>';
 

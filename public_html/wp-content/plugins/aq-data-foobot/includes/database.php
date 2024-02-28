@@ -1,49 +1,36 @@
 <?php
 
-/**
- * Set database versions
- */
+if (!defined('ABSPATH')) {
+   die('Invalid request.');
+}
 
-// Device
-global $bd_foobot_device_db_version;
-$bd_foobot_device_db_version = '1.2';
-
-// Sensors
-global $bd_foobot_sensor_db_version;
-$bd_foobot_sensor_db_version = '1.4';
-
-/** Get Options
- * ============
- * 
- * Retrieve values stored in WordPress database
- * options table. 
- */
-
-// Get API key from the database
+// Get API key
 function bd_foobot_get_api_key()
 {
-   $options = NULL;
-   if (isset(get_option('baindesign_foobot_api_settings'))){
-      $options = get_option('baindesign_foobot_api_settings');
-   }
-   if ($options){
-      return $options['baindesign_foobot_api_key'];
+   $key = BD0019__API_KEY;
+   if ($key){
+      return $key;
    } else {
       return "API key not found";
+      // DEBUG
+      if (BD0019__DEBUG === 1){
+         error_log(print_r("API key not found", true));
+      }
    }
 }
 
 // Get API username from the database
 function bd_foobot_get_api_user()
 {
-   $options = NULL;
-   if (isset(get_option('baindesign_foobot_api_settings'))){
-      $options = get_option('baindesign_foobot_api_settings');
-   }
-   if ($options){
-      return $options['baindesign_foobot_api_user'];
+   $user = BD0019__API_USER;
+   if ($user){
+      return $user;
    } else {
       return "API username not found";
+      // DEBUG
+      if (BD0019__DEBUG === 1){
+         error_log(print_r("API user not found", true));
+      }
    }
 }
 
@@ -63,11 +50,15 @@ function bd_foobot_get_api_user()
 function bd_foobot_create_sensor_table()
 {
    global $wpdb;
-   global $bd_foobot_sensor_db_version;
 
    $table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
 
    $charset_collate = $wpdb->get_charset_collate();
+
+   // DEBUG
+   if (BD0019__DEBUG === 1){
+      error_log(print_r("Creating table " . $table_name, true));
+   }
 
    $sql = "CREATE TABLE $table_name (
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -93,18 +84,22 @@ function bd_foobot_create_sensor_table()
    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
    dbDelta($sql);
 
-   add_option('bd_foobot_sensor_db_version', $bd_foobot_sensor_db_version);
+   add_option('bd_foobot_sensor_db_version', BD0019__SENSOR_DB_VERSION);
 }
 
 // Create table to store device data
 function bd_foobot_create_device_table()
 {
    global $wpdb;
-   global $bd_foobot_device_db_version;
 
    $table_name = $wpdb->prefix . 'bd_foobot_device_data';
 
    $charset_collate = $wpdb->get_charset_collate();
+
+   // DEBUG
+   if (BD0019__DEBUG === 1){
+      error_log(print_r("Creating table " . $table_name, true));
+   }
 
    $sql = "CREATE TABLE $table_name (
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -117,7 +112,7 @@ function bd_foobot_create_device_table()
    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
    dbDelta($sql);
 
-   add_option('bd_foobot_device_db_version', $bd_foobot_device_db_version);
+   add_option('bd_foobot_device_db_version', BD0019__DEVICE_DB_VERSION);
 }
 
 /**
@@ -135,10 +130,17 @@ function bd_foobot_fetch_latest_sensor_data()
 
    // Vars
    global $wpdb;
-   $table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
+   $table_name = BD0019__SENSOR_DB_TABLE;
 
    // $data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$table_name}` ORDER BY `id` DESC LIMIT 1", $sensor) );
    $data = $wpdb->get_row("SELECT * FROM `{$table_name}` ORDER BY `id` DESC LIMIT 1", ARRAY_A);
+
+   // DEBUG
+   if (BD0019__DEBUG === 1){
+      error_log(print_r("Fetching data from table " . $table_name, true));
+      $wpdb->print_error();
+      error_log(print_r($data, true));
+   }
 
    return $data;
 }
@@ -151,21 +153,36 @@ function bd_foobot_fetch_db_sensors($uuid)
    global $wpdb;
 
    // DEBUG
-   // $wpdb->show_errors();
+   if (BD0019__DEBUG === 1){$wpdb->show_errors();}
 
    // Vars
-   $table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
+   $table_name = BD0019__SENSOR_DB_TABLE;
 
    // Update the device table if required
    bd_foobot_update_sensor_data($uuid);
 
+   // Build query
+   $query = $wpdb->prepare("
+      SELECT * 
+      FROM %i
+         WHERE uuid = %s
+         ORDER BY 'id'
+         DESC LIMIT 1
+      ", $table_name, $uuid
+   );
+
    // Now we query the db.
-   $data = $wpdb->get_results("SELECT * FROM `{$table_name}` WHERE `uuid`='$uuid' ORDER BY `id` DESC LIMIT 1", ARRAY_A);
+   $data = $wpdb->get_results( $query, ARRAY_A );
+
+   // DEBUG
+   if (BD0019__DEBUG === 1){
+      error_log(print_r("Fetching data from " . DB_NAME . " > " . BD0019__SENSOR_DB_TABLE, true));
+      $wpdb->print_error();
+      error_log(print_r($data, true));
+   }
 
    return $data;
 
-   // DEBUG
-   // $wpdb->print_error();
 }
 
 // Fetch device data
@@ -175,13 +192,18 @@ function bd_foobot_fetch_db_devices()
    global $wpdb;
    
    // DEBUG
-   // $wpdb->show_errors();
+   if (BD0019__DEBUG === 1){$wpdb->show_errors();}
 
    // Vars
    $table_name = $wpdb->prefix . 'bd_foobot_device_data';
 
    // Update the device table if required
    bd_foobot_update_device_data();
+
+   // DEBUG
+   if (BD0019__DEBUG === 1){
+      error_log(print_r("Fetching data from ".DB_NAME." > " . $table_name, true));
+   }
 
    // Get all the results
    // TO DO: Only return results from the last 24 hours?
@@ -192,26 +214,56 @@ function bd_foobot_fetch_db_devices()
    // match the same timestamp
 
    //$data = $wpdb->get_row( "SELECT * FROM `{$table_name}` WHERE timestamp >= DATE_SUB(NOW(), INTERVAL 1 DAY)", ARRAY_A );
+
    $data = array();
-   $data = $wpdb->get_row("SELECT * FROM `{$table_name}` ORDER BY `id` DESC LIMIT 1", ARRAY_A);
+
+   // Build query
+   $query = $wpdb->prepare("
+      SELECT * 
+      FROM %i
+         ORDER BY 'id'
+         DESC LIMIT 1
+      ", $table_name,
+   );
+
+   // Now we query the db.
+   $data = $wpdb->get_row( $query, ARRAY_A );
    
+   // Get timestamp
    $timestamp = $data["timestamp"];
 
-   //$latest = array();
-   $latest = $wpdb->get_results("SELECT * FROM `{$table_name}` WHERE `timestamp`= $timestamp ORDER BY `id` DESC", ARRAY_A);
+   /**
+    * Build new query to return rows that match timestamp
+    */
+   $query2 = $wpdb->prepare("
+      SELECT * 
+      FROM %i
+         WHERE timestamp = %d
+         ORDER BY 'id'
+         DESC LIMIT 1
+      ", $table_name, $timestamp
+   );
+
+   // Run query
+   $latest = $wpdb->get_results( $query2, ARRAY_A );
+
+   // $latest = $wpdb->get_results("SELECT * FROM `{$table_name}` WHERE `timestamp`= $timestamp ORDER BY `id` DESC", ARRAY_A);
+
+   // Return results
+   // DEBUG
+   if (BD0019__DEBUG === 1){
+      error_log(print_r($latest, true));
+   }
    if (count($latest) > 0) {
-      return $latest;   // returns an array with the latest devices
+      return $latest; // returns an array with the latest devices
    } else {
+      if (BD0019__DEBUG === 1){
+         error_log(print_r("No devices found for timestamp", true));
+      }
       return;
    }
 
-   //echo '<h3>Latest</h3>';
-   //echo '<pre><code>';
-   //var_dump( $latest );
-   //echo '</code></pre>';
 
-   // Show error if any
-   // $wpdb->print_error();
 }
 
 /**
@@ -233,8 +285,9 @@ function bd_foobot_add_db_devices($device_api_data)
 {
 
    global $wpdb;
-   // Turn on errors display
-   //$wpdb->show_errors();
+
+   // DEBUG
+   if (BD0019__DEBUG === 1){$wpdb->show_errors();}
 
    $table_name = $wpdb->prefix . 'bd_foobot_device_data';
    $time = current_time('timestamp');
@@ -298,9 +351,10 @@ function bd_foobot_add_db_sensors($data)
    global $wpdb;
 
    // DEBUG
-   // $wpdb->show_errors(); // Turn on errors display
-
-   $table_name = $wpdb->prefix . 'bd_foobot_sensor_data';
+   if (BD0019__DEBUG === 1){
+      $wpdb->show_errors();
+      error_log(print_r($data, true));
+   };
 
    // Vars
    $time                   = $data['start'];
@@ -324,7 +378,7 @@ function bd_foobot_add_db_sensors($data)
 
    // Insert data into db table
    $wpdb->insert(
-      $table_name,
+      BD0019__SENSOR_DB_TABLE,
       array(
          'timestamp'          => $time,
          'uuid'               => $uuid,

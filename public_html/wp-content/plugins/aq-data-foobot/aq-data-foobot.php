@@ -13,6 +13,26 @@
  * Plugin Slug: aq-data-foobot
  */
 
+if (!defined('ABSPATH')) {
+   die('Invalid request.');
+}
+
+global $wpdb;
+// DEBUG
+if (BD0019__DEBUG === 1){
+   error_log(print_r("DB Name: " . $wpdb->dbname, true));}
+
+define('BD0019__DEVICE_DB_VERSION', '1.2');
+define('BD0019__SENSOR_DB_VERSION', '1.4');
+define('BD0019__API_OPTIONS_NAME', 'baindesign_foobot_api_settings');
+define('BD0019__API_OPTIONS', get_option(BD0019__API_OPTIONS_NAME));
+define('BD0019__API_KEY_FIELD', 'baindesign_foobot_api_key');
+define('BD0019__API_KEY', BD0019__API_OPTIONS[BD0019__API_KEY_FIELD]);
+define('BD0019__API_USER_FIELD', 'baindesign_foobot_api_user');
+define('BD0019__API_USER', BD0019__API_OPTIONS[BD0019__API_USER_FIELD]);
+define('BD0019__SENSOR_DB_TABLE', $wpdb->prefix . 'bd_foobot_sensor_data');
+define('BD0019__DEBUG', 1);
+
 // Includes
 	$path = plugin_dir_path(__FILE__);
 
@@ -25,6 +45,8 @@
 
 	// Misc
 	include( $path . 'includes/helpers.php');
+
+
 
 /**
  * Plugin Init
