@@ -28,6 +28,10 @@ function bd_foobot_call_api_devices()
    $request = wp_remote_get($url, $args);
 
    if (is_wp_error($request)) {
+      // DEBUG
+      if (BD0019__DEBUG === 1){
+         error_log($request->get_error_message(), true);
+      }
       return false; // Bail early
    }
 
@@ -69,6 +73,10 @@ function bd_foobot_call_api_sensors( $uuid )
    $request = wp_remote_get($url, $args);
 
    if (is_wp_error($request)) {
+      // DEBUG
+      if (BD0019__DEBUG === 1){
+         error_log($request->get_error_message(), true);
+      }
       return false; // Bail early
    }
 
@@ -80,51 +88,110 @@ function bd_foobot_call_api_sensors( $uuid )
 }
 
 /**
+ * Get device names and UUIDs
  * 
- * These functions use transients to avoid hitting the API
- * limit. 
+ * Use this function to request device data.
+ * Uses transients to avoid repeated requests 
+ * hitting API limit.
+ * 
+ * @return  array    $output           Device data (name, UUID)
  */
-
-// Update device data
 function bd_foobot_call_api_trans_devices()
 {
-   global $wpdb;
+   // Vars
+   $output = '';
+   $transient_id = 'foobot-api-device-updated';
+   $transient = get_transient($transient_id);
+   $expiry = 86400; // 24 hours
 
-   // If an API call has been made within the last 24 hours, 
-   // return.
-   if (1 == get_transient('foobot-api-device-updated')) {
+   // Check if transient already set / not expired
+   // If set, return.
+   if (1 === $transient) { // Transient set.
+      // DEBUG
+      if (BD0019__DEBUG === 1) {
+         error_log(sprintf("Transient %s set. No API call made.", $transient_id));
+      }
       return;
+   } else {
+      // Get the device data via new API call
+      // DEBUG
+      if (BD0019__DEBUG === 1) {
+         error_log(sprintf("New API call made for devices."));
+      }
+      $data = bd_foobot_call_api_devices();
+
+      // DEBUG
+      if (BD0019__DEBUG === 1) {
+         error_log(print_r($data, TRUE));
+      }
+
+      if (is_wp_error($data)) {
+         return; // Bail early
+      } else {
+         $output = $data;
+      }
+
+      // Set a transient
+      // DEBUG
+      if (BD0019__DEBUG === 1) {
+         error_log(sprintf("Setting transient %s.", $transient_id));
+      }
+      set_transient($transient_id, 1, $expiry);
    }
-
-   // Get the device data
-   $device_data = bd_foobot_call_api_devices();
-
-   // Transient is set for 24 hours
-   set_transient('foobot-api-device-updated', 1, (60 * 60 * 24));
-
-   return $device_data;
+   return $output;
 }
 
-// Update sensor data
-function bd_foobot_call_api_trans_sensors( $uuid )
+/**
+ * Get sensor data
+ * 
+ * Use this function to request sensor data from a specified device.
+ * Uses transients to avoid repeated requests 
+ * hitting API limit.
+ * 
+ * @param   string   $uuid             UUID of device
+ * @return  array    $output           Sensor data
+ */
+function bd_foobot_call_api_trans_sensors($uuid)
 {
-   global $wpdb;
+   // Vars
+   $output = '';
+   $transient_id = 'foobot-api-data-updated-' . $uuid;
+   $transient = get_transient($transient_id);
+   $expiry = 600; // 10 mins
 
-   // If an API call has been made within the last 5 mins, 
-   // return.
-   if (1 == get_transient('foobot-api-data-updated-' . $uuid )) {
-
+   // Check if transient already set / not expired
+   // If set, return.
+   if (1 === $transient) { // Transient set.
+      // DEBUG
+      if (BD0019__DEBUG === 1) {
+         error_log(sprintf("Transient %s set for UUID %s. No API call made.", $transient_id, $uuid));
+      }
       return;
+   } else {
+      // Get the device data via new API call
+      // DEBUG
+      if (BD0019__DEBUG === 1) {
+         error_log(sprintf("New API call made for %s.", $uuid));
+      }
+      $data = bd_foobot_call_api_sensors($uuid);
+
+      // DEBUG
+      if (BD0019__DEBUG === 1) {
+         error_log(print_r($data, TRUE));
+      }
+
+      if (is_wp_error($data)) {
+         return; // Bail early
+      } else {
+         $output = $data;
+      }
+
+      // Set a transient
+      // DEBUG
+      if (BD0019__DEBUG === 1) {
+         error_log(sprintf("Setting transient %s.", $transient_id));
+      }
+      set_transient($transient_id, 1, $expiry);
    }
-
-   // Get the device data
-   $data = bd_foobot_call_api_sensors( $uuid );
-   if (is_wp_error($data)) {
-      return false; // Bail early
-   }
-
-   // Transient is set for 10 mins
-   set_transient('foobot-api-data-updated-' . $uuid, 1, (60 * 10));
-
-   return $data;
+   return $output;
 }
