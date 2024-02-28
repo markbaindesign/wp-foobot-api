@@ -12,7 +12,9 @@ function bd_foobot_show_sensors( $device_name )
 
   // Get the target device UUID
   $uuid = bd_get_foobot_device_uuid( $device_name );
-  if($uuid==='error_device_not_found'){
+
+  // No device found
+  if($uuid ==='error_device_not_found' || $uuid ==='' || $uuid ===NULL){
     $content = '<div class="foobot-data foobot-data__error">';
     $content.= sprintf(
       __('Sorry, the device "%s" has not been found. Please check your device name for accuracy e.g. extra spaces at the end, and try again.', 'aq-data-foobot'), $device_name
@@ -64,7 +66,9 @@ function bd_foobot_show_sensors( $device_name )
   } else {
     // Error message
     $content = '<div class="foobot-data foobot-data__error">';
-    $content .= __('Sorry, something went wrong. Please try again later', 'aq-data-foobot');
+    $content.= sprintf(
+      __('The requested device has been found ("%s" UUID %s), but no data has been sent. Please confirm your device is working via the Foobot app or dashboard.', 'aq-data-foobot'), $device_name, $uuid
+     );
     $content .= '</div>';
 
   }

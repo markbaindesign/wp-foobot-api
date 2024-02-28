@@ -5,7 +5,7 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
    die;
 }
 
-$options_name =     'baindesign_foobot_api_settings';
+$options_name =     BD0019__API_OPTIONS_TABLE;
 
 delete_option($options_name);
 
