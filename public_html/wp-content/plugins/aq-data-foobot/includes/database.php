@@ -176,7 +176,7 @@ function bd_foobot_fetch_db_devices()
    //$data = $wpdb->get_row( "SELECT * FROM `{$table_name}` WHERE timestamp >= DATE_SUB(NOW(), INTERVAL 1 DAY)", ARRAY_A );
    $data = array();
    $data = $wpdb->get_row("SELECT * FROM `{$table_name}` ORDER BY `id` DESC LIMIT 1", ARRAY_A);
-
+   
    $timestamp = $data["timestamp"];
 
    //$latest = array();
