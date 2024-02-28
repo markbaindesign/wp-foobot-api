@@ -39,6 +39,11 @@ function bd_foobot_call_api_devices()
 
    $api_data = json_decode( $body, true);
 
+   // DEBUG
+   if (BD0019__DEBUG === 1) {
+      error_log(print_r($api_data, TRUE));
+   }
+
    return $api_data;
 }
 
@@ -61,6 +66,11 @@ function bd_foobot_call_api_devices()
 
 function bd_foobot_call_api_sensors( $uuid )
 {
+      // DEBUG
+   if (BD0019__DEBUG === 1) {
+      error_log(sprintf("New API call made for %s.", $uuid));
+   }
+   
    $key = bd_foobot_get_api_key();
 
    $url = 'https://api.foobot.io/v2/device/' . $uuid . '/datapoint/0/last/0/?' . $key;
@@ -75,7 +85,7 @@ function bd_foobot_call_api_sensors( $uuid )
    if (is_wp_error($request)) {
       // DEBUG
       if (BD0019__DEBUG === 1){
-         error_log($request->get_error_message(), true);
+         error_log(print_r($request->get_error_message(), true));
       }
       return false; // Bail early
    }
@@ -83,6 +93,11 @@ function bd_foobot_call_api_sensors( $uuid )
    $body = wp_remote_retrieve_body($request);
 
    $api_data = json_decode( $body, true); // Output array
+
+   // DEBUG
+   if (BD0019__DEBUG === 1) {
+      error_log(print_r($api_data, true));
+   }
 
    return $api_data;
 }
@@ -119,11 +134,6 @@ function bd_foobot_call_api_trans_devices()
          error_log(sprintf("New API call made for devices."));
       }
       $data = bd_foobot_call_api_devices();
-
-      // DEBUG
-      if (BD0019__DEBUG === 1) {
-         error_log(print_r($data, TRUE));
-      }
 
       if (is_wp_error($data)) {
          return; // Bail early
@@ -169,10 +179,6 @@ function bd_foobot_call_api_trans_sensors($uuid)
       return;
    } else {
       // Get the device data via new API call
-      // DEBUG
-      if (BD0019__DEBUG === 1) {
-         error_log(sprintf("New API call made for %s.", $uuid));
-      }
       $data = bd_foobot_call_api_sensors($uuid);
 
       // DEBUG

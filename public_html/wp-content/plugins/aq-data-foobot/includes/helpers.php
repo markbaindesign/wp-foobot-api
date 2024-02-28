@@ -10,7 +10,14 @@
 
 function bd_get_foobot_device_uuid( $device_name )
 {
+   // DEBUG
+   if (BD0019__DEBUG === 1){
+      error_log(sprintf("Getting the UUID for %s", $device_name, true));
+   }
+
    $devices = bd_foobot_fetch_db_devices();
+   error_log(print_r($devices, true));
+   
    // Get array columns
    $col = array_column( $devices, 'name' );
    

@@ -18,9 +18,6 @@ if (!defined('ABSPATH')) {
 }
 
 global $wpdb;
-// DEBUG
-if (BD0019__DEBUG === 1){
-   error_log(print_r("DB Name: " . $wpdb->dbname, true));}
 
 define('BD0019__DEVICE_DB_VERSION', '1.2');
 define('BD0019__SENSOR_DB_VERSION', '1.4');
@@ -31,6 +28,7 @@ define('BD0019__API_KEY', BD0019__API_OPTIONS[BD0019__API_KEY_FIELD]);
 define('BD0019__API_USER_FIELD', 'baindesign_foobot_api_user');
 define('BD0019__API_USER', BD0019__API_OPTIONS[BD0019__API_USER_FIELD]);
 define('BD0019__SENSOR_DB_TABLE', $wpdb->prefix . 'bd_foobot_sensor_data');
+define('BD0019__DEVICE_DB_TABLE', $wpdb->prefix . 'bd_foobot_device_data');
 define('BD0019__DEBUG', 1);
 
 // Includes

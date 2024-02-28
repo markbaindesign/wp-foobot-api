@@ -185,7 +185,21 @@ function bd_foobot_fetch_db_sensors($uuid)
 
 }
 
-// Fetch device data
+/**
+ * Fetch device data from the database
+ * 
+ *    Devices on the user account are stored in a custom table.
+ *    This is used to prevent hitting API limits.
+ * 
+ *    If the API has been called recently, we use this function
+ *    instead to get the device data. 
+ * 
+ *    NOTE: This table is updates with devices each time the 
+ *    API call is made. Devices are never removed. In order to
+ *    get current devices, we need to check only the most recent.
+ * 
+ * @return array $latest_devices  Array of last devices returned by API.
+ */
 function bd_foobot_fetch_db_devices()
 {
 
@@ -195,14 +209,14 @@ function bd_foobot_fetch_db_devices()
    if (BD0019__DEBUG === 1){$wpdb->show_errors();}
 
    // Vars
-   $table_name = $wpdb->prefix . 'bd_foobot_device_data';
+   $table_name = BD0019__DEVICE_DB_TABLE;
 
    // Update the device table if required
    bd_foobot_update_device_data();
 
    // DEBUG
    if (BD0019__DEBUG === 1){
-      error_log(print_r("Fetching data from ".DB_NAME." > " . $table_name, true));
+      error_log(sprintf("Fetching device data from database (%s)", $table_name, true));
    }
 
    // Get all the results
@@ -228,8 +242,13 @@ function bd_foobot_fetch_db_devices()
 
    // Now we query the db.
    $data = $wpdb->get_row( $query, ARRAY_A );
+
+   error_log(print_r("Most recent device found:", true));
+   error_log(print_r($data, true));
    
-   // Get timestamp
+   // Get timestamp of most recent API call.
+   // We will use this to find all devices returned
+   // in the last API call.
    $timestamp = $data["timestamp"];
 
    /**
@@ -240,25 +259,24 @@ function bd_foobot_fetch_db_devices()
       FROM %i
          WHERE timestamp = %d
          ORDER BY 'id'
-         DESC LIMIT 1
+         DESC
       ", $table_name, $timestamp
    );
 
    // Run query
-   $latest = $wpdb->get_results( $query2, ARRAY_A );
-
-   // $latest = $wpdb->get_results("SELECT * FROM `{$table_name}` WHERE `timestamp`= $timestamp ORDER BY `id` DESC", ARRAY_A);
+   $latest_devices = $wpdb->get_results( $query2, ARRAY_A );
 
    // Return results
    // DEBUG
    if (BD0019__DEBUG === 1){
-      error_log(print_r($latest, true));
+      error_log(sprintf("All devices found that match timestamp %d: ", $timestamp, true));
+      error_log(print_r($latest_devices, true));
    }
-   if (count($latest) > 0) {
-      return $latest; // returns an array with the latest devices
+   if (count($latest_devices) > 0) {
+      return $latest_devices; // returns an array with the latest devices
    } else {
       if (BD0019__DEBUG === 1){
-         error_log(print_r("No devices found for timestamp", true));
+         error_log(print_r("No devices found for timestamp %d.", $timestamp, true));
       }
       return;
    }
@@ -415,6 +433,9 @@ function bd_foobot_add_db_sensors($data)
 
 }
 
+/**
+ * Update device data
+ */
 function bd_foobot_update_device_data()
 {
    /**

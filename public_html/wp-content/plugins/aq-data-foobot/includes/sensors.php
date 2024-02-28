@@ -12,7 +12,6 @@ function bd_foobot_show_sensors( $device_name )
 
   // Get the target device UUID
   $uuid = bd_get_foobot_device_uuid( $device_name );
-  error_log(print_r($uuid, true));
 
   // No device found
   if($uuid ==='error_device_not_found' || $uuid ==='' || $uuid ===NULL){
