@@ -4,7 +4,7 @@ Donate link: https://bain.design/
 Tags: air quality, foobot, pollution, air, monitor, particles, air, measure, CO2, humidity, temperature, API
 Requires at least: 5.3
 Tested up to: 6.4
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 Requires PHP: 5.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -40,6 +40,9 @@ Sorry, no. I need both of mine for testing purposes.
 
 == Changelog ==
 
+= 1.2.1 =
+* Fix database error
+
 = 1.2 =
 * Display data timestamp in WordPress format
 * Use system fonts
@@ -53,13 +56,16 @@ Sorry, no. I need both of mine for testing purposes.
 
 == Upgrade Notice ==
 
-= 1.0 =
-* Initial plugin version
+= 1.2.1 =
+* Fix database error
 
 = 1.2 =
 * Display data timestamp in WordPress format
 * Use system fonts
 * Force temp to show decimals
+
+= 1.0 =
+* Initial plugin version
 
 == Credits ==
 
