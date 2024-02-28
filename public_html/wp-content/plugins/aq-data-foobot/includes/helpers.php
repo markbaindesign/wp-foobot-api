@@ -10,7 +10,13 @@
 
 function bd_get_foobot_device_uuid( $device_name )
 {
+   // DEBUG
+   if (BD0019__DEBUG === 1){
+      error_log(sprintf("Getting the UUID for %s", $device_name, true));
+   }
+
    $devices = bd_foobot_fetch_db_devices();
+   
    // Get array columns
    $col = array_column( $devices, 'name' );
    
@@ -62,3 +68,60 @@ if(!function_exists('bd324_get_local_datetime')):
       return $output;
    }
 endif;
+
+/**
+ * Get Device name from UUID
+ * 
+ * Looks up the given UUID in the Device database table,
+ * and returns the Device Name if found.
+ *
+ * @param   string $uuid            Device UUID
+ * @return  string $output          Device name
+ */
+if(!function_exists('bd324_get_device_name_from_uuid')):
+   function bd324_get_device_name_from_uuid($uuid)
+   {
+      global $wpdb;
+
+      /* Vars */
+      $output        = '';
+      $table_name    = BD0019__DEVICE_DB_TABLE;
+   
+      // Build query
+      $query = $wpdb->prepare("
+         SELECT * 
+         FROM %i
+            WHERE `uuid` = %s
+            LIMIT 1
+         ", $table_name, $uuid
+      );
+   
+      // Now we query the db.
+      $device_data = $wpdb->get_row( $query, ARRAY_A );
+      $device_name = $device_data['name'];
+
+      // DEBUG
+      if (BD0019__DEBUG === 1){
+         error_log(sprintf("Fetching device name for %s from %s", $uuid, $table_name));
+      }
+
+      if ($device_name){
+         // DEBUG
+         if (BD0019__DEBUG === 1){
+            error_log(print_r($device_name, true));
+         }
+         $output = $device_name;
+      } else {
+         // DEBUG
+         if (BD0019__DEBUG === 1){
+            error_log(sprintf("Device name not found for %s", $uuid, true));
+            error_log(print_r($device_name, true));
+            $wpdb->print_error();
+         }
+         return;
+      }
+
+      return $output;
+   }
+endif;
+
