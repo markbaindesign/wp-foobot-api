@@ -70,7 +70,8 @@ function baindesign_foobot_admin_bar_menu( $wp_admin_bar ) {
 		array(
 			'id'     => 'baindesign-foobot-details',
 			'parent' => 'baindesign-foobot',
-			'title'  => $details,
+			'title'  => '',
+			'meta'   => array( 'html' => $details ),
 		)
 	);
 }
