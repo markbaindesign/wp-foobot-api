@@ -41,7 +41,14 @@ Sorry, no. I need both of mine for testing purposes.
 == Changelog ==
 
 = 1.3.0 =
+* Add a list of devices found on your Foobot account to the settings page, each with a ready-to-copy shortcode
+* Add a "Test Connection" button and a "Last data received" indicator to the settings page
+* Add an option to show a device's latest reading in the WordPress admin bar
+* Mask the saved API key on the settings screen instead of showing it in full
+* Fix stored/reflected XSS: escape device name and Foobot API-derived sensor values before output
 * Fix fatal error on PHP 8+ when no device data exists yet (e.g. fresh install with no API key configured)
+* Fix uninstall.php referencing an undefined constant, which silently skipped cleanup on uninstall
+* Stop sending the API key in the request URL query string (it's already sent via header)
 * Add PHPUnit test suite and WordPress Coding Standards linting
 * Add GitHub Actions CI (tests on every push/PR) and tag-triggered WordPress.org deploy
 * Reformat codebase to WordPress Coding Standards
