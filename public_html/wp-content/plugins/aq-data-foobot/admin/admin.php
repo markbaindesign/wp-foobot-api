@@ -41,6 +41,38 @@ function baindesign_foobot_admin_bar_menu( $wp_admin_bar ) {
 			'href'  => admin_url( 'options-general.php?page=aq-data-foobot' ),
 		)
 	);
+
+	$rows = array(
+		__( 'Temperature', 'aq-data-foobot' ) => number_format( $data['datapointTmp'], 1 ) . $data['unitTmp'],
+		__( 'PM', 'aq-data-foobot' )          => round( $data['datapointPm'], 0 ) . ' µg/m3',
+		__( 'CO2', 'aq-data-foobot' )         => round( $data['datapointCo2'], 0 ) . ' ' . $data['unitCo2'],
+		__( 'VOC', 'aq-data-foobot' )         => round( $data['datapointVoc'], 0 ) . ' ' . $data['unitVoc'],
+		__( 'Humidity', 'aq-data-foobot' )    => round( $data['datapointHum'], 1 ) . ' ' . $data['unitHum'],
+		__( 'All', 'aq-data-foobot' )         => round( $data['datapointAllpollu'], 0 ) . ' ' . $data['unitAllpollu'],
+	);
+
+	$details = '<div style="padding:6px 14px;line-height:1.8;">';
+	foreach ( $rows as $label => $value ) {
+		$details .= '<div>' . esc_html( $label ) . ': ' . esc_html( $value ) . '</div>';
+	}
+	if ( ! empty( $data['timestamp'] ) ) {
+		$details .= '<div style="margin-top:6px;opacity:0.7;">' . esc_html(
+			sprintf(
+				/* translators: %s: date/time the reading was received */
+				__( 'Updated %s', 'aq-data-foobot' ),
+				bd324_get_local_datetime( $data['timestamp'] )
+			)
+		) . '</div>';
+	}
+	$details .= '</div>';
+
+	$wp_admin_bar->add_node(
+		array(
+			'id'     => 'baindesign-foobot-details',
+			'parent' => 'baindesign-foobot',
+			'title'  => $details,
+		)
+	);
 }
 
 function baindesign_foobot_add_admin_menu() {
