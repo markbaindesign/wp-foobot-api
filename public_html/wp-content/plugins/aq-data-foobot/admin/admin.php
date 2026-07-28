@@ -6,6 +6,42 @@
 
 add_action( 'admin_menu', 'baindesign_foobot_add_admin_menu' );
 add_action( 'admin_init', 'baindesign_foobot_settings_init' );
+add_action( 'admin_bar_menu', 'baindesign_foobot_admin_bar_menu', 999 );
+
+function baindesign_foobot_admin_bar_menu( $wp_admin_bar ) {
+	if ( ! BD0019__ADMIN_BAR_ENABLED || ! BD0019__ADMIN_BAR_DEVICE || ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	$uuid = bd_get_foobot_device_uuid( BD0019__ADMIN_BAR_DEVICE );
+
+	if ( ! $uuid || 'error_device_not_found' === $uuid ) {
+		return;
+	}
+
+	$sensor_data = bd_foobot_fetch_db_sensors( $uuid );
+
+	if ( empty( $sensor_data ) || ! isset( $sensor_data[0]['datapointTmp'] ) ) {
+		return;
+	}
+
+	$data = $sensor_data[0];
+
+	$wp_admin_bar->add_node(
+		array(
+			'id'    => 'baindesign-foobot',
+			'title' => esc_html(
+				sprintf(
+					'%s: %s%s',
+					BD0019__ADMIN_BAR_DEVICE,
+					number_format( $data['datapointTmp'], 1 ),
+					$data['unitTmp']
+				)
+			),
+			'href'  => admin_url( 'options-general.php?page=aq-data-foobot' ),
+		)
+	);
+}
 
 function baindesign_foobot_add_admin_menu() {
 	add_options_page(
@@ -53,6 +89,12 @@ function baindesign_foobot_sanitize_settings( $input ) {
 		$output[ BD0019__API_USER_FIELD ] = sanitize_text_field( $input[ BD0019__API_USER_FIELD ] );
 	}
 
+	$output[ BD0019__ADMIN_BAR_ENABLED_FIELD ] = ! empty( $input[ BD0019__ADMIN_BAR_ENABLED_FIELD ] ) ? 1 : 0;
+
+	if ( isset( $input[ BD0019__ADMIN_BAR_DEVICE_FIELD ] ) ) {
+		$output[ BD0019__ADMIN_BAR_DEVICE_FIELD ] = sanitize_text_field( $input[ BD0019__ADMIN_BAR_DEVICE_FIELD ] );
+	}
+
 	return $output;
 }
 
@@ -95,6 +137,32 @@ function baindesign_foobot_settings_init() {
 		'baindesignFoobot',                                 // Page to display on
 		'baindesign-foobot-api-creds'                       // Section ID
 	);
+
+	add_settings_section(
+		'baindesign-foobot-admin-bar',                       // Section ID
+		__( 'Admin Bar', 'aq-data-foobot' ),                // Section header
+		'baindesign_foobot_admin_bar_section_callback',     // Callback
+		'baindesignFoobot'                                      // Add section to
+		// options group
+	);
+
+	// Show in admin bar
+	add_settings_field(
+		BD0019__ADMIN_BAR_ENABLED_FIELD,
+		__( 'Show in Admin Bar', 'aq-data-foobot' ),
+		BD0019__ADMIN_BAR_ENABLED_FIELD . '_field_render',
+		'baindesignFoobot',
+		'baindesign-foobot-admin-bar'
+	);
+
+	// Which device to show
+	add_settings_field(
+		BD0019__ADMIN_BAR_DEVICE_FIELD,
+		__( 'Device', 'aq-data-foobot' ),
+		BD0019__ADMIN_BAR_DEVICE_FIELD . '_field_render',
+		'baindesignFoobot',
+		'baindesign-foobot-admin-bar'
+	);
 }
 
 function baindesign_foobot_api_user_field_render() {
@@ -127,6 +195,37 @@ function baindesign_foobot_api_key_field_render() {
  */
 function baindesign_foobot_settings_section_callback() {
 	_e( 'Add your Foobot API credentials below. An API key can be obtained at <a href="https://api.foobot.io/apidoc/index.html">api.foobot.io</a>.', 'aq-data-foobot' );
+}
+
+function baindesign_foobot_admin_bar_section_callback() {
+	esc_html_e( 'Optionally show a device\'s latest reading in the WordPress admin bar.', 'aq-data-foobot' );
+}
+
+function baindesign_foobot_admin_bar_enabled_field_render() {
+	?>
+	<label>
+		<input type="checkbox" name="baindesign_foobot_api_settings[baindesign_foobot_admin_bar_enabled]" value="1" <?php checked( BD0019__ADMIN_BAR_ENABLED ); ?>>
+		<?php esc_html_e( 'Show data in the admin bar', 'aq-data-foobot' ); ?>
+	</label>
+	<?php
+}
+
+function baindesign_foobot_admin_bar_device_field_render() {
+	$devices = ( BD0019__API_KEY && BD0019__API_USER ) ? bd_foobot_fetch_db_devices() : array();
+
+	if ( empty( $devices ) ) {
+		esc_html_e( 'No devices found yet -- save your API credentials first.', 'aq-data-foobot' );
+		return;
+	}
+	?>
+	<select name="baindesign_foobot_api_settings[baindesign_foobot_admin_bar_device]">
+		<?php foreach ( $devices as $device ) : ?>
+			<option value="<?php echo esc_attr( $device['name'] ); ?>" <?php selected( BD0019__ADMIN_BAR_DEVICE, $device['name'] ); ?>>
+				<?php echo esc_html( $device['name'] ); ?>
+			</option>
+		<?php endforeach; ?>
+	</select>
+	<?php
 }
 
 /**

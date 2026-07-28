@@ -28,6 +28,10 @@ define( 'BD0019__API_KEY_FIELD', 'baindesign_foobot_api_key' );
 define( 'BD0019__API_KEY', BD0019__API_OPTIONS[ BD0019__API_KEY_FIELD ] );
 define( 'BD0019__API_USER_FIELD', 'baindesign_foobot_api_user' );
 define( 'BD0019__API_USER', BD0019__API_OPTIONS[ BD0019__API_USER_FIELD ] );
+define( 'BD0019__ADMIN_BAR_ENABLED_FIELD', 'baindesign_foobot_admin_bar_enabled' );
+define( 'BD0019__ADMIN_BAR_ENABLED', ! empty( BD0019__API_OPTIONS[ BD0019__ADMIN_BAR_ENABLED_FIELD ] ) );
+define( 'BD0019__ADMIN_BAR_DEVICE_FIELD', 'baindesign_foobot_admin_bar_device' );
+define( 'BD0019__ADMIN_BAR_DEVICE', BD0019__API_OPTIONS[ BD0019__ADMIN_BAR_DEVICE_FIELD ] ?? '' );
 define( 'BD0019__SENSOR_DB_TABLE', $wpdb->prefix . 'bd_foobot_sensor_data' );
 define( 'BD0019__DEVICE_DB_TABLE', $wpdb->prefix . 'bd_foobot_device_data' );
 
