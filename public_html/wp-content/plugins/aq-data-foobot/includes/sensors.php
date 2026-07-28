@@ -17,7 +17,7 @@ function bd_foobot_show_sensors( $device_name ) {
 		$content  = '<div class="foobot-data foobot-data__error">';
 		$content .= sprintf(
 			__( 'Sorry, the device "%s" has not been found. Please check your device name for accuracy e.g. extra spaces at the end, and try again.', 'aq-data-foobot' ),
-			$device_name
+			esc_html( $device_name )
 		);
 		$content .= '</div>';
 		return $content;
@@ -48,17 +48,17 @@ function bd_foobot_show_sensors( $device_name ) {
 
 		// Output sensor data
 		$content  = '<div class="foobot-data"><ul class="sensors">';
-		$content .= '<li class="sensor sensor--tmp"><span class="sensor__label">' . __( 'Temperature', 'aq-data-foobot' ) . '</span><span class="sensor__data">' . $Tmp_data . '</span><span class="sensor__unit">' . $data['unitTmp'] . '</span></li>';
+		$content .= '<li class="sensor sensor--tmp"><span class="sensor__label">' . __( 'Temperature', 'aq-data-foobot' ) . '</span><span class="sensor__data">' . $Tmp_data . '</span><span class="sensor__unit">' . esc_html( $data['unitTmp'] ) . '</span></li>';
 		$content .= '<li class="sensor sensor--pm"><span class="sensor__label">' . __( 'PM', 'aq-data-foobot' ) . '</span><span class="sensor__data">' . $Pm_data . '</span><span class="sensor__unit">µg/m3</span></li>';
-		$content .= '<li class="sensor sensor--co2"><span class="sensor__label">' . __( 'Co2', 'aq-data-foobot' ) . '</span><span class="sensor__data">' . $Co2_data . '</span><span class="sensor__unit">' . $data['unitCo2'] . '</span></li>';
-		$content .= '<li class="sensor sensor--voc"><span class="sensor__label">' . __( 'VOC', 'aq-data-foobot' ) . '</span><span class="sensor__data">' . $Voc_data . '</span><span class="sensor__unit">' . $data['unitVoc'] . '</span></li>';
-		$content .= '<li class="sensor sensor--hum"><span class="sensor__label">' . __( 'Humidity', 'aq-data-foobot' ) . '</span><span class="sensor__data">' . $Hum_data . '</span><span class="sensor__unit">' . $data['unitHum'] . '</span></li>';
-		$content .= '<li class="sensor sensor--all"><span class="sensor__label">' . __( 'All', 'aq-data-foobot' ) . '</span><span class="sensor__data">' . $All_data . '</span><span class="sensor__unit">' . $data['unitAllpollu'] . '</span></li>';
+		$content .= '<li class="sensor sensor--co2"><span class="sensor__label">' . __( 'Co2', 'aq-data-foobot' ) . '</span><span class="sensor__data">' . $Co2_data . '</span><span class="sensor__unit">' . esc_html( $data['unitCo2'] ) . '</span></li>';
+		$content .= '<li class="sensor sensor--voc"><span class="sensor__label">' . __( 'VOC', 'aq-data-foobot' ) . '</span><span class="sensor__data">' . $Voc_data . '</span><span class="sensor__unit">' . esc_html( $data['unitVoc'] ) . '</span></li>';
+		$content .= '<li class="sensor sensor--hum"><span class="sensor__label">' . __( 'Humidity', 'aq-data-foobot' ) . '</span><span class="sensor__data">' . $Hum_data . '</span><span class="sensor__unit">' . esc_html( $data['unitHum'] ) . '</span></li>';
+		$content .= '<li class="sensor sensor--all"><span class="sensor__label">' . __( 'All', 'aq-data-foobot' ) . '</span><span class="sensor__data">' . $All_data . '</span><span class="sensor__unit">' . esc_html( $data['unitAllpollu'] ) . '</span></li>';
 		$content .= '</ul>';
 
 		// Show device name and timestamp
 		if ( $utc_timestamp ) {
-			$content .= sprintf( __( '<div class="sensor__data-age">Data from <span class="device-name">%1$s</span> updated <span class="data-timestamp">%2$s</span></div>', 'aq-data-foobot' ), $device_name, $local_timestamp );
+			$content .= sprintf( __( '<div class="sensor__data-age">Data from <span class="device-name">%1$s</span> updated <span class="data-timestamp">%2$s</span></div>', 'aq-data-foobot' ), esc_html( $device_name ), esc_html( $local_timestamp ) );
 		}
 
 		$content .= '</div>';
@@ -67,8 +67,8 @@ function bd_foobot_show_sensors( $device_name ) {
 		$content  = '<div class="foobot-data foobot-data__error">';
 		$content .= sprintf(
 			__( 'The requested device has been found ("%1$s" UUID %2$s), but no data has been sent. Please confirm your device is working via the Foobot app or dashboard.', 'aq-data-foobot' ),
-			$device_name,
-			$uuid
+			esc_html( $device_name ),
+			esc_html( $uuid )
 		);
 		$content .= '</div>';
 	}

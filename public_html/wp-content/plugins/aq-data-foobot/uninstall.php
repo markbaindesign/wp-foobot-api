@@ -5,9 +5,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	die;
 }
 
-$options_name = BD0019__API_OPTIONS_TABLE;
-
-delete_option( $options_name );
+delete_option( 'baindesign_foobot_api_settings' );
 
 // drop a custom database tables
 global $wpdb;

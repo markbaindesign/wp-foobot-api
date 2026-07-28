@@ -37,11 +37,30 @@ function baindesign_settings_link( $links ) {
 }
 add_filter( 'plugin_action_links_aq-data-foobot/aq-data-foobot.php', 'baindesign_settings_link' );
 
+function baindesign_foobot_sanitize_settings( $input ) {
+	$output = array();
+
+	if ( isset( $input[ BD0019__API_KEY_FIELD ] ) ) {
+		$output[ BD0019__API_KEY_FIELD ] = sanitize_textarea_field( $input[ BD0019__API_KEY_FIELD ] );
+	}
+
+	if ( isset( $input[ BD0019__API_USER_FIELD ] ) ) {
+		$output[ BD0019__API_USER_FIELD ] = sanitize_text_field( $input[ BD0019__API_USER_FIELD ] );
+	}
+
+	return $output;
+}
+
 function baindesign_foobot_settings_init() {
 	// Register
 	register_setting(
 		'baindesignFoobot',                             // New options group
-		BD0019__API_OPTIONS_NAME
+		BD0019__API_OPTIONS_NAME,
+		array(
+			'type'              => 'array',
+			'sanitize_callback' => 'baindesign_foobot_sanitize_settings',
+			'default'           => array(),
+		)
 	);
 
 	add_settings_section(

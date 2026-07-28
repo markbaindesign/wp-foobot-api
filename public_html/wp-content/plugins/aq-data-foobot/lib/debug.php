@@ -4,7 +4,7 @@
 function bd_pretty_debug( $var, $name = null ) {
 	// Debug
 	echo '<h5>Debug</h5>';
-	echo '<p>Variable: "$' . $name . '"</p>';
+	echo '<p>Variable: "$' . esc_html( $name ) . '"</p>';
 	echo '<pre><code>';
 	var_dump( $var );
 	echo '</code></pre>';

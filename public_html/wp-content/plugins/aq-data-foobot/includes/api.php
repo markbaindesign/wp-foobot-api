@@ -71,7 +71,7 @@ function bd_foobot_call_api_sensors( $uuid ) {
 
 	$key = bd_foobot_get_api_key();
 
-	$url  = 'https://api.foobot.io/v2/device/' . $uuid . '/datapoint/0/last/0/?' . $key;
+	$url  = 'https://api.foobot.io/v2/device/' . $uuid . '/datapoint/0/last/0/';
 	$args = array(
 		'headers' => array(
 			'X-API-KEY-TOKEN' => $key,
