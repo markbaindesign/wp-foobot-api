@@ -29,7 +29,7 @@ jobs:
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-          SLUG: aq-data-foobot
+          SLUG: air-quality-data-from-foobot
           BUILD_DIR: build/aq-data-foobot
 
       - name: Zip release asset
