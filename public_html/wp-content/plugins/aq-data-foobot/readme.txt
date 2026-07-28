@@ -43,7 +43,7 @@ Sorry, no. I need both of mine for testing purposes.
 = 1.3.0 =
 * Add a list of devices found on your Foobot account to the settings page, each with a ready-to-copy shortcode
 * Add a "Test Connection" button and a "Last data received" indicator to the settings page
-* Add an option to show a device's latest reading in the WordPress admin bar
+* Add an option to show a device's latest reading in the WordPress admin bar, with the full sensor breakdown and last-updated time on hover
 * Mask the saved API key on the settings screen instead of showing it in full
 * Fix stored/reflected XSS: escape device name and Foobot API-derived sensor values before output
 * Fix fatal error on PHP 8+ when no device data exists yet (e.g. fresh install with no API key configured)
