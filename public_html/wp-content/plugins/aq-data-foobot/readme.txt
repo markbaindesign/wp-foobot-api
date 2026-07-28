@@ -49,6 +49,8 @@ Sorry, no. I need both of mine for testing purposes.
 * Fix fatal error on PHP 8+ when no device data exists yet (e.g. fresh install with no API key configured)
 * Fix uninstall.php referencing an undefined constant, which silently skipped cleanup on uninstall
 * Stop sending the API key in the request URL query string (it's already sent via header)
+* Sanitize the API credentials setting on save, not just when displayed
+* Fix an ORDER BY bug that could return a stale device/reading instead of the most recent one
 * Add PHPUnit test suite and WordPress Coding Standards linting
 * Add GitHub Actions CI (tests on every push/PR) and tag-triggered WordPress.org deploy
 * Reformat codebase to WordPress Coding Standards
