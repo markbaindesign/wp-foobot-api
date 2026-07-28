@@ -3,12 +3,20 @@
 # =========================
 .sass-cache
 bin
+backup
 export
 import
 node_modules
 release
 releases
 svn
+!public_html/wp-content/plugins/aq-data-foobot/bin/
+
+# =========================
+# PHP testing / Composer
+# =========================
+public_html/wp-content/plugins/aq-data-foobot/vendor/
+public_html/wp-content/plugins/aq-data-foobot/.phpunit.result.cache
 
 # =========================
 # VVV provisioning
@@ -104,6 +112,7 @@ $RECYCLE.BIN/
 *.gz
 *.sql
 *.yml
+!.github/workflows/*.yml
 *.orig
 *.log
 .DS_Store

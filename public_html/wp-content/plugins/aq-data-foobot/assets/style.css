@@ -2,7 +2,7 @@
 .foobot-data ul,
 .foobot-data li,
 .foobot-data p {
-    font-family: 'Share Tech Mono', monospace;
+    /* font-family: 'Share Tech Mono', monospace; */
     font-size: 16px;
     color: #485665;
 }
@@ -33,9 +33,9 @@ li.sensor {
 .sensor .sensor__unit,
 .sensor__data-age {
     font-size: 0.7em;
-    opacity: 0.5;
+    /* opacity: 0.5;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1px;*/
 }
 .sensor .sensor__label {
     text-align: left;
@@ -46,6 +46,7 @@ li.sensor {
 .sensor .sensor__data {
     font-size: 2em;
     font-weight: bold;
+   font-family: monospace;
 }
 .sensor__data-age {
     color: #485665;
@@ -53,6 +54,10 @@ li.sensor {
 }
 .sensor__data-age .s {
     text-transform: lowercase;
+}
+.sensor__data-age .device-name, 
+.sensor__data-age .data-timestamp  {
+   font-weight: bold;
 }
 @media (min-width: 250px) {
     .sensors {

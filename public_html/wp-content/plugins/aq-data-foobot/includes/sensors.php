@@ -7,85 +7,90 @@
  */
 
 // Show the data from a specific device
-function bd_foobot_show_sensors( $device_name )
-{
-  // debug
-  // error_log("FUNCTION: bd_foobot_show_sensors (" .$device_name. ")", 0);
+function bd_foobot_show_sensors( $device_name ) {
 
-  // Get the target device UUID
-  $uuid = bd_get_foobot_device_uuid( $device_name );
-  if($uuid==='error_device_not_found'){
-    $content = '<div class="foobot-data foobot-data__error">';
-    $content.= sprintf(
-      __('Sorry, the device "%s" has not been found. Please check your device name for accuracy e.g. extra spaces at the end, and try again.', 'aq-data-foobot'), $device_name
-     );
-    $content.='</div>';
-    return $content;
-  }
-  
-  // Fetch the sensor data from the database
-  $sensor_data = bd_foobot_fetch_db_sensors( $uuid );
+	// Get the target device UUID
+	$uuid = bd_get_foobot_device_uuid( $device_name );
 
-  if (count($sensor_data)> 0){
+	// No device found
+	if ( $uuid === 'error_device_not_found' || $uuid === '' || $uuid === null ) {
+		$content  = '<div class="foobot-data foobot-data__error">';
+		$content .= sprintf(
+			__( 'Sorry, the device "%s" has not been found. Please check your device name for accuracy e.g. extra spaces at the end, and try again.', 'aq-data-foobot' ),
+			esc_html( $device_name )
+		);
+		$content .= '</div>';
+		return $content;
+	}
 
-    // Remove one level from the array
-    $data = $sensor_data[0];
+	// Fetch the sensor data from the database
+	$sensor_data = bd_foobot_fetch_db_sensors( $uuid );
 
-   // Data time & date
-   $data_timestamp   = $data['timestamp'];
-   $data_timedate    = date('Y-m-d H:i:s', $data_timestamp);
-   error_log(print_r($data_timedate, true));
+	if ( count( $sensor_data ) > 0 ) {
 
-    // Pretty up the data
-    $Tmp_data = round( $data['datapointTmp'], 1 );
-    $Pm_data = round( $data['datapointPm'], 1 );
-    $Co2_data = round( $data['datapointCo2'], 1 );
-    $Voc_data = round( $data['datapointVoc'], 1 );
-    $Hum_data = round( $data['datapointHum'], 1 );
-    $All_data = round( $data['datapointAllpollu'], 1 );
+		// Remove one level from the array
+		$data = $sensor_data[0];
 
+		// Data time & date
+		$utc_timestamp = '';
+		if ( isset( $data['timestamp'] ) ) {
+			$utc_timestamp   = $data['timestamp'];
+			$local_timestamp = bd324_get_local_datetime( $utc_timestamp );
+		}
 
-    // Output sensor data
-    $content = '<div class="foobot-data"><ul class="sensors">';
-    $content.= '<li class="sensor sensor--tmp"><span class="sensor__label">' . __('Temperature', 'aq-data-foobot') . '</span><span class="sensor__data">' . $Tmp_data . '</span><span class="sensor__unit">' . $data['unitTmp'] . '</span></li>' ;
-    $content.= '<li class="sensor sensor--pm"><span class="sensor__label">' . __('PM', 'aq-data-foobot') . '</span><span class="sensor__data">' . $Pm_data . '</span><span class="sensor__unit">µg/m3</span></li>' ;
-    $content.= '<li class="sensor sensor--co2"><span class="sensor__label">' . __('Co2', 'aq-data-foobot') . '</span><span class="sensor__data">' . $Co2_data . '</span><span class="sensor__unit">' . $data['unitCo2'] . '</span></li>' ;
-    $content.= '<li class="sensor sensor--voc"><span class="sensor__label">' . __('VOC', 'aq-data-foobot') . '</span><span class="sensor__data">' . $Voc_data . '</span><span class="sensor__unit">' . $data['unitVoc'] . '</span></li>' ;
-    $content.= '<li class="sensor sensor--hum"><span class="sensor__label">' . __('Humidity', 'aq-data-foobot') . '</span><span class="sensor__data">' . $Hum_data . '</span><span class="sensor__unit">' . $data['unitHum'] . '</span></li>' ;
-    $content.= '<li class="sensor sensor--all"><span class="sensor__label">' . __('All', 'aq-data-foobot') . '</span><span class="sensor__data">' . $All_data . '</span><span class="sensor__unit">' . $data['unitAllpollu'] . '</span></li>' ;
-    $content.= '</ul>';
-    // $content.= sprintf( __('<div class="sensor__data-age">Data from %s updated %d<span class="s">s</span> ago</div>', 'aq-data-foobot'), $device_name, $data_age );
-    $content.= '</div>';
-  } else {
-    // Error message
-    $content = '<div class="foobot-data foobot-data__error">';
-    $content .= __('Sorry, something went wrong. Please try again later', 'aq-data-foobot');
-    $content .= '</div>';
+		// Pretty up the data
+		$Tmp_data = number_format( $data['datapointTmp'], 1 );
+		$Pm_data  = round( $data['datapointPm'], 0 );
+		$Co2_data = round( $data['datapointCo2'], 0 );
+		$Voc_data = round( $data['datapointVoc'], 0 );
+		$Hum_data = round( $data['datapointHum'], 1 );
+		$All_data = round( $data['datapointAllpollu'], 0 );
 
-  }
+		// Output sensor data
+		$content  = '<div class="foobot-data"><ul class="sensors">';
+		$content .= '<li class="sensor sensor--tmp"><span class="sensor__label">' . __( 'Temperature', 'aq-data-foobot' ) . '</span><span class="sensor__data">' . $Tmp_data . '</span><span class="sensor__unit">' . esc_html( $data['unitTmp'] ) . '</span></li>';
+		$content .= '<li class="sensor sensor--pm"><span class="sensor__label">' . __( 'PM', 'aq-data-foobot' ) . '</span><span class="sensor__data">' . $Pm_data . '</span><span class="sensor__unit">µg/m3</span></li>';
+		$content .= '<li class="sensor sensor--co2"><span class="sensor__label">' . __( 'Co2', 'aq-data-foobot' ) . '</span><span class="sensor__data">' . $Co2_data . '</span><span class="sensor__unit">' . esc_html( $data['unitCo2'] ) . '</span></li>';
+		$content .= '<li class="sensor sensor--voc"><span class="sensor__label">' . __( 'VOC', 'aq-data-foobot' ) . '</span><span class="sensor__data">' . $Voc_data . '</span><span class="sensor__unit">' . esc_html( $data['unitVoc'] ) . '</span></li>';
+		$content .= '<li class="sensor sensor--hum"><span class="sensor__label">' . __( 'Humidity', 'aq-data-foobot' ) . '</span><span class="sensor__data">' . $Hum_data . '</span><span class="sensor__unit">' . esc_html( $data['unitHum'] ) . '</span></li>';
+		$content .= '<li class="sensor sensor--all"><span class="sensor__label">' . __( 'All', 'aq-data-foobot' ) . '</span><span class="sensor__data">' . $All_data . '</span><span class="sensor__unit">' . esc_html( $data['unitAllpollu'] ) . '</span></li>';
+		$content .= '</ul>';
 
-  return $content;
+		// Show device name and timestamp
+		if ( $utc_timestamp ) {
+			$content .= sprintf( __( '<div class="sensor__data-age">Data from <span class="device-name">%1$s</span> updated <span class="data-timestamp">%2$s</span></div>', 'aq-data-foobot' ), esc_html( $device_name ), esc_html( $local_timestamp ) );
+		}
 
+		$content .= '</div>';
+	} else {
+		// Error message
+		$content  = '<div class="foobot-data foobot-data__error">';
+		$content .= sprintf(
+			__( 'The requested device has been found ("%1$s" UUID %2$s), but no data has been sent. Please confirm your device is working via the Foobot app or dashboard.', 'aq-data-foobot' ),
+			esc_html( $device_name ),
+			esc_html( $uuid )
+		);
+		$content .= '</div>';
+	}
 
-
+	return $content;
 }
 
-/** 
+/**
  * Get current temperature and return it as array
  */
-function bd_get_temp_now($uuid)
-{
-   /**
-    * First, we need to check our transient and update the data in the 
-    * custom table if necessary. 
-    */
-    bd_foobot_update_sensor_data($uuid);
+function bd_get_temp_now( $uuid ) {
+	/**
+	 * First, we need to check our transient and update the data in the
+	 * custom table if necessary.
+	 */
+	bd_foobot_update_sensor_data( $uuid );
 
-   /**
-    * Having done that, we can proceed with questioning the database.
-    */
+	/**
+	 * Having done that, we can proceed with questioning the database.
+	 */
 
-   $data = bd_foobot_fetch_latest_sensor_data();
+	$data = bd_foobot_fetch_latest_sensor_data();
 
-   return $data;
+	return $data;
 }
