@@ -291,7 +291,7 @@ function bd_foobot_fetch_db_devices() {
 		if ( BD0019__DEBUG === 1 ) {
 			error_log( print_r( 'No devices found for timestamp %d.', $timestamp, true ) );
 		}
-		return;
+		return array();
 	}
 }
 

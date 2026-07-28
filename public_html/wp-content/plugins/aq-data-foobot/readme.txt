@@ -3,7 +3,7 @@ Contributors: markcbain
 Donate link: https://bain.design/
 Tags: air quality, foobot, pollution, air, monitor, particles, air, measure, CO2, humidity, temperature, API
 Requires at least: 5.3
-Tested up to: 6.4
+Tested up to: 7.0
 Stable tag: 1.3.0
 Requires PHP: 5.2.4
 License: GPLv2 or later
@@ -41,9 +41,11 @@ Sorry, no. I need both of mine for testing purposes.
 == Changelog ==
 
 = 1.3.0 =
+* Fix fatal error on PHP 8+ when no device data exists yet (e.g. fresh install with no API key configured)
 * Add PHPUnit test suite and WordPress Coding Standards linting
 * Add GitHub Actions CI (tests on every push/PR) and tag-triggered WordPress.org deploy
 * Reformat codebase to WordPress Coding Standards
+* Confirm compatibility with WordPress 7.0
 
 = 1.2.1 =
 * Fix database error
