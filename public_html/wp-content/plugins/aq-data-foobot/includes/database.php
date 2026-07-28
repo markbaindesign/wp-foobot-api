@@ -133,7 +133,7 @@ function bd_foobot_fetch_latest_sensor_data() {
 		"
       SELECT * 
       FROM %i
-         ORDER BY 'id'
+         ORDER BY `id`
          DESC LIMIT 1
       ",
 		$table_name,
@@ -244,7 +244,7 @@ function bd_foobot_fetch_db_devices() {
 		"
       SELECT * 
       FROM %i
-         ORDER BY 'id'
+         ORDER BY `id`
          DESC LIMIT 1
       ",
 		$table_name,

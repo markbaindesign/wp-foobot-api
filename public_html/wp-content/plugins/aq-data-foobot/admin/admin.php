@@ -38,10 +38,15 @@ function baindesign_settings_link( $links ) {
 add_filter( 'plugin_action_links_aq-data-foobot/aq-data-foobot.php', 'baindesign_settings_link' );
 
 function baindesign_foobot_sanitize_settings( $input ) {
-	$output = array();
+	$output   = array();
+	$existing = get_option( BD0019__API_OPTIONS_NAME, array() );
 
-	if ( isset( $input[ BD0019__API_KEY_FIELD ] ) ) {
+	// An empty submitted key means "keep the current key" (the field is
+	// left blank/hidden in the UI so the stored key isn't shown on screen).
+	if ( ! empty( $input[ BD0019__API_KEY_FIELD ] ) ) {
 		$output[ BD0019__API_KEY_FIELD ] = sanitize_textarea_field( $input[ BD0019__API_KEY_FIELD ] );
+	} elseif ( ! empty( $existing[ BD0019__API_KEY_FIELD ] ) ) {
+		$output[ BD0019__API_KEY_FIELD ] = $existing[ BD0019__API_KEY_FIELD ];
 	}
 
 	if ( isset( $input[ BD0019__API_USER_FIELD ] ) ) {
@@ -99,9 +104,23 @@ function baindesign_foobot_api_user_field_render() {
 }
 
 function baindesign_foobot_api_key_field_render() {
-	?>
-	<textarea rows="7" cols="50" name='baindesign_foobot_api_settings[baindesign_foobot_api_key]' placeholder='<?php _e( 'Your API key', 'aq-data-foobot' ); ?>'><?php echo esc_textarea( BD0019__API_KEY ); ?></textarea>
-	<?php
+	if ( BD0019__API_KEY ) {
+		$masked = str_repeat( '•', 8 ) . substr( BD0019__API_KEY, -4 );
+		?>
+		<p>
+			<code><?php echo esc_html( $masked ); ?></code>
+			<label style="display:block;margin-top:8px;font-weight:normal;">
+				<input type="checkbox" onchange="document.getElementById('bdf-key-textarea').style.display = this.checked ? 'block' : 'none';">
+				<?php esc_html_e( 'Change API Key', 'aq-data-foobot' ); ?>
+			</label>
+			<textarea id="bdf-key-textarea" rows="7" cols="50" name='baindesign_foobot_api_settings[baindesign_foobot_api_key]' placeholder='<?php echo esc_attr__( 'Enter a new API key', 'aq-data-foobot' ); ?>' style="display:none;margin-top:8px;"></textarea>
+		</p>
+		<?php
+	} else {
+		?>
+		<textarea rows="7" cols="50" name='baindesign_foobot_api_settings[baindesign_foobot_api_key]' placeholder='<?php echo esc_attr__( 'Your API key', 'aq-data-foobot' ); ?>'></textarea>
+		<?php
+	}
 }
 /**
  * Render the settings section content
@@ -111,22 +130,144 @@ function baindesign_foobot_settings_section_callback() {
 }
 
 /**
+ * Handle the "Test Connection" button, if submitted.
+ *
+ * @return array|null {success: bool, message: string} or null if not submitted.
+ */
+function baindesign_foobot_handle_test_connection() {
+	if ( ! isset( $_POST['baindesign_foobot_test_connection'] ) ) {
+		return null;
+	}
+
+	check_admin_referer( 'baindesign_foobot_test_connection' );
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return null;
+	}
+
+	if ( ! BD0019__API_KEY || ! BD0019__API_USER ) {
+		return array(
+			'success' => false,
+			'message' => __( 'Please save your API key and API user above before testing the connection.', 'aq-data-foobot' ),
+		);
+	}
+
+	$result = bd_foobot_call_api_devices();
+
+	if ( is_array( $result ) && isset( $result['state'] ) ) {
+		return array(
+			'success' => false,
+			'message' => sprintf(
+				/* translators: %d: HTTP status code returned by the Foobot API */
+				__( 'Connection failed: the Foobot API returned an error (status %d). Double-check your API key and API user email.', 'aq-data-foobot' ),
+				(int) $result['state']
+			),
+		);
+	}
+
+	if ( is_array( $result ) ) {
+		return array(
+			'success' => true,
+			'message' => sprintf(
+				/* translators: %d: number of devices found */
+				_n( 'Connection successful: found %d device.', 'Connection successful: found %d devices.', count( $result ), 'aq-data-foobot' ),
+				count( $result )
+			),
+		);
+	}
+
+	return array(
+		'success' => false,
+		'message' => __( 'Connection failed: no response from the Foobot API.', 'aq-data-foobot' ),
+	);
+}
+
+/**
+ * Get a human-readable "last data received" string, or a fallback message.
+ */
+function baindesign_foobot_get_last_received_text() {
+	$data = bd_foobot_fetch_latest_sensor_data();
+
+	if ( empty( $data['timestamp'] ) ) {
+		return __( 'No data received yet.', 'aq-data-foobot' );
+	}
+
+	return sprintf(
+		/* translators: %s: date/time the most recent sensor reading was received */
+		__( 'Last data received: %s', 'aq-data-foobot' ),
+		bd324_get_local_datetime( $data['timestamp'] )
+	);
+}
+
+/**
+ * Render the list of devices found on the account
+ */
+function baindesign_foobot_render_devices_list() {
+	if ( ! BD0019__API_KEY || ! BD0019__API_USER ) {
+		echo '<p>' . esc_html__( 'Save your API credentials above to see the devices found on your Foobot account.', 'aq-data-foobot' ) . '</p>';
+		return;
+	}
+
+	$devices = bd_foobot_fetch_db_devices();
+
+	if ( empty( $devices ) ) {
+		echo '<p>' . esc_html__( 'No devices found on this Foobot account.', 'aq-data-foobot' ) . '</p>';
+		return;
+	}
+	?>
+	<table class="widefat striped" style="max-width: 600px;">
+		<thead>
+			<tr>
+				<th><?php esc_html_e( 'Device Name', 'aq-data-foobot' ); ?></th>
+				<th><?php esc_html_e( 'Shortcode', 'aq-data-foobot' ); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach ( $devices as $device ) : ?>
+				<tr>
+					<td><?php echo esc_html( $device['name'] ); ?></td>
+					<td><code>[foobot-show-data device="<?php echo esc_attr( $device['name'] ); ?>"]</code></td>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+	<?php
+}
+
+/**
  * Render the options page form
  */
 
 function baindesign_foobot_options_page() {
+	$test_result = baindesign_foobot_handle_test_connection();
 	?>
 	<div class="wrap">
-		<form action='options.php' method='post'>
+		<h1><?php _e( 'Air Quality Data from Foobot', 'aq-data-foobot' ); ?></h1>
 
-			<h1><?php _e( 'Air Quality Data from Foobot', 'aq-data-foobot' ); ?></h1>
+		<?php if ( $test_result ) : ?>
+			<div class="notice <?php echo $test_result['success'] ? 'notice-success' : 'notice-error'; ?> is-dismissible">
+				<p><?php echo esc_html( $test_result['message'] ); ?></p>
+			</div>
+		<?php endif; ?>
+
+		<form action='options.php' method='post'>
 			<?php
 			settings_fields( 'baindesignFoobot' );
 			do_settings_sections( 'baindesignFoobot' );
 			submit_button();
 			?>
-
 		</form>
+
+		<form method="post" style="display:flex;align-items:center;gap:12px;">
+			<?php wp_nonce_field( 'baindesign_foobot_test_connection' ); ?>
+			<input type="hidden" name="baindesign_foobot_test_connection" value="1">
+			<?php submit_button( __( 'Test Connection', 'aq-data-foobot' ), 'secondary', 'submit', false ); ?>
+			<span><?php echo esc_html( baindesign_foobot_get_last_received_text() ); ?></span>
+		</form>
+
+		<h2><?php esc_html_e( 'Devices Found', 'aq-data-foobot' ); ?></h2>
+		<?php baindesign_foobot_render_devices_list(); ?>
+
 	</div>
 	<?php
 }
