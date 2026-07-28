@@ -18,42 +18,44 @@ If you just want to install the plugin and display your air quality data on your
 
 # Development
 
-If you want to collaborate on this plugin or fork your own version, here's a brief guide. 
+If you want to collaborate on this plugin or fork your own version, here's a brief guide.
 
-## VVV Setup
+# DDEV setup
 
-Add the following to your VVV `config.yml` 
-
-```
-  wp-foobot-api:
-    skip_provisioning: false
-    description: "A WordPress plugin to display Foobot data"
-    repo: https://github.com/markbaindesign/wp-foobot-api.git
-    hosts:
-      - wp-foobot-api.test
-    custom:
-      delete_default_plugins: true
-      install_plugins:
-        - transients-manager
-        - query-monitor
-      wp_config_constants:
-        WP_DEBUG: true
-        WP_DEBUG_LOG: true
-        WP_DEBUG_DISPLAY: false
-        WP_DISABLE_FATAL_ERROR_HANDLER: true
-```
-
-
-## Testing
-
-WP CLI is your friend. Here are some commands to make testing a breeze.
+This plugin is developed locally with [DDEV](https://ddev.com/). The project ships a `.ddev/config.yaml`, so setup is:
 
 ```
-wp db tables --all-tables
-wp db query 'SELECT * FROM wp_bd_foobot_device_data'
-wp db query 'SELECT * FROM wp_bd_foobot_device_data ORDER BY id DESC LIMIT 10'
-wp db query 'SELECT * FROM wp_bd_foobot_sensor_data'
-wp option get baindesign_foobot_api_settings
+ddev start
+```
+
+The site is then available at:
+
+- https://wp-foobot-api.ddev.site
+
+WordPress core and the dev-tool plugins (`classic-editor`, `debug-bar`, `transients-manager`) live under `public_html/wp-content` alongside the plugin itself and are not tracked in this repo's git history.
+
+To import a database dump:
+
+```
+ddev import-db --file=/path/to/dump.sql
+```
+
+To export the current database:
+
+```
+ddev export-db --file=/path/to/dump.sql
+```
+
+# Manual testing
+
+WP CLI is your friend (via `ddev wp ...` or `ddev ssh` then `wp ...`). Here are some commands to make testing a breeze.
+
+```
+ddev wp db tables --all-tables
+ddev wp db query 'SELECT * FROM wp_bd_foobot_device_data'
+ddev wp db query 'SELECT * FROM wp_bd_foobot_device_data ORDER BY id DESC LIMIT 10'
+ddev wp db query 'SELECT * FROM wp_bd_foobot_sensor_data'
+ddev wp option get baindesign_foobot_api_settings
 ```
 
 ## Changes to table structure
@@ -65,3 +67,37 @@ When changing the database table, you must also:
 3. Reactivate the plugin
 
 ...in order for the changes to take effect.
+
+# Automated testing
+
+The plugin has a PHPUnit test suite plus WordPress Coding Standards linting, both runnable inside DDEV. Dependencies and the WordPress test library aren't tracked in git, so set them up once per environment:
+
+```
+cd public_html/wp-content/plugins/aq-data-foobot
+ddev exec "cd public_html/wp-content/plugins/aq-data-foobot && composer install"
+ddev exec "cd public_html/wp-content/plugins/aq-data-foobot && bash bin/install-wp-tests.sh aqfoobot_test root root db latest"
+```
+
+Then, from `public_html/wp-content/plugins/aq-data-foobot`:
+
+```
+ddev exec "cd public_html/wp-content/plugins/aq-data-foobot && WP_TESTS_DIR=/tmp/wordpress-tests-lib vendor/bin/phpunit"
+ddev exec "cd public_html/wp-content/plugins/aq-data-foobot && vendor/bin/phpcs"
+```
+
+(`vendor/bin/phpcbf` will auto-fix most PHPCS formatting violations.)
+
+# CI/CD
+
+GitHub Actions (`.github/workflows/`) runs PHPUnit + PHPCS checks on every push/PR to `master` and `develop`. This repo is public, so Actions minutes are free (no billing risk).
+
+The PHPCS job is currently non-blocking (`continue-on-error: true`) — this plugin has ~69 pre-existing WordPress Coding Standards errors (output escaping, Yoda conditions, i18n translator comments, variable naming) that predate this pipeline and need real code changes, not just reformatting, to fix. PHPUnit is the hard gate. Tighten `lint` back to blocking once that backlog is cleared.
+
+Pushing a `v*` tag (e.g. `v1.3.0`) triggers `deploy.yml`, which re-runs the test suite and, if it passes, publishes the plugin to the WordPress.org SVN repository and attaches a zip to the matching GitHub Release. This requires `SVN_USERNAME` and `SVN_PASSWORD` to be set as repository secrets — **not yet configured**, so `deploy.yml` will fail at the deploy step until they're added:
+
+```
+gh secret set SVN_USERNAME -R markbaindesign/wp-foobot-api
+gh secret set SVN_PASSWORD -R markbaindesign/wp-foobot-api
+```
+
+Until then, releases to WordPress.org remain a manual `svn` commit from the `svn/` working copy in this repo, same as before.
