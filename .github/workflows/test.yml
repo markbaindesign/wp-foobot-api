@@ -2,7 +2,7 @@ name: Test
 
 on:
   push:
-    branches: [master, develop]
+    branches: [master, develop, "feature/**"]
   pull_request:
     branches: [master, develop]
   workflow_call:
@@ -55,6 +55,10 @@ jobs:
       - name: Install WordPress test suite
         run: yes | bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 ${{ matrix.wp }}
 
+      - name: Confirm the WordPress version under test
+        if: matrix.wp != 'latest'
+        run: grep -F "\$wp_version = '${{ matrix.wp }}'" /tmp/wordpress/wp-includes/version.php
+
       - name: Run PHPUnit
         run: WP_TESTS_DIR=/tmp/wordpress-tests-lib vendor/bin/phpunit
 
@@ -86,3 +90,22 @@ jobs:
 
       - name: Run PHPCS
         run: vendor/bin/phpcs
+
+  plugin-check:
+    name: Plugin Check
+    runs-on: ubuntu-latest
+    # Non-blocking until the first run's findings have been reviewed.
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the release directory
+        run: |
+          mkdir -p build/air-quality-data-from-foobot
+          rsync -a --exclude-from=public_html/wp-content/plugins/aq-data-foobot/.distignore public_html/wp-content/plugins/aq-data-foobot/ build/air-quality-data-from-foobot/
+
+      - name: Run Plugin Check
+        uses: WordPress/plugin-check-action@v1
+        with:
+          build-dir: build/air-quality-data-from-foobot

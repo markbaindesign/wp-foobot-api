@@ -1,0 +1,36 @@
+name: Update readme on WordPress.org
+
+# Pushes readme.txt to SVN trunk and to the stable tag's folder, without a
+# release: the route for a "Tested up to" bump. 10up's action refuses if any
+# other plugin file differs from SVN trunk, so run it from a ref whose plugin
+# code matches the released version. Assets are left alone.
+#
+#   gh workflow run wporg-readme.yml --ref <branch>
+
+on:
+  workflow_dispatch:
+
+jobs:
+  readme:
+    name: Push readme.txt to WordPress.org
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: _repo
+
+      # The action reads the plugin from the workspace root, so build the
+      # release directory there, as deploy.yml does under build/.
+      - name: Build the release directory at the workspace root
+        run: |
+          rsync -a --exclude-from=_repo/public_html/wp-content/plugins/aq-data-foobot/.distignore _repo/public_html/wp-content/plugins/aq-data-foobot/ ./
+          printf '/_repo\n/.distignore\n' > .distignore
+
+      - name: WordPress.org readme update
+        uses: 10up/action-wordpress-plugin-asset-update@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: air-quality-data-from-foobot
+          SKIP_ASSETS: true
