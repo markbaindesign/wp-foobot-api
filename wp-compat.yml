@@ -1,0 +1,5 @@
+# Read by the studio's wp-compat tool. Paths are relative to this file.
+slug: aq-data-foobot
+wporg_slug: air-quality-data-from-foobot
+source: public_html/wp-content/plugins/aq-data-foobot
+test_workflow: .github/workflows/test.yml

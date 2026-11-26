@@ -116,3 +116,6 @@ $RECYCLE.BIN/
 *.orig
 *.log
 .DS_Store
+
+# Read by the studio wp-compat tool
+!/wp-compat.yml
